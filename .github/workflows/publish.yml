@@ -57,7 +57,14 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Build NuGet Package
-        run: dotnet pack csharp/Thruput.Semgrep.Rules.csproj -c Release -o dist/nuget
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+          VERSION="${TAG#v}"
+          if [ -n "$VERSION" ]; then
+            dotnet pack csharp/Thruput.Semgrep.Rules.csproj -c Release -p:Version="$VERSION" -o dist/nuget
+          else
+            dotnet pack csharp/Thruput.Semgrep.Rules.csproj -c Release -o dist/nuget
+          fi
 
       - name: Upload NuGet Package to GitHub Release
         if: github.event_name == 'release'

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>Thruput.Semgrep.Rules</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Authors>Thruput</Authors>
     <Company>Thruput</Company>
     <Description>Curated Semgrep ruleset for .NET codebases with auto-bootstrapped CLI support, covering correctness, null safety, security, and performance.</Description>

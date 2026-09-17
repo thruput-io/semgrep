@@ -5,7 +5,7 @@ Semgrep Python Rules Package.
 from importlib import resources
 from pathlib import Path
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 
 def get_rules_path() -> Path:
