@@ -10,7 +10,7 @@ rules:
       Instantiating `HttpClient` directly inside methods causes socket exhaustion under high load, because underlying sockets remain in TIME_WAIT state after disposal.
       Inject `IHttpClientFactory` and call `_httpClientFactory.CreateClient()` or use a static/singleton `HttpClient` instance.
     languages: [csharp]
-    severity: WARNING
+    severity: ERROR
     metadata:
       category: performance
       confidence: MEDIUM

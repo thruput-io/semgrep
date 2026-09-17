@@ -6,16 +6,16 @@ rules:
           - pattern: $FUNC(..., $KEY=None, ...)
       - metavariable-regex:
           metavariable: $FUNC
-          regex: '^(?!.*(\bgetattr\b|\bsetattr\b|\bget\b|\bpop\b|\bnext\b|assert)).*$'
+          regex: '^(?!.*(assert)).*$'
     message: >-
       Passing literal `None` as an argument to `$FUNC`.
       In Clean Code, avoid passing `None` as arguments.
-      Rely on default argument values in function definitions (omit the argument at call site)
+      Rely on default argument values in function definitions (omit the argument at call site, e.g. use `.get("key")` instead of `.get("key", None)`),
       or use dedicated, intention-revealing function overloads.
     languages: [python]
-    severity: WARNING
+    severity: ERROR
     metadata:
-      category: style
-      confidence: MEDIUM
+      category: correctness
+      confidence: HIGH
       references:
         - https://peps.python.org/pep-0008/#programming-recommendations

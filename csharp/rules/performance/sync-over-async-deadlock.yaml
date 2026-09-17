@@ -21,7 +21,7 @@ rules:
       This sync-over-async pattern causes thread-pool starvation and can lead to deadlocks in ASP.NET Core request pipelines.
       Make the enclosing method `async Task` and use `await $TASK`.
     languages: [csharp]
-    severity: WARNING
+    severity: ERROR
     metadata:
       category: performance
       confidence: MEDIUM

@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "thruput-semgrep-rules-python"
+name = "thruput-semgrep-rules"
 version = "0.1.0"
 description = "Curated Semgrep ruleset for Python codebases by Thruput"
 readme = "README.md"
@@ -21,6 +21,7 @@ dependencies = [
 ]
 
 [project.scripts]
+thruput-semgrep = "semgrep_rules.cli:main"
 semgrep-python = "semgrep_rules.cli:main"
 
 [project.optional-dependencies]

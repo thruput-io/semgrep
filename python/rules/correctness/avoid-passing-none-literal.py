@@ -11,6 +11,12 @@ def execute():
     # ruleid: python-avoid-passing-none-literal
     notify_user("usr_123", "Hello", None, channel="slack")
 
+    # ruleid: python-avoid-passing-none-literal
+    val = getattr(dict(), "items", None)
+
+    # ruleid: python-avoid-passing-none-literal
+    header = {"Authorization": "Bearer token"}.get("Content-Type", None)
+
     # ok: python-avoid-passing-none-literal
     notify_user("usr_123", "Hello")
 
@@ -18,7 +24,7 @@ def execute():
     notify_user("usr_123", "Hello", channel="slack")
 
     # ok: python-avoid-passing-none-literal
-    val = getattr(dict(), "items", None)
+    safe_header = {"Authorization": "Bearer token"}.get("Content-Type")
 
     # ok: python-avoid-passing-none-literal
-    header = {"Authorization": "Bearer token"}.get("Content-Type", None)
+    safe_val = getattr(dict(), "items", "default")

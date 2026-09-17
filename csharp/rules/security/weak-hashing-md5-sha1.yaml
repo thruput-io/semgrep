@@ -12,7 +12,7 @@ rules:
       MD5 and SHA1 are cryptographically broken and vulnerable to collision attacks.
       Use `SHA256.Create()`, `SHA512.Create()`, or `HMACSHA256` for secure cryptographic hashing and HMAC.
     languages: [csharp]
-    severity: WARNING
+    severity: ERROR
     metadata:
       category: security
       cwe: "CWE-328: Use of Weak Hash"

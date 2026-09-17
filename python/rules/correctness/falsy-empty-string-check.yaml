@@ -9,7 +9,7 @@ rules:
       Using `$STR or $DEFAULT` when `$STR` is typed as `str` replaces empty string `""` with `$DEFAULT`.
       If `""` is a valid input distinct from missing/None, use an explicit `if $STR is None:` or ternary `$DEFAULT if $STR is None else $STR`.
     languages: [python]
-    severity: WARNING
+    severity: ERROR
     metadata:
       category: correctness
       confidence: MEDIUM

@@ -28,7 +28,7 @@ rules:
       This can cause unexpected repeated side-effects, database queries, or performance degradation.
       Materialize the sequence into a `List` or `Array` first with `.ToList()` or `.ToArray()`.
     languages: [csharp]
-    severity: WARNING
+    severity: ERROR
     metadata:
       category: performance
       confidence: MEDIUM

@@ -1,6 +1,6 @@
 # Thruput Semgrep Rules
 
-Curated Semgrep rulesets for **Python** and **.NET (C#)** codebases.
+Curated Semgrep rulesets for **Python** and **.NET (C#)** codebases. All rules are configured with **`ERROR`** severity to enforce strict, blocking quality gates in CI/CD.
 
 ---
 
@@ -12,11 +12,12 @@ Curated Semgrep rulesets for **Python** and **.NET (C#)** codebases.
 > Never assume a rule pattern or change works without running the test suite. Breaking changes, syntax errors, or unverified patterns are not allowed.
 
 ### Rule Modification Requirements:
-1. **Paired Test Fixtures**: Every rule YAML file (`*.yaml`) must have a corresponding test fixture (`.py` or `.cs`) containing:
+1. **Severity Policy**: All rules must have `severity: ERROR` to serve as hard blocking gates.
+2. **Paired Test Fixtures**: Every rule YAML file (`*.yaml`) must have a corresponding test fixture (`.py` or `.cs`) containing:
    - At least one positive trigger case marked with `# ruleid: <rule-id>` or `// ruleid: <rule-id>`.
    - At least one negative false-positive guard marked with `# ok: <rule-id>` or `// ok: <rule-id>`.
-2. **Quoting Special Syntax**: In YAML, all pattern strings containing colons, curly braces `{}`, brackets `[]`, or quotes must be quoted to prevent parser errors.
-3. **Mandatory Test Verification**:
+3. **Quoting Special Syntax**: In YAML, all pattern strings containing colons, curly braces `{}`, brackets `[]`, or quotes must be quoted to prevent parser errors.
+4. **Mandatory Test Verification**:
    Before committing or finalizing changes, execute the test suite:
    ```bash
    pytest
@@ -27,17 +28,19 @@ Curated Semgrep rulesets for **Python** and **.NET (C#)** codebases.
 
 ## 📦 Consuming the Packages
 
-### 🐍 Python (`thruput-semgrep-rules-python`)
+### 🐍 Python (`thruput-semgrep-rules`)
 
 1. **Add Dependency**:
    ```toml
    [project.optional-dependencies]
    dev = [
-       "thruput-semgrep-rules-python @ git+https://github.com/thruput/semgrep.git#subdirectory=python"
+       "thruput-semgrep-rules @ git+https://github.com/thruput/semgrep.git#subdirectory=python"
    ]
    ```
 2. **Run Linter**:
    ```bash
+   thruput-semgrep .
+   # or
    semgrep-python .
    ```
 3. **Programmatic Access**:

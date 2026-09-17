@@ -11,7 +11,7 @@ rules:
       In C#, `==` can be overloaded, potentially introducing bugs or bypassing null checks.
       Prefer pattern matching syntax `$X is null` or `$X is not null` for safe, type-level null checking.
     languages: [csharp]
-    severity: WARNING
+    severity: ERROR
     metadata:
       category: correctness
       confidence: HIGH

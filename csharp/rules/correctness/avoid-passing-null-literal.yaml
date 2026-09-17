@@ -10,7 +10,7 @@ rules:
       Passing literal `null` as an argument to `$METHOD`.
       Avoid passing `null` directly as arguments. Consider using default parameters, Option/Result types, or dedicated method overloads instead of null values.
     languages: [csharp]
-    severity: INFO
+    severity: ERROR
     metadata:
       category: correctness
       confidence: LOW

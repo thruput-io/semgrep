@@ -10,7 +10,7 @@ rules:
       Direct comparison `$S == ""` does not check for `null` or whitespace strings.
       Use `string.IsNullOrEmpty($S)` or `string.IsNullOrWhiteSpace($S)` to safely check for empty/missing string values.
     languages: [csharp]
-    severity: WARNING
+    severity: ERROR
     metadata:
       category: correctness
       confidence: HIGH

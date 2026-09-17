@@ -8,7 +8,7 @@ rules:
       Comments are disallowed in this codebase. Code should be self-documenting through clear naming,
       concise function structure, and type annotations.
     languages: [csharp]
-    severity: WARNING
+    severity: ERROR
     metadata:
       category: style
       confidence: HIGH

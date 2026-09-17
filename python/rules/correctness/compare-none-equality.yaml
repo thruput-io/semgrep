@@ -11,7 +11,7 @@ rules:
       `None` is a singleton in Python; use identity operators `is None` or `is not None` instead.
       Equality comparisons invoke `__eq__` on `$X`, which may cause unexpected behavior or performance issues.
     languages: [python]
-    severity: WARNING
+    severity: ERROR
     metadata:
       category: correctness
       confidence: HIGH

@@ -11,7 +11,7 @@ rules:
       will throw an `InvalidOperationException: Nullable object must have a value` at runtime if null.
       Use `GetValueOrDefault()`, null-coalescing `$X ?? fallback`, or pattern matching `if ($X is int val)`.
     languages: [csharp]
-    severity: WARNING
+    severity: ERROR
     metadata:
       category: correctness
       confidence: MEDIUM

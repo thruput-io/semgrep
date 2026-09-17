@@ -9,7 +9,7 @@ rules:
       Calling `.$METHOD()` directly on the result of `$DICT.get($KEY)` will raise `AttributeError: 'NoneType' object has no attribute '$METHOD'` if the key does not exist.
       Provide a default value (e.g. `$DICT.get($KEY, "").$METHOD(...)`) or check for `None` before dereferencing.
     languages: [python]
-    severity: WARNING
+    severity: ERROR
     metadata:
       category: correctness
       confidence: MEDIUM

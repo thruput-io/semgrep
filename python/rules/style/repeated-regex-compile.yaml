@@ -9,7 +9,7 @@ rules:
       Calling `re.compile()` inside a loop recompiles the regular expression on every iteration.
       Compile the regex pattern once outside the loop or module-level for better performance.
     languages: [python]
-    severity: WARNING
+    severity: ERROR
     metadata:
       category: performance
       confidence: HIGH

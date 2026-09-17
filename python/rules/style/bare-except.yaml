@@ -11,7 +11,7 @@ rules:
       A bare `except:` catches `BaseException`, which silently traps critical system signals such as `KeyboardInterrupt` and `SystemExit`.
       Catch specific exceptions (e.g. `except Exception:`, `except ValueError:`) instead.
     languages: [python]
-    severity: WARNING
+    severity: ERROR
     metadata:
       category: style
       confidence: HIGH
