@@ -123,10 +123,13 @@ class TestPythonRulesIntegrity:
 
     @pytest.mark.parametrize("rule_file", PYTHON_RULE_FILES, ids=get_rule_id)
     def test_semgrep_test_execution(self, rule_file):
-        """Execute `semgrep --test <rule_file>` against Python fixture."""
+        """Execute `semgrep --test --config <rule_file> <fixture_path>` against Python fixture."""
         semgrep_bin = get_semgrep_executable()
+        base, _ = os.path.splitext(rule_file)
+        fixture_path = f"{base}.py"
+
         result = subprocess.run(
-            [semgrep_bin, "--test", rule_file],
+            [semgrep_bin, "--test", "--config", rule_file, fixture_path],
             capture_output=True,
             text=True
         )
