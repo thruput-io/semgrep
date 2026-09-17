@@ -2,13 +2,14 @@ rules:
   - id: python-dangerous-eval-exec
     patterns:
       - pattern-either:
-          - pattern: "eval($CODE, ...)"
-          - pattern: "exec($CODE, ...)"
-    pattern-not:
-      - pattern: 'eval("...", ...)'
-      - pattern: 'exec("...", ...)'
+          - pattern: eval(...)
+          - pattern: exec(...)
+      - pattern-not: eval("...")
+      - pattern-not: eval("...", ...)
+      - pattern-not: exec("...")
+      - pattern-not: exec("...", ...)
     message: >-
-      Found use of dynamic `eval()` or `exec()` with variable input `$CODE`.
+      Found use of dynamic `eval()` or `exec()` with variable input.
       Executing dynamically formatted code allows arbitrary code execution vulnerabilities.
       Use safer parsing alternatives (e.g. `ast.literal_eval()`, `json.loads()`).
     languages: [python]

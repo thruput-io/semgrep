@@ -2,17 +2,11 @@ rules:
   - id: python-avoid-passing-none-literal
     patterns:
       - pattern-either:
-          - pattern: "$FUNC(..., None, ...)"
-          - pattern: "$FUNC(..., $KEY=None, ...)"
-    pattern-not:
-      - pattern: "getattr(..., None)"
-      - pattern: "$DICT.get(..., None)"
-      - pattern: "$DICT.pop(..., None)"
-      - pattern: "next(..., None)"
-      - pattern: "setattr(..., None)"
-      - pattern: "self.assertEqual(..., None, ...)"
-      - pattern: "self.assertIs(..., None, ...)"
-      - pattern: "self.assertIsNot(..., None, ...)"
+          - pattern: $FUNC(..., None, ...)
+          - pattern: $FUNC(..., $KEY=None, ...)
+      - metavariable-regex:
+          metavariable: $FUNC
+          regex: '^(?!.*(\bgetattr\b|\bsetattr\b|\bget\b|\bpop\b|\bnext\b|assert)).*$'
     message: >-
       Passing literal `None` as an argument to `$FUNC`.
       In Clean Code, avoid passing `None` as arguments.

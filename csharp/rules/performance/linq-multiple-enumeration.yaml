@@ -11,6 +11,18 @@ rules:
               }
               ...
           }
+      - pattern-not-inside: |
+          var $SEQ = $EXPR.ToList();
+          ...
+      - pattern-not-inside: |
+          var $SEQ = $EXPR.ToArray();
+          ...
+      - pattern-not-inside: |
+          $TYPE $SEQ = $EXPR.ToList();
+          ...
+      - pattern-not-inside: |
+          $TYPE $SEQ = $EXPR.ToArray();
+          ...
     message: >-
       Possible multiple enumeration of `IEnumerable` `$SEQ` detected (`Any()` check followed by `foreach`).
       This can cause unexpected repeated side-effects, database queries, or performance degradation.

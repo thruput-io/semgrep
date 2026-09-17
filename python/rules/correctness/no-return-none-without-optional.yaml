@@ -18,7 +18,11 @@ rules:
               ...
               return None
       - pattern-not: |
-          def $FUNC(...) -> Union[..., None, ...]:
+          def $FUNC(...) -> Union[$T, None]:
+              ...
+              return None
+      - pattern-not: |
+          def $FUNC(...) -> Union[None, $T]:
               ...
               return None
     message: >-

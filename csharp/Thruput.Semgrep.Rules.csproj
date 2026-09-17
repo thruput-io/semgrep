@@ -18,6 +18,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- Exclude test fixture .cs files from project compilation -->
+    <Compile Remove="rules\**\*.cs" />
+    <Compile Remove="tests\**\*.cs" />
+    <None Include="rules\**\*.cs" />
+
     <!-- Package README -->
     <None Include="..\README.md" Pack="true" PackagePath="\" />
 

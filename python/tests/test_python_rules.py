@@ -2,8 +2,11 @@ import glob
 import os
 import shutil
 import subprocess
+import sys
 import yaml
 import pytest
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src")))
 from semgrep_rules import get_rules_path
 
 RULES_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "rules"))

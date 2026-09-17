@@ -1,10 +1,10 @@
 rules:
   - id: python-falsy-empty-string-check
     patterns:
-      - pattern: |
+      - pattern: $VAR = $STR or $DEFAULT
+      - pattern-inside: |
           def $FUNC(..., $STR: str, ...):
               ...
-              $VAR = $STR or $DEFAULT
     message: >-
       Using `$STR or $DEFAULT` when `$STR` is typed as `str` replaces empty string `""` with `$DEFAULT`.
       If `""` is a valid input distinct from missing/None, use an explicit `if $STR is None:` or ternary `$DEFAULT if $STR is None else $STR`.

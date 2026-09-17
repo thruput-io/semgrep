@@ -7,7 +7,15 @@ rules:
               {
                   ...
               }
-              catch ($EX)
+              catch ($TYPE $EX)
+              {
+              }
+          - pattern: |
+              try
+              {
+                  ...
+              }
+              catch ($TYPE)
               {
               }
           - pattern: |
