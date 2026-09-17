@@ -66,12 +66,21 @@ jobs:
         run: |
           gh release upload ${{ github.event.release.tag_name }} dist/nuget/* --clobber
 
+      # Register GitHub Packages as authenticated NuGet source
+      - name: Authenticate GitHub Packages NuGet Source
+        run: |
+          dotnet nuget add source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
+            --name "github" \
+            --username "${{ github.actor }}" \
+            --password "${{ secrets.GITHUB_TOKEN }}" \
+            --store-password-in-clear-text
+
       # Push to GitHub Packages NuGet Feed
       - name: Push to GitHub Packages
         run: |
           dotnet nuget push dist/nuget/*.nupkg \
-            --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
-            --api-key ${{ secrets.GITHUB_TOKEN }} \
+            --source "github" \
+            --api-key "${{ secrets.GITHUB_TOKEN }}" \
             --skip-duplicate
 
       # Push to NuGet.org (optional: if NUGET_API_KEY is configured)

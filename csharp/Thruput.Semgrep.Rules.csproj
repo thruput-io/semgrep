@@ -10,7 +10,10 @@
     <PackageTags>thruput;semgrep;linter;csharp;dotnet;security;clean-code;quality</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    
+    <PackageProjectUrl>https://github.com/thruput-io/semgrep</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/thruput-io/semgrep</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+
     <!-- Rules/content-only package, no compiled dll binaries required -->
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
