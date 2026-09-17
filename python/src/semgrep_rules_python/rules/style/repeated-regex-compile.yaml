@@ -1,0 +1,15 @@
+rules:
+  - id: python-repeated-regex-compile
+    patterns:
+      - pattern: |
+          for ... in ...:
+              ...
+              re.compile(...)
+    message: >-
+      Calling `re.compile()` inside a loop recompiles the regular expression on every iteration.
+      Compile the regex pattern once outside the loop or module-level for better performance.
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: performance
+      confidence: HIGH

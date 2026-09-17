@@ -1,0 +1,21 @@
+rules:
+  - id: python-mutable-default-arg
+    patterns:
+      - pattern-either:
+          - pattern: "def $FUNC(..., $ARG=[], ...): ..."
+          - pattern: "def $FUNC(..., $ARG={}, ...): ..."
+          - pattern: "def $FUNC(..., $ARG=set(), ...): ..."
+          - pattern: "def $FUNC(..., $ARG=list(), ...): ..."
+          - pattern: "def $FUNC(..., $ARG=dict(), ...): ..."
+    message: >-
+      Default argument `$ARG` is mutable (list, dict, or set). In Python, default
+      arguments are evaluated once when the function is defined, not each time the function is called.
+      Use `None` as the default value and initialize inside the function body (e.g. `$ARG = None`, then `if $ARG is None: $ARG = []`).
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: correctness
+      cwe: "CWE-665: Improper Initialization"
+      confidence: HIGH
+      references:
+        - https://docs.python-guide.org/writing/gotchas/#mutable-default-arguments

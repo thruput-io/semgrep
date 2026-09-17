@@ -1,0 +1,15 @@
+rules:
+  - id: python-assert-tuple-statement
+    patterns:
+      - pattern: "assert ($X, $Y)"
+    message: >-
+      Found `assert ($X, $Y)` with a tuple argument.
+      In Python, non-empty tuples always evaluate to `True`, which means this assertion will never fail!
+      Use `assert $X, $Y` instead (without grouping parentheses).
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: correctness
+      confidence: HIGH
+      references:
+        - https://docs.python.org/3/reference/simple_stmts.html#the-assert-statement

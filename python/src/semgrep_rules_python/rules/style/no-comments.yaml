@@ -1,0 +1,12 @@
+rules:
+  - id: python-no-comments
+    patterns:
+      - pattern-regex: '^[ \t]*#[ \t]*(?!(?:type:\s*ignore|noqa|pragma:|!|ruleid:|ok:|semgrep:)).+$'
+    message: >-
+      Comments are disallowed in this codebase. Code should be self-documenting through clear naming,
+      concise function structure, and type annotations.
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: style
+      confidence: HIGH

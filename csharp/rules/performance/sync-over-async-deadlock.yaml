@@ -1,0 +1,29 @@
+rules:
+  - id: csharp-sync-over-async-deadlock
+    patterns:
+      - pattern-either:
+          - pattern: "$TASK.Result"
+          - pattern: "$TASK.Wait(...)"
+          - pattern: "$TASK.GetAwaiter().GetResult()"
+    pattern-not-inside:
+      - pattern: |
+          public static void Main(...)
+          {
+              ...
+          }
+      - pattern: |
+          public static async Task Main(...)
+          {
+              ...
+          }
+    message: >-
+      Detected synchronous blocking on asynchronous task (`.Result`, `.Wait()`, or `.GetAwaiter().GetResult()`).
+      This sync-over-async pattern causes thread-pool starvation and can lead to deadlocks in ASP.NET Core request pipelines.
+      Make the enclosing method `async Task` and use `await $TASK`.
+    languages: [csharp]
+    severity: WARNING
+    metadata:
+      category: performance
+      confidence: MEDIUM
+      references:
+        - https://github.com/davidfowl/AspNetCoreDiagnosticScenarios/blob/master/AsyncGuidance.md#warning-sync-over-async

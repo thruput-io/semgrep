@@ -1,0 +1,19 @@
+rules:
+  - id: python-compare-none-equality
+    patterns:
+      - pattern-either:
+          - pattern: "$X == None"
+          - pattern: "$X != None"
+          - pattern: "None == $X"
+          - pattern: "None != $X"
+    message: >-
+      Comparison with `None` using equality operator (`==` or `!=`).
+      `None` is a singleton in Python; use identity operators `is None` or `is not None` instead.
+      Equality comparisons invoke `__eq__` on `$X`, which may cause unexpected behavior or performance issues.
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: correctness
+      confidence: HIGH
+      references:
+        - https://peps.python.org/pep-0008/#programming-recommendations

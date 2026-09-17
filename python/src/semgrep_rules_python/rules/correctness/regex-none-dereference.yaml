@@ -1,0 +1,20 @@
+rules:
+  - id: python-regex-none-dereference
+    patterns:
+      - pattern-either:
+          - pattern: "re.search(...).group(...)"
+          - pattern: "re.search(...).groups(...)"
+          - pattern: "re.match(...).group(...)"
+          - pattern: "re.match(...).groups(...)"
+          - pattern: "re.fullmatch(...).group(...)"
+          - pattern: "re.fullmatch(...).groups(...)"
+    message: >-
+      Chained `.group()` or `.groups()` called directly on `re.search`, `re.match`, or `re.fullmatch`.
+      These functions return `None` when no regex match is found, causing an immediate
+      `AttributeError: 'NoneType' object has no attribute 'group'`.
+      Store the match result and check for `None` or use the walrus operator (`if match := re.search(...):`).
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: correctness
+      confidence: HIGH

@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>Semgrep.Rules.CSharp</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Jonas</Authors>
+    <Company>Jonas</Company>
+    <Description>Curated Semgrep ruleset for C# (.NET) codebases covering correctness, null safety, security, and performance.</Description>
+    <PackageTags>semgrep;linter;csharp;dotnet;security;clean-code;quality</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    
+    <!-- Rules/content-only package, no compiled dll binaries required -->
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Package README -->
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
+
+    <!-- Include all C# rules into package -->
+    <None Include="rules\**\*.yaml" Pack="true" PackagePath="rules\csharp\" />
+
+    <!-- Include MSBuild targets for consumers -->
+    <None Include="build\Semgrep.Rules.CSharp.targets" Pack="true" PackagePath="build\Semgrep.Rules.CSharp.targets" />
+  </ItemGroup>
+
+</Project>

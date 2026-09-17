@@ -1,0 +1,16 @@
+rules:
+  - id: csharp-avoid-passing-null-literal
+    patterns:
+      - pattern: "$METHOD(..., null, ...)"
+    pattern-not:
+      - pattern: "$METHOD(null)"
+      - pattern: "Assert.$METHOD(..., null, ...)"
+      - pattern: "$OBJ.Equals(..., null, ...)"
+    message: >-
+      Passing literal `null` as an argument to `$METHOD`.
+      Avoid passing `null` directly as arguments. Consider using default parameters, Option/Result types, or dedicated method overloads instead of null values.
+    languages: [csharp]
+    severity: INFO
+    metadata:
+      category: correctness
+      confidence: LOW

@@ -1,0 +1,27 @@
+rules:
+  - id: python-avoid-passing-none-literal
+    patterns:
+      - pattern-either:
+          - pattern: "$FUNC(..., None, ...)"
+          - pattern: "$FUNC(..., $KEY=None, ...)"
+    pattern-not:
+      - pattern: "getattr(..., None)"
+      - pattern: "$DICT.get(..., None)"
+      - pattern: "$DICT.pop(..., None)"
+      - pattern: "next(..., None)"
+      - pattern: "setattr(..., None)"
+      - pattern: "self.assertEqual(..., None, ...)"
+      - pattern: "self.assertIs(..., None, ...)"
+      - pattern: "self.assertIsNot(..., None, ...)"
+    message: >-
+      Passing literal `None` as an argument to `$FUNC`.
+      In Clean Code, avoid passing `None` as arguments.
+      Rely on default argument values in function definitions (omit the argument at call site)
+      or use dedicated, intention-revealing function overloads.
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: style
+      confidence: MEDIUM
+      references:
+        - https://peps.python.org/pep-0008/#programming-recommendations

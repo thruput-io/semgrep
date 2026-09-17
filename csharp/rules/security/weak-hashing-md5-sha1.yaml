@@ -1,0 +1,19 @@
+rules:
+  - id: csharp-weak-hashing-md5-sha1
+    patterns:
+      - pattern-either:
+          - pattern: "MD5.Create(...)"
+          - pattern: "SHA1.Create(...)"
+          - pattern: "new MD5CryptoServiceProvider(...)"
+          - pattern: "new SHA1CryptoServiceProvider(...)"
+          - pattern: "new SHA1Managed(...)"
+    message: >-
+      Weak cryptographic hashing algorithm detected (`MD5` or `SHA1`).
+      MD5 and SHA1 are cryptographically broken and vulnerable to collision attacks.
+      Use `SHA256.Create()`, `SHA512.Create()`, or `HMACSHA256` for secure cryptographic hashing and HMAC.
+    languages: [csharp]
+    severity: WARNING
+    metadata:
+      category: security
+      cwe: "CWE-328: Use of Weak Hash"
+      confidence: HIGH

@@ -1,0 +1,19 @@
+rules:
+  - id: csharp-compare-null-equality
+    patterns:
+      - pattern-either:
+          - pattern: "$X == null"
+          - pattern: "$X != null"
+          - pattern: "null == $X"
+          - pattern: "null != $X"
+    message: >-
+      Comparison with `null` using `==` or `!=`.
+      In C#, `==` can be overloaded, potentially introducing bugs or bypassing null checks.
+      Prefer pattern matching syntax `$X is null` or `$X is not null` for safe, type-level null checking.
+    languages: [csharp]
+    severity: WARNING
+    metadata:
+      category: correctness
+      confidence: HIGH
+      references:
+        - https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/is

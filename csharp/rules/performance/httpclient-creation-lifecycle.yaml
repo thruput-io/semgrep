@@ -1,0 +1,18 @@
+rules:
+  - id: csharp-httpclient-creation-lifecycle
+    patterns:
+      - pattern: "new HttpClient(...)"
+    pattern-not-inside:
+      - pattern: "static readonly HttpClient $CLIENT = new HttpClient(...);"
+      - pattern: "private static readonly HttpClient $CLIENT = new HttpClient(...);"
+      - pattern: "public static readonly HttpClient $CLIENT = new HttpClient(...);"
+    message: >-
+      Instantiating `HttpClient` directly inside methods causes socket exhaustion under high load, because underlying sockets remain in TIME_WAIT state after disposal.
+      Inject `IHttpClientFactory` and call `_httpClientFactory.CreateClient()` or use a static/singleton `HttpClient` instance.
+    languages: [csharp]
+    severity: WARNING
+    metadata:
+      category: performance
+      confidence: MEDIUM
+      references:
+        - https://learn.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/use-httpclientfactory-to-implement-resilient-http-requests

@@ -1,0 +1,22 @@
+rules:
+  - id: csharp-linq-multiple-enumeration
+    patterns:
+      - pattern: |
+          if ($SEQ.Any())
+          {
+              ...
+              foreach (var $X in $SEQ)
+              {
+                  ...
+              }
+              ...
+          }
+    message: >-
+      Possible multiple enumeration of `IEnumerable` `$SEQ` detected (`Any()` check followed by `foreach`).
+      This can cause unexpected repeated side-effects, database queries, or performance degradation.
+      Materialize the sequence into a `List` or `Array` first with `.ToList()` or `.ToArray()`.
+    languages: [csharp]
+    severity: WARNING
+    metadata:
+      category: performance
+      confidence: MEDIUM

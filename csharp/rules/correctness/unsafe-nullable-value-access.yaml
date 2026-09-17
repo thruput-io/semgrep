@@ -1,0 +1,29 @@
+rules:
+  - id: csharp-unsafe-nullable-value-access
+    patterns:
+      - pattern: "$X.Value"
+    pattern-not-inside:
+      - pattern: |
+          if ($X.HasValue)
+          {
+              ...
+          }
+      - pattern: |
+          if ($X != null)
+          {
+              ...
+          }
+      - pattern: |
+          if ($X is not null)
+          {
+              ...
+          }
+    message: >-
+      Directly accessing `.Value` on a nullable type `$X` without verifying `.HasValue` or `$X is not null`
+      will throw an `InvalidOperationException: Nullable object must have a value` at runtime if null.
+      Use `GetValueOrDefault()`, null-coalescing `$X ?? fallback`, or pattern matching `if ($X is int val)`.
+    languages: [csharp]
+    severity: WARNING
+    metadata:
+      category: correctness
+      confidence: MEDIUM

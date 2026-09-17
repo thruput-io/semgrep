@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "semgrep-rules-python"
+version = "0.1.0"
+description = "Curated Semgrep ruleset for Python codebases"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [
+    { name = "Jonas" }
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Security",
+]
+dependencies = [
+    "semgrep>=1.60.0",
+]
+
+[project.scripts]
+semgrep-python = "semgrep_rules_python.cli:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pyyaml>=6.0.0",
+    "build>=1.0.0",
+    "twine>=4.0.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+semgrep_rules_python = [
+    "py.typed",
+    "rules/**/*.yaml",
+    "rules/**/*.py",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --tb=short"

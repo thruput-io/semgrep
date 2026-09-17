@@ -1,0 +1,19 @@
+rules:
+  - id: python-dangerous-eval-exec
+    patterns:
+      - pattern-either:
+          - pattern: "eval($CODE, ...)"
+          - pattern: "exec($CODE, ...)"
+    pattern-not:
+      - pattern: 'eval("...", ...)'
+      - pattern: 'exec("...", ...)'
+    message: >-
+      Found use of dynamic `eval()` or `exec()` with variable input `$CODE`.
+      Executing dynamically formatted code allows arbitrary code execution vulnerabilities.
+      Use safer parsing alternatives (e.g. `ast.literal_eval()`, `json.loads()`).
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: security
+      cwe: "CWE-95: Improper Neutralization of Directives in Dynamically Evaluated Code ('Eval Injection')"
+      confidence: HIGH
