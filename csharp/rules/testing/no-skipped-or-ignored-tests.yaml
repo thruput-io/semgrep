@@ -1,0 +1,38 @@
+rules:
+  - id: csharp-no-skipped-or-ignored-tests
+    patterns:
+      - pattern-either:
+          - pattern: |
+              [Fact(..., Skip = $REASON, ...)]
+              $RET $METHOD(...)
+              {
+                  ...
+              }
+          - pattern: |
+              [Theory(..., Skip = $REASON, ...)]
+              $RET $METHOD(...)
+              {
+                  ...
+              }
+          - pattern: |
+              [Ignore(...)]
+              $RET $METHOD(...)
+              {
+                  ...
+              }
+          - pattern: |
+              [Ignore]
+              $RET $METHOD(...)
+              {
+                  ...
+              }
+    message: >-
+      Skipped or ignored test detected.
+      Per RULES.md Section 8, tests MUST NOT be skipped or muted. Fix the defect or delete the obsolete test immediately.
+    languages: [csharp]
+    severity: ERROR
+    metadata:
+      category: testing
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#8-testing

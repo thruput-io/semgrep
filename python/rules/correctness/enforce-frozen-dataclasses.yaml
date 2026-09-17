@@ -1,0 +1,27 @@
+rules:
+  - id: python-enforce-frozen-dataclasses
+    patterns:
+      - pattern-either:
+          - pattern: |
+              @dataclass
+              class $CLASS:
+                  ...
+          - pattern: |
+              @dataclass(...)
+              class $CLASS:
+                  ...
+      - pattern-not: |
+          @dataclass(..., frozen=True, ...)
+          class $CLASS:
+              ...
+    message: >-
+      Found mutable `@dataclass` definition for `$CLASS`.
+      Per RULES.md Section 4, domain objects MUST be immutable; state changes must return new validated instances.
+      Add `frozen=True` (e.g. `@dataclass(frozen=True)`).
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: correctness
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#4-domain-modeling--unrepresentable-illegal-states

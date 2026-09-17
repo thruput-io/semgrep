@@ -1,0 +1,40 @@
+rules:
+  - id: python-test-must-have-assertion
+    patterns:
+      - pattern: |
+          def $FUNC(...):
+              ...
+      - metavariable-regex:
+          metavariable: $FUNC
+          regex: "^test_.*"
+      - pattern-not: |
+          def $FUNC(...):
+              ...
+              assert ...
+              ...
+      - pattern-not: |
+          def $FUNC(...):
+              ...
+              self.$ASSERT(...)
+              ...
+      - pattern-not: |
+          def $FUNC(...):
+              ...
+              pytest.raises(...)
+              ...
+      - pattern-not: |
+          def $FUNC(...):
+              ...
+              with pytest.raises(...):
+                  ...
+    message: >-
+      Test function `$FUNC` does not contain any assertions (`assert`, `pytest.raises`, or `self.assert*`).
+      Per RULES.md Section 8, tests MUST assert concrete return values.
+      Coverage-only or no-assertion tests are strictly prohibited.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: testing
+      confidence: MEDIUM
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#8-testing

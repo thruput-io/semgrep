@@ -1,0 +1,20 @@
+rules:
+  - id: python-no-skipped-or-ignored-tests
+    patterns:
+      - pattern-either:
+          - pattern: "@pytest.mark.skip(...)"
+          - pattern: "@pytest.mark.skip"
+          - pattern: "@pytest.mark.skipif(...)"
+          - pattern: "pytest.skip(...)"
+          - pattern: "@unittest.skip(...)"
+          - pattern: "@unittest.skipIf(...)"
+    message: >-
+      Skipped or ignored test detected.
+      Per RULES.md Section 8, tests MUST NOT be skipped or muted. Fix the defect or delete the obsolete test immediately.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: testing
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#8-testing

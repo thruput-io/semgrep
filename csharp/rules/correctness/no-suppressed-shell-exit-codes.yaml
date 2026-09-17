@@ -1,0 +1,18 @@
+rules:
+  - id: csharp-no-suppressed-shell-exit-codes
+    patterns:
+      - pattern-either:
+          - pattern-regex: '\|\|\s*true\b'
+          - pattern-regex: '2>\s*\/dev\/null'
+          - pattern-regex: '>\s*\/dev\/null\s+2>&1'
+    message: >-
+      Found suppressed exit code (`|| true`) or discarded error diagnostics (`2>/dev/null`) in command.
+      Per RULES.md Section 7, code MUST maintain diagnostic and exit code integrity.
+      Never suppress exit codes or redirect stderr to /dev/null.
+    languages: [csharp]
+    severity: ERROR
+    metadata:
+      category: correctness
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#7-behavior--failure-handling

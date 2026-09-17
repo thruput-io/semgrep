@@ -1,0 +1,21 @@
+rules:
+  - id: python-ban-any-in-domain-signatures
+    patterns:
+      - pattern-either:
+          - pattern: "def $FUNC(..., $PARAM: Any, ...): ..."
+          - pattern: "def $FUNC(...) -> Any: ..."
+          - pattern: "def $FUNC(..., $PARAM: dict[str, Any], ...): ..."
+          - pattern: "def $FUNC(...) -> dict[str, Any]: ..."
+          - pattern: "def $FUNC(..., $PARAM: Dict[str, Any], ...): ..."
+          - pattern: "def $FUNC(...) -> Dict[str, Any]: ..."
+    message: >-
+      Found `Any` or unstructured dictionary type annotation in function `$FUNC`.
+      Per RULES.md Section 4, ban `any`, unstructured dictionaries, or raw primitives in domain logic.
+      Use validated Value Objects, Domain Primitives, or typed domain models instead.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: correctness
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#4-domain-modeling--unrepresentable-illegal-states

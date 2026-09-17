@@ -1,0 +1,61 @@
+rules:
+  - id: csharp-no-branching-or-loops-in-tests
+    patterns:
+      - pattern-either:
+          - pattern: |
+              if ($COND)
+              {
+                  ...
+              }
+          - pattern: |
+              for ($TYPE $I = $INIT; $COND; $INCR)
+              {
+                  ...
+              }
+          - pattern: |
+              for ($I = $INIT; $COND; $INCR)
+              {
+                  ...
+              }
+          - pattern: |
+              foreach (var $ITEM in $SEQ)
+              {
+                  ...
+              }
+          - pattern: |
+              foreach ($TYPE $ITEM in $SEQ)
+              {
+                  ...
+              }
+          - pattern: |
+              while ($COND)
+              {
+                  ...
+              }
+          - pattern: |
+              switch ($EXPR)
+              {
+                  case $VAL:
+                      ...
+              }
+      - pattern-inside: |
+          [$ATTR]
+          public void $TEST(...)
+          {
+              ...
+          }
+      - metavariable-regex:
+          metavariable: $ATTR
+          regex: '^(Fact|Theory|Test|TestMethod|FactAttribute|TheoryAttribute|TestAttribute).*$'
+    message: >-
+      Found branching or loop statement inside test method `$TEST`.
+      Per RULES.md Section 8, tests MUST be linear and deterministic.
+      Tests MUST NOT contain branching logic (`if`, `switch`), fallback branches, or loops.
+      Split conditional scenarios into separate parameterized unit tests (`[Theory]` / `[InlineData]`).
+    languages: [csharp]
+    severity: ERROR
+    metadata:
+      category: testing
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#8-testing

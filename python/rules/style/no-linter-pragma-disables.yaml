@@ -1,0 +1,15 @@
+rules:
+  - id: python-no-linter-pragma-disables
+    patterns:
+      - pattern-regex: '^[ \t]*#[ \t]*(type:\s*ignore|noqa|pragma:\s*no cover|pylint:\s*disable|pyright:\s*ignore|mypy:\s*ignore).*$'
+    message: >-
+      Found linter/compiler suppression pragma comment.
+      Per RULES.md Section 9, do NOT add or accept comment pragmas that bypass rules (e.g. `type: ignore`, `noqa`, `pragma: no cover`).
+      Fix the underlying type or code defect rather than suppressing it.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: style
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#9-quality-tooling--shift-left

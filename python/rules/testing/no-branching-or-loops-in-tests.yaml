@@ -1,0 +1,36 @@
+rules:
+  - id: python-no-branching-or-loops-in-tests
+    patterns:
+      - pattern-either:
+          - pattern: |
+              if ...:
+                  ...
+          - pattern: |
+              for ... in ...:
+                  ...
+          - pattern: |
+              while ...:
+                  ...
+          - pattern: |
+              try:
+                  ...
+              except ...:
+                  ...
+      - pattern-inside: |
+          def $FUNC(...):
+              ...
+      - metavariable-regex:
+          metavariable: $FUNC
+          regex: "^test_.*"
+    message: >-
+      Found branching or loop statement inside test function `$FUNC`.
+      Per RULES.md Section 8, tests MUST be linear and deterministic.
+      Tests MUST NOT contain branching logic (`if`, `switch`), fallback branches, or loops.
+      Split conditional scenarios into separate parameterized unit tests.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: testing
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#8-testing
