@@ -4,9 +4,9 @@ import shutil
 import subprocess
 import yaml
 import pytest
-from semgrep_rules_python import get_rules_path
+from semgrep_rules import get_rules_path
 
-RULES_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src", "semgrep_rules_python", "rules"))
+RULES_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "rules"))
 
 def find_rule_files():
     """Find all yaml rule files under python rules directory."""

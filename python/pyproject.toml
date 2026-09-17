@@ -3,13 +3,13 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "semgrep-rules-python"
+name = "thruput-semgrep-rules-python"
 version = "0.1.0"
-description = "Curated Semgrep ruleset for Python codebases"
+description = "Curated Semgrep ruleset for Python codebases by Thruput"
 readme = "README.md"
 requires-python = ">=3.9"
 authors = [
-    { name = "Jonas" }
+    { name = "Thruput" }
 ]
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -21,7 +21,7 @@ dependencies = [
 ]
 
 [project.scripts]
-semgrep-python = "semgrep_rules_python.cli:main"
+semgrep-python = "semgrep_rules.cli:main"
 
 [project.optional-dependencies]
 dev = [
@@ -31,14 +31,19 @@ dev = [
     "twine>=4.0.0",
 ]
 
+[tool.setuptools]
+package-dir = {"" = "src", "semgrep_rules.rules" = "rules"}
+
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.package-data]
-semgrep_rules_python = [
+semgrep_rules = [
     "py.typed",
-    "rules/**/*.yaml",
-    "rules/**/*.py",
+]
+"semgrep_rules.rules" = [
+    "**/*.yaml",
+    "**/*.py",
 ]
 
 [tool.pytest.ini_options]

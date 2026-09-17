@@ -49,7 +49,7 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Build NuGet Package
-        run: dotnet pack csharp/Semgrep.Rules.CSharp.csproj -c Release -o dist/nuget
+        run: dotnet pack csharp/Thruput.Semgrep.Rules.csproj -c Release -o dist/nuget
 
       - name: Push to GitHub Packages
         run: |

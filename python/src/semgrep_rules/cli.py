@@ -11,7 +11,7 @@ from . import get_rules_path, __version__
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(
         prog="semgrep-python",
-        description="Run packaged Python Semgrep rules against your codebase.",
+        description="Run Python Semgrep rules against your codebase.",
         add_help=False
     )
     parser.add_argument(

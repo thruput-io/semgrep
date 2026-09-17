@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageId>Semgrep.Rules.CSharp</PackageId>
+    <PackageId>Thruput.Semgrep.Rules</PackageId>
     <Version>0.1.0</Version>
-    <Authors>Jonas</Authors>
-    <Company>Jonas</Company>
-    <Description>Curated Semgrep ruleset for C# (.NET) codebases covering correctness, null safety, security, and performance.</Description>
-    <PackageTags>semgrep;linter;csharp;dotnet;security;clean-code;quality</PackageTags>
+    <Authors>Thruput</Authors>
+    <Company>Thruput</Company>
+    <Description>Curated Semgrep ruleset for .NET codebases with auto-bootstrapped CLI support, covering correctness, null safety, security, and performance.</Description>
+    <PackageTags>thruput;semgrep;linter;csharp;dotnet;security;clean-code;quality</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     
@@ -25,7 +25,7 @@
     <None Include="rules\**\*.yaml" Pack="true" PackagePath="rules\csharp\" />
 
     <!-- Include MSBuild targets for consumers -->
-    <None Include="build\Semgrep.Rules.CSharp.targets" Pack="true" PackagePath="build\Semgrep.Rules.CSharp.targets" />
+    <None Include="build\Thruput.Semgrep.Rules.targets" Pack="true" PackagePath="build\Thruput.Semgrep.Rules.targets" />
   </ItemGroup>
 
 </Project>

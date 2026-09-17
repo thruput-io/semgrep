@@ -79,7 +79,7 @@ jobs:
 
       - name: Build C# NuGet Package
         run: |
-          dotnet pack csharp/Semgrep.Rules.CSharp.csproj -c Release -o dist/nuget
+          dotnet pack csharp/Thruput.Semgrep.Rules.csproj -c Release -o dist/nuget
 
       - name: Upload NuGet Artifacts
         uses: actions/upload-artifact@v4

@@ -1,11 +1,11 @@
-# Polyglot Semgrep Rules Monorepo (Python & C#)
+# Thruput Semgrep Rules (Python & .NET)
 
-A curated, production-grade Semgrep ruleset for **Python** and **C# (.NET)** codebases, designed to catch subtle bugs, mutable state pitfalls, null safety violations, security vulnerabilities, performance anti-patterns, and framework misuse.
+Curated, production-grade Semgrep rulesets maintained by **Thruput** for **Python** and **.NET (C#)** codebases, designed to catch subtle bugs, mutable state pitfalls, null safety violations, security vulnerabilities, performance anti-patterns, and framework misuse.
 
 Cleanly separated into two independent packages:
-- 🐍 **`python/`**: Python package `semgrep-rules-python` + `semgrep-python` CLI runner
-- ⚡ **`csharp/`**: .NET NuGet package `Semgrep.Rules.CSharp` + MSBuild integration
-- 🤖 **`.github/`**: GitHub Actions CI/CD workflows for building, testing, and publishing
+- 🐍 **`python/`**: Python package `thruput-semgrep-rules-python` + `semgrep-python` CLI runner
+- ⚡ **`csharp/`**: .NET NuGet package `Thruput.Semgrep.Rules` with **zero-setup auto-bootstrapping CLI** + MSBuild integration
+- 🤖 **`.github/`**: GitHub Actions CI/CD workflows for testing, building, and publishing
 
 ---
 
@@ -19,32 +19,32 @@ Cleanly separated into two independent packages:
 │       └── publish.yml             # GitHub Actions publishing workflow (PyPI & NuGet)
 │
 ├── python/                         # 🐍 Self-contained Python Package
-│   ├── pyproject.toml              # Python build & dependency config
-│   ├── pytest.ini                  # Pytest configuration
+│   ├── rules/                      # Canonical Python Semgrep rules & test fixtures
+│   │   ├── correctness/
+│   │   ├── security/
+│   │   ├── frameworks/
+│   │   └── style/
 │   ├── src/
-│   │   └── semgrep_rules_python/   # Package module
+│   │   └── semgrep_rules/          # Python module source
 │   │       ├── __init__.py         # get_rules_path() resolution
 │   │       ├── cli.py              # semgrep-python CLI entrypoint
-│   │       ├── py.typed            # PEP 561 marker
-│   │       └── rules/              # Canonical Python Semgrep rules & test fixtures
-│   │           ├── correctness/
-│   │           ├── security/
-│   │           ├── frameworks/
-│   │           └── style/
-│   └── tests/
-│       └── test_python_rules.py    # Pytest suite for Python rules & schema validation
+│   │       └── py.typed            # PEP 561 marker
+│   ├── tests/
+│   │   └── test_python_rules.py    # Pytest suite for Python rules & schema validation
+│   ├── pyproject.toml              # Python build & dependency config (thruput-semgrep-rules-python)
+│   └── pytest.ini                  # Pytest configuration
 │
 ├── csharp/                         # ⚡ Self-contained .NET NuGet Package
-│   ├── Semgrep.Rules.CSharp.csproj # NuGet package project definition
-│   ├── build/
-│   │   └── Semgrep.Rules.CSharp.targets # MSBuild build targets
 │   ├── rules/                      # Canonical C# Semgrep rules & test fixtures
 │   │   ├── correctness/
 │   │   ├── security/
 │   │   ├── performance/
 │   │   └── style/
-│   └── tests/
-│       └── test_csharp_rules.py    # Test suite for C# rules & schema validation
+│   ├── build/
+│   │   └── Thruput.Semgrep.Rules.targets # MSBuild integration & CLI auto-bootstrapper
+│   ├── tests/
+│   │   └── test_csharp_rules.py    # Test suite for C# rules & schema validation
+│   └── Thruput.Semgrep.Rules.csproj # NuGet package project definition
 │
 └── README.md
 ```
@@ -88,9 +88,9 @@ Cleanly separated into two independent packages:
 [project.optional-dependencies]
 dev = [
     # From PyPI / GitHub Packages
-    "semgrep-rules-python>=0.1.0",
+    "thruput-semgrep-rules-python>=0.1.0",
     # Or directly from GitHub
-    "semgrep-rules-python @ git+https://github.com/YOUR_ORG/YOUR_REPO.git#subdirectory=python"
+    "thruput-semgrep-rules-python @ git+https://github.com/thruput/semgrep.git#subdirectory=python"
 ]
 ```
 
@@ -105,39 +105,49 @@ semgrep-python --error --exclude "tests/**" .
 
 #### 3. Programmatic Access
 ```python
-from semgrep_rules_python import get_rules_path
+from semgrep_rules import get_rules_path
 
 rules_dir = get_rules_path()
 ```
 
 ---
 
-### ⚡ In .NET / C# Projects
+### ⚡ In .NET / C# Projects (Zero-Setup Auto-Bootstrapping)
+
+Your colleagues do **not** need to install Python, Brew, or any CLI beforehand. The NuGet package automatically downloads the standalone Semgrep binary on the first run if not already present on their system.
 
 #### 1. Add NuGet Package
 ```bash
-dotnet add package Semgrep.Rules.CSharp
+dotnet add package Thruput.Semgrep.Rules
 ```
 Or in your `.csproj`:
 ```xml
 <ItemGroup>
-  <PackageReference Include="Semgrep.Rules.CSharp" Version="0.1.0">
+  <PackageReference Include="Thruput.Semgrep.Rules" Version="0.1.0">
     <PrivateAssets>all</PrivateAssets>
   </PackageReference>
 </ItemGroup>
 ```
 
 #### 2. Run via MSBuild Target
-The package exposes the `$(SemgrepCSharpRulesPath)` property and the `SemgrepLint` target:
 ```bash
-dotnet build -t:SemgrepLint
+# Runs Semgrep against project files (auto-bootstrapping CLI if needed)
+dotnet build -t:ThruputSemgrepLint
+```
+
+#### 3. Enable Automatic Linting on Every Build (Optional)
+In your `.csproj` or `Directory.Build.props`:
+```xml
+<PropertyGroup>
+  <EnableThruputSemgrepOnBuild>true</EnableThruputSemgrepOnBuild>
+</PropertyGroup>
 ```
 
 ---
 
 ## 📋 Rule Catalog
 
-### 🐍 Python Rules (`python/src/semgrep_rules_python/rules/`)
+### 🐍 Python Rules (`python/rules/`)
 
 | Rule ID | Severity | Category | Description |
 | :--- | :--- | :--- | :--- |
@@ -198,5 +208,5 @@ python -m build
 ### C# Workspace
 ```bash
 cd csharp
-dotnet pack Semgrep.Rules.CSharp.csproj -c Release -o dist
+dotnet pack Thruput.Semgrep.Rules.csproj -c Release -o dist
 ```

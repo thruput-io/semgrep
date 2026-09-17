@@ -1,0 +1,72 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <!-- Provide the path to the packaged C# Semgrep rules for downstream MSBuild projects -->
+    <ThruputSemgrepCSharpRulesPath Condition="'$(ThruputSemgrepCSharpRulesPath)' == ''">$(MSBuildThisFileDirectory)../rules/csharp</ThruputSemgrepCSharpRulesPath>
+    <SemgrepCSharpRulesPath Condition="'$(SemgrepCSharpRulesPath)' == ''">$(ThruputSemgrepCSharpRulesPath)</SemgrepCSharpRulesPath>
+
+    <!-- Cache folder for bootstrapped standalone semgrep binary -->
+    <ThruputSemgrepCacheDir Condition="'$(OS)' == 'Windows_NT'">$(USERPROFILE)\.thruput\semgrep</ThruputSemgrepCacheDir>
+    <ThruputSemgrepCacheDir Condition="'$(OS)' != 'Windows_NT'">$(HOME)/.thruput/semgrep</ThruputSemgrepCacheDir>
+
+    <ThruputSemgrepBin Condition="'$(OS)' == 'Windows_NT'">$(ThruputSemgrepCacheDir)\semgrep.exe</ThruputSemgrepBin>
+    <ThruputSemgrepBin Condition="'$(OS)' != 'Windows_NT'">$(ThruputSemgrepCacheDir)/semgrep</ThruputSemgrepBin>
+  </PropertyGroup>
+
+  <!-- Auto-Bootstrap Target: Locates semgrep or downloads standalone binary -->
+  <Target Name="ThruputEnsureSemgrep">
+    <PropertyGroup>
+      <SemgrepExecutable Condition="'$(SemgrepExecutable)' == ''">semgrep</SemgrepExecutable>
+    </PropertyGroup>
+
+    <!-- 1. Check if semgrep is in system PATH -->
+    <Exec Command="which semgrep" ContinueOnError="true" IgnoreExitCode="true" StandardOutputImportance="Low" StandardErrorImportance="Low" Condition="'$(OS)' != 'Windows_NT'">
+      <Output TaskParameter="ExitCode" PropertyName="SemgrepInPathExitCode" />
+    </Exec>
+    <Exec Command="where semgrep" ContinueOnError="true" IgnoreExitCode="true" StandardOutputImportance="Low" StandardErrorImportance="Low" Condition="'$(OS)' == 'Windows_NT'">
+      <Output TaskParameter="ExitCode" PropertyName="SemgrepInPathExitCode" />
+    </Exec>
+
+    <!-- 2. If already in PATH, use system semgrep -->
+    <PropertyGroup Condition="'$(SemgrepInPathExitCode)' == '0'">
+      <SemgrepExecutable>semgrep</SemgrepExecutable>
+    </PropertyGroup>
+
+    <!-- 3. If not in PATH, check if cached standalone binary exists -->
+    <PropertyGroup Condition="'$(SemgrepInPathExitCode)' != '0' And Exists('$(ThruputSemgrepBin)')">
+      <SemgrepExecutable>$(ThruputSemgrepBin)</SemgrepExecutable>
+    </PropertyGroup>
+
+    <!-- 4. If neither, auto-download standalone binary into user cache -->
+    <MakeDir Directories="$(ThruputSemgrepCacheDir)" Condition="'$(SemgrepInPathExitCode)' != '0' And !Exists('$(ThruputSemgrepBin)')" />
+
+    <!-- Unix / macOS auto-downloader -->
+    <Exec Command="echo '[Thruput Semgrep] Bootstrapping standalone Semgrep CLI...' &amp;&amp; curl -fsSL https://semgrep.dev/install.sh | SEMGREP_INSTALL_DIR=&quot;$(ThruputSemgrepCacheDir)&quot; bash"
+          ContinueOnError="false"
+          Condition="'$(SemgrepInPathExitCode)' != '0' And !Exists('$(ThruputSemgrepBin)') And '$(OS)' != 'Windows_NT'" />
+
+    <!-- Windows auto-downloader -->
+    <Exec Command="powershell -NoProfile -Command &quot;Write-Host '[Thruput Semgrep] Bootstrapping standalone Semgrep CLI...'; Invoke-WebRequest -Uri 'https://github.com/semgrep/semgrep/releases/latest/download/semgrep-win-x86_64.exe' -OutFile '$(ThruputSemgrepBin)'&quot;"
+          ContinueOnError="false"
+          Condition="'$(SemgrepInPathExitCode)' != '0' And !Exists('$(ThruputSemgrepBin)') And '$(OS)' == 'Windows_NT'" />
+
+    <!-- Update executable path to cached binary if it was downloaded -->
+    <PropertyGroup Condition="'$(SemgrepInPathExitCode)' != '0' And Exists('$(ThruputSemgrepBin)')">
+      <SemgrepExecutable>$(ThruputSemgrepBin)</SemgrepExecutable>
+    </PropertyGroup>
+  </Target>
+
+  <!-- Main Lint Target -->
+  <Target Name="ThruputSemgrepLint" DependsOnTargets="ThruputEnsureSemgrep">
+    <Message Importance="high" Text="[Thruput] Running Semgrep rules on $(MSBuildProjectDirectory)..." />
+    <Exec Command="&quot;$(SemgrepExecutable)&quot; --config &quot;$(ThruputSemgrepCSharpRulesPath)&quot; --error &quot;$(MSBuildProjectDirectory)&quot;" 
+          ContinueOnError="false" />
+  </Target>
+
+  <!-- Backward-compatibility alias -->
+  <Target Name="SemgrepLint" DependsOnTargets="ThruputSemgrepLint" />
+
+  <!-- Run on build when enabled -->
+  <Target Name="ThruputSemgrepOnBuild" AfterTargets="Build" Condition="'$(EnableThruputSemgrepOnBuild)' == 'true' Or '$(EnableSemgrepOnBuild)' == 'true'" DependsOnTargets="ThruputSemgrepLint" />
+
+</Project>
