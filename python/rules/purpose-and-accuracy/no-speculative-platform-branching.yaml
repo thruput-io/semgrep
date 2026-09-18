@@ -1,0 +1,20 @@
+rules:
+  - id: python-no-speculative-platform-branching
+    patterns:
+      - pattern-either:
+          - pattern: "sys.platform == $VAL"
+          - pattern: "sys.platform.startswith($VAL)"
+          - pattern: "platform.system() == $VAL"
+          - pattern: "os.name == 'nt'"
+          - pattern: "os.name == 'posix'"
+    message: >-
+      Found runtime OS / platform branching check.
+      Per RULES.md Section 1, code MUST NOT add platform, shell, or environment compatibility branches for environments the task does not run in.
+      Target the designated runtime environment directly without speculative portability branching.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: purpose-and-accuracy
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#no-speculative-portability

@@ -1,0 +1,65 @@
+rules:
+  - id: csharp-no-null-collection-return
+    patterns:
+      - pattern-either:
+          - pattern-inside: |
+              IEnumerable<$T> $METHOD(...)
+              {
+                  ...
+              }
+          - pattern-inside: |
+              IReadOnlyList<$T> $METHOD(...)
+              {
+                  ...
+              }
+          - pattern-inside: |
+              IReadOnlyCollection<$T> $METHOD(...)
+              {
+                  ...
+              }
+          - pattern-inside: |
+              List<$T> $METHOD(...)
+              {
+                  ...
+              }
+          - pattern-inside: |
+              IList<$T> $METHOD(...)
+              {
+                  ...
+              }
+          - pattern-inside: |
+              $T[] $METHOD(...)
+              {
+                  ...
+              }
+          - pattern-inside: |
+              Dictionary<$K, $V> $METHOD(...)
+              {
+                  ...
+              }
+          - pattern-inside: |
+              IReadOnlyDictionary<$K, $V> $METHOD(...)
+              {
+                  ...
+              }
+          - pattern-inside: |
+              ISet<$T> $METHOD(...)
+              {
+                  ...
+              }
+          - pattern-inside: |
+              HashSet<$T> $METHOD(...)
+              {
+                  ...
+              }
+      - pattern: return null;
+    message: >-
+      Found `return null;` in a function returning a collection or sequence type.
+      Per RULES.md Section 4, return an empty collection (`Array.Empty<T>()`, `Enumerable.Empty<T>()`, `[]`, or `ImmutableArray<T>.Empty`) rather than `null`.
+    languages: [csharp]
+    severity: ERROR
+    metadata:
+      category: domain-modeling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#constrained-collections

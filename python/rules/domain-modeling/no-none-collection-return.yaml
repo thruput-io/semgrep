@@ -1,0 +1,59 @@
+rules:
+  - id: python-no-none-collection-return
+    patterns:
+      - pattern-either:
+          - pattern: |
+              def $FUNC(...) -> list[$T]:
+                  ...
+                  return None
+          - pattern: |
+              def $FUNC(...) -> List[$T]:
+                  ...
+                  return None
+          - pattern: |
+              def $FUNC(...) -> dict[$K, $V]:
+                  ...
+                  return None
+          - pattern: |
+              def $FUNC(...) -> Dict[$K, $V]:
+                  ...
+                  return None
+          - pattern: |
+              def $FUNC(...) -> set[$T]:
+                  ...
+                  return None
+          - pattern: |
+              def $FUNC(...) -> Set[$T]:
+                  ...
+                  return None
+          - pattern: |
+              def $FUNC(...) -> Sequence[$T]:
+                  ...
+                  return None
+          - pattern: |
+              def $FUNC(...) -> Iterable[$T]:
+                  ...
+                  return None
+          - pattern: |
+              def $FUNC(...) -> list:
+                  ...
+                  return None
+          - pattern: |
+              def $FUNC(...) -> dict:
+                  ...
+                  return None
+          - pattern: |
+              def $FUNC(...) -> set:
+                  ...
+                  return None
+    message: >-
+      Function `$FUNC` is annotated to return a collection type, but returns `None`.
+      In Clean Code, functions returning collections should always return an empty collection (`[]`, `{}`, `set()`)
+      instead of `None` to prevent `TypeError: 'NoneType' object is not iterable` at call sites.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: domain-modeling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#constrained-collections

@@ -1,0 +1,22 @@
+rules:
+  - id: python-django-raw-sql
+    patterns:
+      - pattern-either:
+          - pattern: '$MODEL.objects.raw(f"...", ...)'
+          - pattern: '$MODEL.objects.raw("..." % (...), ...)'
+          - pattern: '$MODEL.objects.raw("...".format(...), ...)'
+          - pattern: '$MODEL.objects.raw("..." + ..., ...)'
+          - pattern: '$QUERYSET.extra(where=[f"..."], ...)'
+          - pattern: '$QUERYSET.extra(where=["..." % (...)], ...)'
+          - pattern: '$QUERYSET.extra(where=["...".format(...)], ...)'
+    message: >-
+      Detected dynamic string formatting in Django `raw()` or `extra(where=...)`.
+      This can lead to SQL Injection. Pass query parameters as a list/tuple to `raw(sql, params=[...])` or `extra(params=[...])`.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: quality-tooling
+      cwe: "CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#shift-left

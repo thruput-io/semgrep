@@ -1,0 +1,20 @@
+rules:
+  - id: python-bare-except
+    patterns:
+      - pattern: |
+          try:
+              ...
+          except:
+              ...
+    message: >-
+      Found bare `except:` block.
+      A bare `except:` catches `BaseException`, which silently traps critical system signals such as `KeyboardInterrupt` and `SystemExit`.
+      Catch specific exceptions (e.g. `except Exception:`, `except ValueError:`) instead.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: behavior-and-failure-handling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#no-silent-catch
+        - https://peps.python.org/pep-0008/#programming-recommendations

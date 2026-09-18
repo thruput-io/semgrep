@@ -1,0 +1,16 @@
+rules:
+  - id: csharp-no-public-mutable-collection-properties
+    patterns:
+      - pattern-regex: 'public\s+(?:List|Dictionary|HashSet|Collection|IList|IDictionary|ISet)<[^>]+>\s+[A-Za-z0-9_]+\s*(?:\{|=>)'
+    message: >-
+      Found public property exposing a mutable collection type (`List<T>`, `Dictionary<K, V>`, `HashSet<T>`).
+      Per RULES.md Section 4, domain aggregates MUST NOT expose raw mutable collections.
+      Expose `IReadOnlyList<T>`, `IReadOnlyDictionary<K, V>`, `IReadOnlyCollection<T>`, or `ImmutableArray<T>` instead.
+    languages: [csharp]
+    severity: ERROR
+    metadata:
+      category: domain-modeling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#self-guarding-aggregates
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#constrained-collections

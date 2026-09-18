@@ -1,0 +1,17 @@
+rules:
+  - id: python-no-test-case-ordering
+    patterns:
+      - pattern-either:
+          - pattern: "@pytest.mark.order(...)"
+          - pattern: "@pytest.mark.run(..., order=..., ...)"
+    message: >-
+      Found test ordering decorator (`@pytest.mark.order` or `@pytest.mark.run(order=...)`).
+      Per RULES.md Section 8, test cases MUST NOT be coupled or depend on execution order.
+      Every test case MUST be executable independently in any order.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: testing
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#no-test-case-coupling

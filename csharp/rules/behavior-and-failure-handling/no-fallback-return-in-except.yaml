@@ -1,0 +1,46 @@
+rules:
+  - id: csharp-no-fallback-return-in-except
+    patterns:
+      - pattern-either:
+          - pattern: |
+              try
+              {
+                  ...
+              }
+              catch ($TYPE $EX)
+              {
+                  ...
+                  return $VAL;
+              }
+          - pattern: |
+              try
+              {
+                  ...
+              }
+              catch ($TYPE)
+              {
+                  ...
+                  return $VAL;
+              }
+          - pattern: |
+              try
+              {
+                  ...
+              }
+              catch
+              {
+                  ...
+                  return $VAL;
+              }
+    message: >-
+      Found `return $VAL;` inside a `catch` block.
+      Per RULES.md Section 7, code MUST fail fast. Do not return fallback/default values or switch strategies on failure.
+      Either let the exception bubble up or translate it into a specific Domain Exception.
+    languages: [csharp]
+    severity: ERROR
+    metadata:
+      category: behavior-and-failure-handling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#no-default-on-failure
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#fail-fast

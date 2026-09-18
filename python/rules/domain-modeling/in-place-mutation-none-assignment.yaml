@@ -1,0 +1,21 @@
+rules:
+  - id: python-in-place-mutation-none-assignment
+    patterns:
+      - pattern-either:
+          - pattern: "$X = $X.sort(...)"
+          - pattern: "$X = $X.append(...)"
+          - pattern: "$X = $X.extend(...)"
+          - pattern: "$X = $X.reverse()"
+          - pattern: "$X = $X.clear()"
+    message: >-
+      Detected assignment of in-place list method result to `$X`.
+      In Python, `.sort()`, `.append()`, `.extend()`, `.reverse()`, and `.clear()` modify the list in-place and return `None`.
+      Assigning their return value will overwrite `$X` with `None`.
+      Invoke the method as a standalone statement (e.g. `$X.sort()`) or use `sorted($X)`.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: domain-modeling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#immutability

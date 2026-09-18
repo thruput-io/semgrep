@@ -1,0 +1,15 @@
+rules:
+  - id: csharp-no-suppress-message-attribute
+    patterns:
+      - pattern-regex: '\[\s*(?:System\.Diagnostics\.CodeAnalysis\.)?SuppressMessage\s*\('
+    message: >-
+      Found `[SuppressMessage]` attribute bypassing static analysis or compiler warnings.
+      Per RULES.md Section 9, do NOT disable linting, compiler, or analyzer rules via attributes or pragmas.
+      Fix the underlying issue rather than suppressing the diagnostic.
+    languages: [csharp]
+    severity: ERROR
+    metadata:
+      category: quality-tooling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#no-disabling-via-pragma

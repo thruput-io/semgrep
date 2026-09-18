@@ -1,0 +1,21 @@
+rules:
+  - id: csharp-no-speculative-platform-branching
+    patterns:
+      - pattern-either:
+          - pattern: "RuntimeInformation.IsOSPlatform(...)"
+          - pattern: "OperatingSystem.IsWindows()"
+          - pattern: "OperatingSystem.IsLinux()"
+          - pattern: "OperatingSystem.IsMacOS()"
+          - pattern: "OperatingSystem.IsFreeBSD()"
+          - pattern: "Environment.OSVersion.Platform"
+    message: >-
+      Found runtime OS / platform branching check.
+      Per RULES.md Section 1, code MUST NOT add platform or environment compatibility branches for environments the task does not run in.
+      Target the designated production environment directly without speculative portability branching.
+    languages: [csharp]
+    severity: ERROR
+    metadata:
+      category: purpose-and-accuracy
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#no-speculative-portability

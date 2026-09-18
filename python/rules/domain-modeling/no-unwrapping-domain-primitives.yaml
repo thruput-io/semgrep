@@ -1,0 +1,23 @@
+rules:
+  - id: python-no-unwrapping-domain-primitives
+    patterns:
+      - pattern-not-inside: |
+          def __eq__(self, ...):
+              ...
+      - pattern-either:
+          - pattern: "$A.value == $B.value"
+          - pattern: "$A.value != $B.value"
+          - pattern: "$A.id == $B.id"
+          - pattern: "$A.id != $B.id"
+    message: >-
+      Found domain object unwrapped into raw primitives (`.value` or `.id`) for equality comparison.
+      Per RULES.md Section 4, domain objects MUST NOT be unwrapped for comparison.
+      Compare domain objects directly (e.g. `a == b` or `a != b`) using domain equality.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: domain-modeling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#no-unwrapping
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#domain-operations

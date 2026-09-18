@@ -1,0 +1,21 @@
+rules:
+  - id: python-no-fallback-return-in-except
+    patterns:
+      - pattern: |
+          try:
+              ...
+          except ...:
+              ...
+              return $VAL
+    message: >-
+      Found `return $VAL` inside an `except` block.
+      Per RULES.md Section 7, code MUST fail fast. Do not return fallback/default values or switch strategies on failure.
+      Either let the exception bubble up or translate it into a specific Domain Exception.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: behavior-and-failure-handling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#no-default-on-failure
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#fail-fast

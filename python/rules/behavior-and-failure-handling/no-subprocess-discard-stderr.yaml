@@ -1,0 +1,18 @@
+rules:
+  - id: python-no-subprocess-discard-stderr
+    patterns:
+      - pattern-either:
+          - pattern: "subprocess.$FUNC(..., stderr=subprocess.DEVNULL, ...)"
+          - pattern: "subprocess.$FUNC(..., stderr=os.devnull, ...)"
+          - pattern: "subprocess.$FUNC(..., stderr=open(os.devnull, ...), ...)"
+    message: >-
+      Found discarded command stderr diagnostic stream (`stderr=subprocess.DEVNULL` or `os.devnull`).
+      Per RULES.md Section 7, code MUST NOT send command stderr to /dev/null or discard diagnostics.
+      Let the process output failure diagnostics to stderr so errors can be inspected and diagnosed.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: behavior-and-failure-handling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#no-discarded-diagnostics

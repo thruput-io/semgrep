@@ -1,0 +1,17 @@
+rules:
+  - id: python-none-attribute-access
+    patterns:
+      - pattern-either:
+          - pattern: "$DICT.get($KEY).$METHOD(...)"
+    pattern-not-inside:
+      - pattern: "$DICT.get($KEY, $DEFAULT).$METHOD(...)"
+    message: >-
+      Calling `.$METHOD()` directly on the result of `$DICT.get($KEY)` will raise `AttributeError: 'NoneType' object has no attribute '$METHOD'` if the key does not exist.
+      Provide a default value (e.g. `$DICT.get($KEY, "").$METHOD(...)`) or check for `None` before dereferencing.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: domain-modeling
+      confidence: MEDIUM
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#compile-time-optionality

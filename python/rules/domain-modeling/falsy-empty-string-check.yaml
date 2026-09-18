@@ -1,0 +1,17 @@
+rules:
+  - id: python-falsy-empty-string-check
+    patterns:
+      - pattern: $VAR = $STR or $DEFAULT
+      - pattern-inside: |
+          def $FUNC(..., $STR: str, ...):
+              ...
+    message: >-
+      Using `$STR or $DEFAULT` when `$STR` is typed as `str` replaces empty string `""` with `$DEFAULT`.
+      If `""` is a valid input distinct from missing/None, use an explicit `if $STR is None:` or ternary `$DEFAULT if $STR is None else $STR`.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: domain-modeling
+      confidence: MEDIUM
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#domain-primitives

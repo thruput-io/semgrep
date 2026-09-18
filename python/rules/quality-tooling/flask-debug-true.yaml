@@ -1,0 +1,20 @@
+rules:
+  - id: python-flask-debug-true
+    patterns:
+      - pattern-either:
+          - pattern: "$APP.run(..., debug=True, ...)"
+          - pattern: "$APP.config['DEBUG'] = True"
+          - pattern: "$APP.debug = True"
+    message: >-
+      Flask application is running with `debug=True`.
+      Debug mode enables the Werkzeug interactive debugger, which allows remote code execution if accessible in production.
+      Always disable debug mode or control it via environment variables in production.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: quality-tooling
+      cwe: "CWE-489: Active Debug Code"
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#production-parity
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#shift-left

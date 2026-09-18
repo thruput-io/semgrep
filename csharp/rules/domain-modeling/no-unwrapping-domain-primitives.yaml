@@ -1,0 +1,32 @@
+rules:
+  - id: csharp-no-unwrapping-domain-primitives
+    patterns:
+      - pattern-not-inside: |
+          public bool Equals(...)
+          {
+              ...
+          }
+      - pattern-not-inside: |
+          public override bool Equals(...)
+          {
+              ...
+          }
+      - pattern-either:
+          - pattern: "$A.Value == $B.Value"
+          - pattern: "$A.Value != $B.Value"
+          - pattern: "$A.Id == $B.Id"
+          - pattern: "$A.Id != $B.Id"
+          - pattern: "$A.Value.Equals($B.Value)"
+          - pattern: "$A.Id.Equals($B.Id)"
+    message: >-
+      Found domain object unwrapped into raw primitives (`.Value` or `.Id`) for equality comparison.
+      Per RULES.md Section 4, domain objects MUST NOT be unwrapped for comparison.
+      Compare domain objects directly (e.g. `a == b` or `a.Equals(b)`) using domain equality.
+    languages: [csharp]
+    severity: ERROR
+    metadata:
+      category: domain-modeling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#no-unwrapping
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#domain-operations

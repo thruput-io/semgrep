@@ -1,0 +1,351 @@
+rules:
+  - id: csharp-test-must-have-assertion
+    patterns:
+      - pattern-either:
+          - pattern: |
+              [$ATTR]
+              public $RET $TEST(...)
+              {
+                  ...
+              }
+          - pattern: |
+              [$ATTR]
+              public async $RET $TEST(...)
+              {
+                  ...
+              }
+      - metavariable-regex:
+          metavariable: $ATTR
+          regex: '^(Fact|Theory|Test|TestMethod|FactAttribute|TheoryAttribute|TestAttribute).*$'
+      - pattern-not: |
+          [$ATTR]
+          public $RET $TEST(...)
+          {
+              ...
+              Assert.$METHOD(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public async $RET $TEST(...)
+          {
+              ...
+              Assert.$METHOD(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public $RET $TEST(...)
+          {
+              ...
+              $OBJ.Should().$METHOD(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public async $RET $TEST(...)
+          {
+              ...
+              $OBJ.Should().$METHOD(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldBeNull(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public async $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldBeNull(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldNotBeNull(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public async $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldNotBeNull(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldBe(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public async $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldBe(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldNotBe(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public async $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldNotBe(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldBeTrue(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public async $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldBeTrue(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldBeFalse(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public async $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldBeFalse(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldBeOfType(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public async $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldBeOfType(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldBeOfType<$TYPE>(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public async $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldBeOfType<$TYPE>(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldContain(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public async $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldContain(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldNotContain(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public async $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldNotContain(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldBeEmpty(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public async $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldBeEmpty(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldNotBeEmpty(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public async $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldNotBeEmpty(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldThrow(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public async $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldThrow(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldThrow<$TYPE>(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public async $RET $TEST(...)
+          {
+              ...
+              $OBJ.ShouldThrow<$TYPE>(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public $RET $TEST(...)
+          {
+              ...
+              Should.$METHOD(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public async $RET $TEST(...)
+          {
+              ...
+              Should.$METHOD(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public $RET $TEST(...)
+          {
+              ...
+              Should.$METHOD<$TYPE>(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public async $RET $TEST(...)
+          {
+              ...
+              Should.$METHOD<$TYPE>(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public $RET $TEST(...)
+          {
+              ...
+              Assert.Throws<$TYPE>(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public async $RET $TEST(...)
+          {
+              ...
+              Assert.Throws<$TYPE>(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public $RET $TEST(...)
+          {
+              ...
+              Assert.ThrowsAsync<$TYPE>(...);
+              ...
+          }
+      - pattern-not: |
+          [$ATTR]
+          public async $RET $TEST(...)
+          {
+              ...
+              Assert.ThrowsAsync<$TYPE>(...);
+              ...
+          }
+    message: >-
+      Test method `$TEST` does not contain any assertions (`Assert.*`, `.Should().*`, `.Should*()`, `Should.*`).
+      Per RULES.md Section 8, tests MUST assert concrete returned values.
+      Coverage-only or assertion-free tests are strictly prohibited.
+    languages: [csharp]
+    severity: ERROR
+    metadata:
+      category: testing
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#assert-values
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#no-coverage-only-tests

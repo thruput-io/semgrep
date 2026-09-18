@@ -1,0 +1,15 @@
+rules:
+  - id: csharp-no-linter-pragma-disables
+    patterns:
+      - pattern-regex: '^[ \t]*#pragma\s+warning\s+disable.*$'
+    message: >-
+      Found compiler warning suppression pragma (`#pragma warning disable`).
+      Per RULES.md Section 9, do NOT add or accept comment/compiler pragmas that bypass rules.
+      Fix the underlying defect or warning rather than suppressing it.
+    languages: [csharp]
+    severity: ERROR
+    metadata:
+      category: quality-tooling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#no-disabling-via-pragma

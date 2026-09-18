@@ -1,0 +1,30 @@
+rules:
+  - id: python-fastapi-mutable-dependency
+    patterns:
+      - pattern-either:
+          - pattern: |
+              @$APP.$METHOD(...)
+              def $FUNC(..., $PARAM: list = [], ...):
+                  ...
+          - pattern: |
+              @$APP.$METHOD(...)
+              def $FUNC(..., $PARAM: dict = {}, ...):
+                  ...
+          - pattern: |
+              @$APP.$METHOD(...)
+              async def $FUNC(..., $PARAM: list = [], ...):
+                  ...
+          - pattern: |
+              @$APP.$METHOD(...)
+              async def $FUNC(..., $PARAM: dict = {}, ...):
+                  ...
+    message: >-
+      FastAPI endpoint `$FUNC` defines a mutable default (`[]` or `{}`) for parameter `$PARAM`.
+      Use `Query(default=[])` or `Body(default=...)` with `Optional[List[...]] = None` instead.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: domain-modeling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#immutability

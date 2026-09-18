@@ -1,0 +1,19 @@
+rules:
+  - id: python-subprocess-require-check
+    patterns:
+      - pattern-not-inside: "$RES = subprocess.run(...)"
+      - pattern-not-inside: "return subprocess.run(...)"
+      - pattern: "subprocess.run(...)"
+      - pattern-not: "subprocess.run(..., check=True, ...)"
+      - pattern-not: "subprocess.run(..., check=$BOOL, ...)"
+    message: >-
+      Found `subprocess.run(...)` without `check=True` and without capturing return code.
+      Per RULES.md Section 7, code MUST NOT discard non-zero exit status.
+      Pass `check=True` to raise `CalledProcessError` on failure or capture and verify the process returncode.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: behavior-and-failure-handling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#no-suppressed-exit-status

@@ -1,0 +1,38 @@
+rules:
+  - id: python-no-return-none-without-optional
+    patterns:
+      - pattern: |
+          def $FUNC(...) -> $RET:
+              ...
+              return None
+      - pattern-not: |
+          def $FUNC(...) -> Optional[$T]:
+              ...
+              return None
+      - pattern-not: |
+          def $FUNC(...) -> $T | None:
+              ...
+              return None
+      - pattern-not: |
+          def $FUNC(...) -> None:
+              ...
+              return None
+      - pattern-not: |
+          def $FUNC(...) -> Union[$T, None]:
+              ...
+              return None
+      - pattern-not: |
+          def $FUNC(...) -> Union[None, $T]:
+              ...
+              return None
+    message: >-
+      Function `$FUNC` has a non-nullable return type annotation `->$RET`, but returns `None`.
+      In Clean Code, do not return `None` from functions promising a concrete object.
+      Use the Null Object Pattern, raise a domain exception, or explicitly declare `Optional[$RET]` / `$RET | None` if absence is an expected contract.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: domain-modeling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#compile-time-optionality

@@ -1,0 +1,22 @@
+rules:
+  - id: csharp-ef-core-sql-injection
+    patterns:
+      - pattern-either:
+          - pattern: '$DBSET.FromSqlRaw($"...", ...)'
+          - pattern: '$DBSET.FromSqlRaw(string.Format("...", ...), ...)'
+          - pattern: '$DBSET.FromSqlRaw("..." + ..., ...)'
+          - pattern: '$CONTEXT.Database.ExecuteSqlRaw($"...", ...)'
+          - pattern: '$CONTEXT.Database.ExecuteSqlRaw(string.Format("...", ...), ...)'
+    message: >-
+      Detected string interpolation or concatenation passed into `FromSqlRaw` or `ExecuteSqlRaw`.
+      This pattern creates SQL injection vulnerabilities.
+      Use parameterized queries or `FromSqlInterpolated` / `ExecuteSqlInterpolated` which automatically parameterize interpolated strings.
+    languages: [csharp]
+    severity: ERROR
+    metadata:
+      category: quality-tooling
+      cwe: "CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#shift-left
+        - https://learn.microsoft.com/en-us/ef/core/querying/raw-sql

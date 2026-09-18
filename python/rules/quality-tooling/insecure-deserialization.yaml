@@ -1,0 +1,26 @@
+rules:
+  - id: python-insecure-deserialization
+    patterns:
+      - pattern-either:
+          - pattern: pickle.loads(...)
+          - pattern: pickle.load(...)
+          - pattern: _pickle.loads(...)
+          - pattern: _pickle.load(...)
+          - pattern: cPickle.loads(...)
+          - pattern: cPickle.load(...)
+          - pattern: yaml.load($STREAM)
+          - pattern: yaml.load($STREAM, Loader=yaml.Loader)
+          - pattern: yaml.load($STREAM, Loader=yaml.CLoader)
+          - pattern: yaml.load($STREAM, Loader=yaml.UnsafeLoader)
+    message: >-
+      Insecure deserialization detected (`pickle` or unsafe `yaml.load`).
+      Deserializing untrusted data with `pickle` or `yaml.load` can lead to remote code execution.
+      Use `json`, `yaml.safe_load()`, or cryptographically signed serialization.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: quality-tooling
+      cwe: "CWE-502: Deserialization of Untrusted Data"
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#shift-left

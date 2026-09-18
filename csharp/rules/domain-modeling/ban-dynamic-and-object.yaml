@@ -1,0 +1,24 @@
+rules:
+  - id: csharp-ban-dynamic-and-object
+    patterns:
+      - pattern-either:
+          - pattern: "dynamic $VAR"
+          - pattern: "public dynamic $METHOD(...) { ... }"
+          - pattern: "public $RET $METHOD(..., dynamic $PARAM, ...) { ... }"
+          - pattern: "public object $METHOD(...) { ... }"
+          - pattern: "public $RET $METHOD(..., object $PARAM, ...) { ... }"
+      - pattern-not: "public override bool Equals(object $OBJ) { ... }"
+      - pattern-not: "public bool Equals(object $OBJ) { ... }"
+      - pattern-not: "public override int GetHashCode() { ... }"
+      - pattern-not: "public override string ToString() { ... }"
+    message: >-
+      Found `dynamic` or raw `object` in signature or variable declaration.
+      Per RULES.md Section 4, ban dynamic, untyped, or unstructured types (`object`, `dynamic`) in domain logic.
+      Use strongly typed Domain Primitives, Value Objects, or generic type parameters instead.
+    languages: [csharp]
+    severity: ERROR
+    metadata:
+      category: domain-modeling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#strong-typing

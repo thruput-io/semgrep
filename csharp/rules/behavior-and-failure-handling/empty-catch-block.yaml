@@ -1,0 +1,39 @@
+rules:
+  - id: csharp-empty-catch-block
+    patterns:
+      - pattern-either:
+          - pattern: |
+              try
+              {
+                  ...
+              }
+              catch ($TYPE $EX)
+              {
+              }
+          - pattern: |
+              try
+              {
+                  ...
+              }
+              catch ($TYPE)
+              {
+              }
+          - pattern: |
+              try
+              {
+                  ...
+              }
+              catch
+              {
+              }
+    message: >-
+      Found empty `catch` block that swallows exceptions silently.
+      Per RULES.md Section 7, code MUST fail fast and MUST NOT use try/catch blocks that do not rethrow.
+      Either let the exception bubble up or translate it into a specific Domain Exception.
+    languages: [csharp]
+    severity: ERROR
+    metadata:
+      category: behavior-and-failure-handling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#no-silent-catch
