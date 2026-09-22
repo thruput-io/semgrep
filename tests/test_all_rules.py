@@ -27,16 +27,6 @@ def get_rule_test_id(rule_path):
 
 
 def resolve_fixture_files(base):
-    """
-    Resolve the positive and negative fixture files for a rule.
-
-    Most rules use one fixture file carrying both '# ruleid:' and '# ok:'
-    lines. A whole-file-scope rule (e.g. "file must start with a shebang")
-    cannot hold both cases at once, since the property being checked is a
-    single fact about the whole file. Such rules provide a second file,
-    '<base>.ok.<ext>', carrying only the negative case; if present, it is
-    used for the negative test instead of the primary fixture file.
-    """
     for ext in (".py", ".cs", ".sh", ".bats"):
         primary = f"{base}{ext}"
         if os.path.exists(primary):
