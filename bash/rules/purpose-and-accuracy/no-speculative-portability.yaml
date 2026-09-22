@@ -1,6 +1,6 @@
 rules:
   - id: no-speculative-portability
-    message: "Add platform, shell, or environment compatibility branches for environments the task does not run in. Target the designated runtime directly."
+    message: "Do not add platform, shell, or environment compatibility branches for environments the task does not run in. Target the designated runtime directly."
     severity: ERROR
     languages:
       - bash
