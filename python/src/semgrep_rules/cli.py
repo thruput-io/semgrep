@@ -5,14 +5,22 @@ CLI runner for semgrep-python.
 import argparse
 import subprocess
 import sys
-from . import get_rules_path, __version__
+from typing import Optional, Sequence
+
+from . import SupportedLanguage, get_rules_path, __version__
 
 
-def main(argv=None) -> int:
+def main(argv: Optional[Sequence[str]] = None, lang: SupportedLanguage = "python") -> int:
     parser = argparse.ArgumentParser(
-        prog="semgrep-python",
-        description="Run Python Semgrep rules against your codebase.",
+        prog=f"semgrep-{lang}",
+        description=f"Run {lang.title()} Semgrep rules against your codebase.",
         add_help=False
+    )
+    parser.add_argument(
+        "--lang",
+        choices=["python", "bash", "csharp"],
+        default=lang,
+        help="Language ruleset to run"
     )
     parser.add_argument(
         "--version",
@@ -20,15 +28,16 @@ def main(argv=None) -> int:
         version=f"%(prog)s {__version__}"
     )
 
-    _, remaining_args = parser.parse_known_args(argv)
+    args, remaining_args = parser.parse_known_args(argv)
 
+    target_lang: SupportedLanguage = args.lang
     try:
-        rules_path = str(get_rules_path())
+        rules_path = str(get_rules_path(target_lang))
     except FileNotFoundError as exc:
         print(f"Error: {exc}", file=sys.stderr)
         return 1
 
-    cmd = ["semgrep", "--config", rules_path] + remaining_args
+    cmd = ["semgrep", "--error", "--config", rules_path] + list(remaining_args)
 
     if not any(not arg.startswith("-") for arg in remaining_args):
         cmd.append(".")
@@ -42,6 +51,10 @@ def main(argv=None) -> int:
             file=sys.stderr
         )
         return 1
+
+
+def bash_main(argv: Optional[Sequence[str]] = None) -> int:
+    return main(argv, lang="bash")
 
 
 if __name__ == "__main__":
