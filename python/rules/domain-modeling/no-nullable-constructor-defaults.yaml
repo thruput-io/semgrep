@@ -1,0 +1,16 @@
+rules:
+  - id: python-no-nullable-constructor-defaults
+    patterns:
+      - pattern: "def __init__(..., $PARAM = None, ...): ..."
+    message: >-
+      Constructor `__init__` accepts parameter `$PARAM` with default `None`.
+      Per RULES.md Section 4 and Section 7, dependencies and domain invariants must be explicitly provided.
+      Do not accept optional dependencies with silent `None` defaults. Require explicit dependencies or use dedicated factory methods.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: domain-modeling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#validating-factory
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#no-strategy-fallback

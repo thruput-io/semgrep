@@ -1,0 +1,16 @@
+rules:
+  - id: csharp-no-params-in-constructors
+    patterns:
+      - pattern-regex: 'public\s+[A-Za-z0-9_]+\s*\([^)]*?\bparams\s+[A-Za-z0-9_?<>\[\],\s]+\s+[A-Za-z0-9_]+'
+    message: >-
+      Constructor accepts `params` array argument.
+      Per RULES.md Section 4, domain classes and services MUST declare all dependencies and invariants explicitly.
+      Do not use `params` arrays in constructors to pass dynamic or optional dependencies.
+    languages: [csharp]
+    severity: ERROR
+    metadata:
+      category: domain-modeling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#strong-typing
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#validating-factory

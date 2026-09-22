@@ -1,0 +1,16 @@
+rules:
+  - id: csharp-no-dictionary-subclass-data-bags
+    patterns:
+      - pattern-regex: 'public\s+(?:sealed\s+)?class\s+[A-Za-z0-9_]+\s*:\s*(?:(?:System\.Collections\.Generic\.)?Dictionary<|(?:System\.Collections\.Concurrent\.)?ConcurrentDictionary<)'
+    message: >-
+      Class inherits directly from `Dictionary<...>` or `ConcurrentDictionary<...>` as a generic data bag.
+      Per RULES.md Section 4, ban raw maps/dictionaries and unstructured data bags for domain concepts.
+      Define dedicated strongly-typed immutable domain records or classes with explicit validated properties.
+    languages: [csharp]
+    severity: ERROR
+    metadata:
+      category: domain-modeling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#strong-typing
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#strict-domain-modeling

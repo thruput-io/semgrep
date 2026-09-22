@@ -1,0 +1,60 @@
+rules:
+  - id: csharp-max-parameters-warning
+    patterns:
+      - pattern-not: |
+          [$ATTR]
+          public $RET $FUNC(...) { ... }
+      - pattern-not: |
+          [$ATTR(...)]
+          public $RET $FUNC(...) { ... }
+      - pattern-not: |
+          [$ATTR]
+          public async $RET $FUNC(...) { ... }
+      - pattern-not: |
+          [$ATTR(...)]
+          public async $RET $FUNC(...) { ... }
+      - pattern-either:
+          - pattern: "$RET $FUNC($T1 $P1, $T2 $P2, $T3 $P3) { ... }"
+          - pattern: "$RET $FUNC($T1 $P1, $T2 $P2, $T3 $P3) => $EXPR;"
+      - pattern-not: "$RET $FUNC($T1 $P1, $T2 $P2, $T3 $P3, $T4 $P4, ...) { ... }"
+      - pattern-not: "$RET $FUNC($T1 $P1, $T2 $P2, $T3 $P3, $T4 $P4, ...) => $EXPR;"
+    message: >-
+      Method `$FUNC` accepts 3 parameters (WARNING).
+      Consider grouping related parameters into a dedicated Value Object / Parameter record.
+    languages: [csharp]
+    severity: WARNING
+    metadata:
+      category: domain-modeling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#domain-primitives
+
+  - id: csharp-max-parameters-error
+    patterns:
+      - pattern-not: |
+          [$ATTR]
+          public $RET $FUNC(...) { ... }
+      - pattern-not: |
+          [$ATTR(...)]
+          public $RET $FUNC(...) { ... }
+      - pattern-not: |
+          [$ATTR]
+          public async $RET $FUNC(...) { ... }
+      - pattern-not: |
+          [$ATTR(...)]
+          public async $RET $FUNC(...) { ... }
+      - pattern-either:
+          - pattern: "$RET $FUNC($T1 $P1, $T2 $P2, $T3 $P3, $T4 $P4, ...) { ... }"
+          - pattern: "$RET $FUNC($T1 $P1, $T2 $P2, $T3 $P3, $T4 $P4, ...) => $EXPR;"
+    message: >-
+      Method `$FUNC` accepts 4 or more parameters (ERROR).
+      Per RULES.md Section 4, methods MUST NOT exceed parameter limits.
+      Refactor parameters into a strongly-typed Domain Model, Command record, or Value Object.
+    languages: [csharp]
+    severity: ERROR
+    metadata:
+      category: domain-modeling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#domain-primitives
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#strong-typing

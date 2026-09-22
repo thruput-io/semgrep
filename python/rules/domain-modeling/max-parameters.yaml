@@ -1,0 +1,122 @@
+rules:
+  - id: python-max-parameters-warning
+    patterns:
+      - pattern-not: "def __init__(...): ..."
+      - pattern-not: "def __new__(...): ..."
+      - pattern-not: |
+          @override
+          def $FUNC(...):
+              ...
+      - pattern-not: |
+          @override
+          async def $FUNC(...):
+              ...
+      - pattern-not: |
+          @typing.override
+          def $FUNC(...):
+              ...
+      - pattern-not: |
+          @typing.override
+          async def $FUNC(...):
+              ...
+      - pattern-not: |
+          @typing_extensions.override
+          def $FUNC(...):
+              ...
+      - pattern-not: |
+          @typing_extensions.override
+          async def $FUNC(...):
+              ...
+      - pattern-not: |
+          @overrides
+          def $FUNC(...):
+              ...
+      - pattern-not: |
+          @overrides
+          async def $FUNC(...):
+              ...
+      - pattern-either:
+          - patterns:
+              - pattern: "def $FUNC($P1, $P2, $P3): ..."
+              - pattern-not: "def $FUNC(self, ...): ..."
+              - pattern-not: "def $FUNC(cls, ...): ..."
+          - pattern: "def $FUNC(self, $P1, $P2, $P3): ..."
+          - pattern: "def $FUNC(cls, $P1, $P2, $P3): ..."
+          - patterns:
+              - pattern: "async def $FUNC($P1, $P2, $P3): ..."
+              - pattern-not: "async def $FUNC(self, ...): ..."
+              - pattern-not: "async def $FUNC(cls, ...): ..."
+          - pattern: "async def $FUNC(self, $P1, $P2, $P3): ..."
+          - pattern: "async def $FUNC(cls, $P1, $P2, $P3): ..."
+    message: >-
+      Function or method `$FUNC` accepts 3 parameters (WARNING).
+      Consider grouping related parameters into a dedicated Value Object / Domain Model.
+    languages: [python]
+    severity: WARNING
+    metadata:
+      category: domain-modeling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#domain-primitives
+
+  - id: python-max-parameters-error
+    patterns:
+      - pattern-not: "def __init__(...): ..."
+      - pattern-not: "def __new__(...): ..."
+      - pattern-not: |
+          @override
+          def $FUNC(...):
+              ...
+      - pattern-not: |
+          @override
+          async def $FUNC(...):
+              ...
+      - pattern-not: |
+          @typing.override
+          def $FUNC(...):
+              ...
+      - pattern-not: |
+          @typing.override
+          async def $FUNC(...):
+              ...
+      - pattern-not: |
+          @typing_extensions.override
+          def $FUNC(...):
+              ...
+      - pattern-not: |
+          @typing_extensions.override
+          async def $FUNC(...):
+              ...
+      - pattern-not: |
+          @overrides
+          def $FUNC(...):
+              ...
+      - pattern-not: |
+          @overrides
+          async def $FUNC(...):
+              ...
+      - pattern-either:
+          - patterns:
+              - pattern: "def $FUNC($P1, $P2, $P3, $P4, ...): ..."
+              - pattern-not: "def $FUNC(self, ...): ..."
+              - pattern-not: "def $FUNC(cls, ...): ..."
+          - pattern: "def $FUNC(self, $P1, $P2, $P3, $P4, ...): ..."
+          - pattern: "def $FUNC(cls, $P1, $P2, $P3, $P4, ...): ..."
+          - patterns:
+              - pattern: "async def $FUNC($P1, $P2, $P3, $P4, ...): ..."
+              - pattern-not: "async def $FUNC(self, ...): ..."
+              - pattern-not: "async def $FUNC(cls, ...): ..."
+          - pattern: "async def $FUNC(self, $P1, $P2, $P3, $P4, ...): ..."
+          - pattern: "async def $FUNC(cls, $P1, $P2, $P3, $P4, ...): ..."
+    message: >-
+      Function or method `$FUNC` accepts 4 or more parameters (ERROR).
+      Per RULES.md Section 4, functions and methods MUST NOT exceed parameter limits.
+      Refactor parameters into a strongly-typed Domain Model, Command object, or Value Object.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: domain-modeling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#domain-primitives
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#strong-typing
