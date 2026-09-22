@@ -23,7 +23,6 @@ dependencies = [
 [project.scripts]
 thruput-semgrep = "semgrep_rules.cli:main"
 semgrep-python = "semgrep_rules.cli:main"
-semgrep-bash = "semgrep_rules.cli:bash_main"
 
 [project.optional-dependencies]
 dev = [

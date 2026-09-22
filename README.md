@@ -1,6 +1,6 @@
 # Thruput Semgrep Rules
 
-Curated Semgrep rulesets for **Python** and **.NET (C#)** codebases. All rules are configured with **`ERROR`** severity to enforce strict, blocking quality gates in CI/CD.
+Curated Semgrep rulesets for **Python**, **.NET (C#)**, and **Bash** codebases. All rules are configured with **`ERROR`** severity to enforce strict, blocking quality gates in CI/CD.
 
 ---
 
@@ -71,4 +71,19 @@ The .NET package includes an auto-bootstrapping mechanism that automatically dow
    <PropertyGroup>
      <EnableThruputSemgrepOnBuild>true</EnableThruputSemgrepOnBuild>
    </PropertyGroup>
+   ```
+
+---
+
+### 🐚 Bash (`bash/bin/semgrep-bash`)
+
+A standalone shell script, not a Python package — Bash consumers do not need Python installed to lint Bash. It only needs the real `semgrep` binary on `PATH`.
+
+1. **Get the script and rules**:
+   ```bash
+   git clone https://github.com/thruput-io/semgrep.git
+   ```
+2. **Run Linter**:
+   ```bash
+   ./semgrep/bash/bin/semgrep-bash .
    ```
