@@ -8,6 +8,7 @@ import pytest
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src")))
 from semgrep_rules import get_rules_path
+from semgrep_rules.cli import bash_main
 
 RULES_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "rules"))
 
@@ -41,6 +42,23 @@ class TestPythonPackageIntegrity:
         path = get_rules_path()
         assert path.exists(), f"Path does not exist: {path}"
         assert len(list(path.glob("**/*.yaml"))) > 0, "No Python yaml rules found in package path"
+
+    def test_get_rules_path_for_csharp(self):
+        path = get_rules_path("csharp")
+        assert path.exists(), f"Path does not exist: {path}"
+        assert len(list(path.glob("**/*.yaml"))) > 0, "No csharp yaml rules found in package path"
+
+    def test_get_rules_path_fails_fast_for_unknown_language(self):
+        with pytest.raises(FileNotFoundError) as exc_info:
+            get_rules_path("cobol")
+        assert "cobol" in str(exc_info.value)
+
+    def test_bash_main_reports_bash_prog_name(self, capsys):
+        with pytest.raises(SystemExit) as exc_info:
+            bash_main(["--version"])
+        assert exc_info.value.code == 0
+        captured = capsys.readouterr()
+        assert captured.out.startswith("semgrep-bash ")
 
 
 class TestPythonRulesIntegrity:
