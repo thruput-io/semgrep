@@ -1,0 +1,16 @@
+rules:
+  - id: csharp-no-nullable-constructor-defaults
+    patterns:
+      - pattern-regex: 'public\s+[A-Za-z0-9_]+\s*\([^)]*?(?:[A-Za-z0-9_?<>\[\],\s]+)\s+[A-Za-z0-9_]+\s*=\s*(?:null|default)'
+    message: >-
+      Constructor accepts parameter with default `null` or `default`.
+      Per RULES.md Section 4 and Section 7, dependencies and domain invariants must be explicitly provided.
+      Do not accept optional dependencies with silent null defaults. Require explicit dependencies or use dedicated factory overloads.
+    languages: [csharp]
+    severity: ERROR
+    metadata:
+      category: domain-modeling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#validating-factory
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#no-strategy-fallback

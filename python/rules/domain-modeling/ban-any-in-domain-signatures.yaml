@@ -1,21 +1,20 @@
 rules:
   - id: python-ban-any-in-domain-signatures
     patterns:
+      - pattern-not-regex: '^[ \t]*def\s+__(?:eq|ne)__\s*\(\s*self\s*,\s*[A-Za-z0-9_]+\s*:\s*object\s*\)\s*->\s*bool\s*:'
       - pattern-either:
-          - pattern: "def $FUNC(..., $PARAM: Any, ...): ..."
-          - pattern: "def $FUNC(...) -> Any: ..."
-          - pattern: "def $FUNC(..., $PARAM: dict[str, Any], ...): ..."
-          - pattern: "def $FUNC(...) -> dict[str, Any]: ..."
-          - pattern: "def $FUNC(..., $PARAM: Dict[str, Any], ...): ..."
-          - pattern: "def $FUNC(...) -> Dict[str, Any]: ..."
+          # Match Any / object / dict in parameters
+          - pattern-regex: 'def\s+[A-Za-z0-9_]+\s*\([^)]*?:\s*[^)=]*?\b(?:Any|object|dict|Dict)\b'
+          # Match Any / object / dict in return types
+          - pattern-regex: 'def\s+[A-Za-z0-9_]+\s*\([^)]*\)\s*->\s*[^:\n]*?\b(?:Any|object|dict|Dict)\b'
     message: >-
-      Found `Any` or unstructured dictionary type annotation in function `$FUNC`.
-      Per RULES.md Section 4, ban `any`, unstructured dictionaries, or raw primitives in domain logic.
-      Use validated Value Objects, Domain Primitives, or typed domain models instead.
+      Found `Any`, `object`, or unstructured dictionary type annotation in function signature.
+      Per RULES.md Section 4, ban dynamic, untyped, or unstructured types (`Any`, `object`, raw maps/dictionaries) in domain logic.
+      Use validated Domain Primitives, Value Objects, typed models, or generic type variables instead.
     languages: [python]
     severity: ERROR
     metadata:
-      category: correctness
+      category: domain-modeling
       confidence: HIGH
       references:
-        - https://github.com/thruput-io/agents/blob/main/RULES.md#4-domain-modeling--unrepresentable-illegal-states
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#strong-typing

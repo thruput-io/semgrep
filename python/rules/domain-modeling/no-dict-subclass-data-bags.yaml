@@ -1,0 +1,43 @@
+rules:
+  - id: python-no-dict-subclass-data-bags
+    patterns:
+      - pattern-either:
+          - pattern: |
+              class $NAME(dict):
+                  ...
+          - pattern: |
+              class $NAME(dict[...]):
+                  ...
+          - pattern: |
+              class $NAME(Dict):
+                  ...
+          - pattern: |
+              class $NAME(Dict[...]):
+                  ...
+          - pattern: |
+              class $NAME(typing.Dict):
+                  ...
+          - pattern: |
+              class $NAME(typing.Dict[...]):
+                  ...
+          - pattern: |
+              class $NAME(UserDict):
+                  ...
+          - pattern: |
+              class $NAME(collections.UserDict):
+                  ...
+          - pattern: |
+              class $NAME(MutableMapping[...]):
+                  ...
+    message: >-
+      Class `$NAME` subclasses `dict`, `Dict`, or `UserDict` as a dynamic data bag.
+      Per RULES.md Section 4, ban raw maps/dictionaries and unstructured data bags for domain concepts.
+      Define dedicated strongly-typed immutable domain models with explicit validated fields (e.g. `@dataclass(frozen=True)` or frozen Pydantic model).
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: domain-modeling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#strong-typing
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#strict-domain-modeling

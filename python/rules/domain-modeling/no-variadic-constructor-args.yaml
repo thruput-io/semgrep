@@ -1,0 +1,18 @@
+rules:
+  - id: python-no-variadic-constructor-args
+    patterns:
+      - pattern-either:
+          - pattern: "def __init__(..., *$ARGS, ...): ..."
+          - pattern: "def __init__(..., **$KWARGS): ..."
+    message: >-
+      Constructor `__init__` accepts variadic arguments (`*$ARGS` or `**$KWARGS`).
+      Per RULES.md Section 4, domain classes and services MUST declare all dependencies and invariants explicitly.
+      Do not use `*args` or `**kwargs` in constructors to pass or dynamically extract dependencies.
+    languages: [python]
+    severity: ERROR
+    metadata:
+      category: domain-modeling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#strong-typing
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#validating-factory
