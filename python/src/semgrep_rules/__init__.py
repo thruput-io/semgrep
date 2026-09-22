@@ -4,34 +4,28 @@ Semgrep Python Rules Package.
 
 from importlib import resources
 from pathlib import Path
-from typing import Literal
 
 __version__ = "0.1.1"
 
-SupportedLanguage = Literal["python", "bash", "csharp"]
 
-
-def _packaged_rules_path(lang: SupportedLanguage) -> Path:
+def _packaged_rules_path() -> Path:
     pkg_root = resources.files("semgrep_rules")
-    return Path(str(pkg_root / lang / "rules"))
+    return Path(str(pkg_root / "rules"))
 
 
-def _dev_checkout_rules_path(lang: SupportedLanguage) -> Path:
-    return Path(__file__).resolve().parent.parent.parent.parent / lang / "rules"
+def _dev_checkout_rules_path() -> Path:
+    return Path(__file__).resolve().parent.parent.parent / "rules"
 
 
-def get_rules_path(lang: SupportedLanguage = "python") -> Path:
-    """
-    Returns the absolute Path to the Semgrep rules directory for the given language.
-    """
-    packaged = _packaged_rules_path(lang)
+def get_rules_path() -> Path:
+    packaged = _packaged_rules_path()
     if packaged.exists():
         return packaged
 
-    dev_checkout = _dev_checkout_rules_path(lang)
+    dev_checkout = _dev_checkout_rules_path()
     if dev_checkout.exists():
         return dev_checkout
 
     raise FileNotFoundError(
-        f"Semgrep rules for language '{lang}' not found at: {packaged} or {dev_checkout}"
+        f"Python Semgrep rules not found at: {packaged} or {dev_checkout}"
     )
