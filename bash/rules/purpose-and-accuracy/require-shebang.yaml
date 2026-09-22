@@ -1,0 +1,17 @@
+rules:
+  - id: require-shebang
+    message: "Executable shell scripts MUST start with a valid shebang (e.g. #!/bin/bash or #!/usr/bin/env bash)."
+    severity: ERROR
+    languages:
+      - bash
+    patterns:
+      - pattern-regex: '\A(?!#!)'
+    metadata:
+      category: purpose-and-accuracy
+      technology:
+        - bash
+      note: >-
+        No 1:1 canonical rule exists for this in thruput-io/agents rules.yaml as of
+        2026-09-22; shebang is only mentioned there as an exemption example inside
+        no-comments-in-code. This is a bash execution mechanic belonging to the
+        (not-yet-written) standards/bash.md tier per docs/adrs/0001, not a universal rule.

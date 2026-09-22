@@ -1,0 +1,15 @@
+rules:
+  - id: scripts-abort-on-error
+    message: "Enable 'set -euo pipefail' (or the language's equivalent error-abort configuration) in every script, and let a failing step abort execution immediately."
+    severity: ERROR
+    languages:
+      - bash
+    patterns:
+      - pattern-regex: '(?s)\A.*\Z'
+      - pattern-not-regex: '(^|\n)\s*set\s+(-[a-zA-Z]*e[a-zA-Z]*(\s|$)|.*-o\s+errexit\b)'
+    metadata:
+      category: behavior-and-failure-handling
+      technology:
+        - bash
+      references:
+        - https://github.com/thruput-io/agents/blob/main/rules.yaml#scripts-abort-on-error

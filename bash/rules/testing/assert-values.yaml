@@ -1,0 +1,18 @@
+rules:
+  - id: assert-values
+    message: "Assert the actual returned values, not merely that no error occurred. A bats @test that runs a command must check $status, $output, or $lines."
+    severity: ERROR
+    languages:
+      - generic
+    paths:
+      include:
+        - "*.bats"
+    patterns:
+      - pattern-regex: "(?s)@test\\s+\"[^\"]*\"\\s*\\{(?:(?!\\n\\}|\\$status|\\$output|\\$lines)[\\s\\S])*?\\brun\\b(?:(?!\\n\\}|\\$status|\\$output|\\$lines)[\\s\\S])*?\\n\\}"
+    metadata:
+      category: testing
+      technology:
+        - bash
+        - bats
+      references:
+        - https://github.com/thruput-io/agents/blob/main/rules.yaml#assert-values

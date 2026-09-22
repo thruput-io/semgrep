@@ -1,0 +1,14 @@
+rules:
+  - id: no-disabling-via-pragma
+    message: "Do not disable linting rules via comments or pragmas (e.g., 'shellcheck disable=SC2086'). Fix the underlying issue instead of suppressing it."
+    severity: ERROR
+    languages:
+      - bash
+    patterns:
+      - pattern-regex: '^\s*#\s*shellcheck\s+disable='
+    metadata:
+      category: quality-tooling
+      technology:
+        - bash
+      references:
+        - https://github.com/thruput-io/agents/blob/main/rules.yaml#no-disabling-via-pragma

@@ -1,0 +1,14 @@
+rules:
+  - id: no-suppressed-exit-status
+    message: "Do not discard a command's non-zero exit status with '|| true', '|| :', or an equivalent."
+    severity: ERROR
+    languages:
+      - bash
+    patterns:
+      - pattern-regex: '\|\|\s*(true|:)\s*(#.*)?$'
+    metadata:
+      category: behavior-and-failure-handling
+      technology:
+        - bash
+      references:
+        - https://github.com/thruput-io/agents/blob/main/rules.yaml#no-suppressed-exit-status

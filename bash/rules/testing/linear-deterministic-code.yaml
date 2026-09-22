@@ -1,0 +1,18 @@
+rules:
+  - id: linear-deterministic-code
+    message: "Do not write tests that contain branching logic (if, for, while, case). A bats @test body must be linear and deterministic."
+    severity: ERROR
+    languages:
+      - generic
+    paths:
+      include:
+        - "*.bats"
+    patterns:
+      - pattern-regex: "(?s)@test\\s+\"[^\"]*\"\\s*\\{(?:(?!\\n\\})[\\s\\S])*?\\b(if|for|while|case)\\b"
+    metadata:
+      category: testing
+      technology:
+        - bash
+        - bats
+      references:
+        - https://github.com/thruput-io/agents/blob/main/rules.yaml#linear-deterministic-code
