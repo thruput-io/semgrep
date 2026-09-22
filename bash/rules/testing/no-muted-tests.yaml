@@ -1,0 +1,18 @@
+rules:
+  - id: no-muted-tests
+    message: "Do not mute or skip tests (bats 'skip'). Fix or delete the test instead."
+    severity: ERROR
+    languages:
+      - generic
+    paths:
+      include:
+        - "*.bats"
+    patterns:
+      - pattern-regex: '^\s*skip\b'
+    metadata:
+      category: testing
+      technology:
+        - bash
+        - bats
+      references:
+        - https://github.com/thruput-io/agents/blob/main/rules.yaml#no-muted-tests

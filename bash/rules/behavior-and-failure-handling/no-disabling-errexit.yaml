@@ -1,0 +1,19 @@
+rules:
+  - id: no-disabling-errexit
+    message: "Do not disable errexit mid-script with 'set +e' or 'set +o errexit'. Scripts must fail fast on every line."
+    severity: ERROR
+    languages:
+      - bash
+    patterns:
+      - pattern-regex: '^\s*set\s+(\S*\+[a-zA-Z]*e[a-zA-Z]*\S*(\s|$)|.*\+o\s+errexit\b)'
+    metadata:
+      category: behavior-and-failure-handling
+      technology:
+        - bash
+      references:
+        - https://github.com/thruput-io/agents/blob/main/rules.yaml#scripts-abort-on-error
+        - https://github.com/thruput-io/agents/blob/main/rules.yaml#fail-fast
+      note: >-
+        No 1:1 canonical rule id exists for this specific anti-pattern; it is a
+        bash-specific elaboration guarding the scripts-abort-on-error and fail-fast
+        rules against the common way scripts silently undo them mid-execution.
