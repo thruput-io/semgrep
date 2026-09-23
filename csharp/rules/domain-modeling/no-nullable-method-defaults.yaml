@@ -1,0 +1,27 @@
+rules:
+  - id: csharp-no-nullable-method-defaults
+    patterns:
+      - pattern-either:
+          - pattern: "$RET $METHOD(..., $TYPE $PARAM = null, ...) { ... }"
+          - pattern: "$RET $METHOD(..., $TYPE $PARAM = default, ...) { ... }"
+          - pattern: "$RET $METHOD(..., $TYPE $PARAM = null, ...) => $EXPR;"
+          - pattern: "$RET $METHOD(..., $TYPE $PARAM = default, ...) => $EXPR;"
+          - pattern: "$RET $METHOD(..., $TYPE $PARAM = null, ...);"
+          - pattern: "$RET $METHOD(..., $TYPE $PARAM = default, ...);"
+      - pattern-not: "$RET $METHOD(..., CancellationToken $PARAM = default, ...) { ... }"
+      - pattern-not: "$RET $METHOD(..., CancellationToken $PARAM = default, ...) => $EXPR;"
+      - pattern-not: "$RET $METHOD(..., CancellationToken $PARAM = default, ...);"
+      - pattern-not: "override $RET $METHOD(...) { ... }"
+      - pattern-not: "override $RET $METHOD(...) => $EXPR;"
+    message: >-
+      Method `$METHOD` accepts parameter `$PARAM` with default `null` or `default`.
+      Per RULES.md Section 4 and Section 7, methods and domain operations must explicitly declare required parameters or provide dedicated overloads.
+      Do not accept optional parameters with silent null defaults. Require explicit arguments, dedicated overloads, or Option/Result types.
+    languages: [csharp]
+    severity: ERROR
+    metadata:
+      category: domain-modeling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#compile-time-optionality
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#no-strategy-fallback
