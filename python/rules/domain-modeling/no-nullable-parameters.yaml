@@ -1,8 +1,28 @@
 rules:
-  - id: python-no-nullable-function-defaults
+  - id: python-no-nullable-parameters
     patterns:
       - pattern-either:
+          - pattern: "def $FUNC(..., $PARAM: $T | None, ...): ..."
+          - pattern: "def $FUNC(..., $PARAM: None | $T, ...): ..."
+          - pattern: "def $FUNC(..., $PARAM: Optional[$T], ...): ..."
+          - pattern: "def $FUNC(..., $PARAM: Union[$T, None], ...): ..."
+          - pattern: "def $FUNC(..., $PARAM: Union[None, $T], ...): ..."
+          - pattern: "def $FUNC(..., $PARAM: $T | None = $DEFAULT, ...): ..."
+          - pattern: "def $FUNC(..., $PARAM: None | $T = $DEFAULT, ...): ..."
+          - pattern: "def $FUNC(..., $PARAM: Optional[$T] = $DEFAULT, ...): ..."
+          - pattern: "def $FUNC(..., $PARAM: Union[$T, None] = $DEFAULT, ...): ..."
+          - pattern: "def $FUNC(..., $PARAM: Union[None, $T] = $DEFAULT, ...): ..."
           - pattern: "def $FUNC(..., $PARAM = None, ...): ..."
+          - pattern: "async def $FUNC(..., $PARAM: $T | None, ...): ..."
+          - pattern: "async def $FUNC(..., $PARAM: None | $T, ...): ..."
+          - pattern: "async def $FUNC(..., $PARAM: Optional[$T], ...): ..."
+          - pattern: "async def $FUNC(..., $PARAM: Union[$T, None], ...): ..."
+          - pattern: "async def $FUNC(..., $PARAM: Union[None, $T], ...): ..."
+          - pattern: "async def $FUNC(..., $PARAM: $T | None = $DEFAULT, ...): ..."
+          - pattern: "async def $FUNC(..., $PARAM: None | $T = $DEFAULT, ...): ..."
+          - pattern: "async def $FUNC(..., $PARAM: Optional[$T] = $DEFAULT, ...): ..."
+          - pattern: "async def $FUNC(..., $PARAM: Union[$T, None] = $DEFAULT, ...): ..."
+          - pattern: "async def $FUNC(..., $PARAM: Union[None, $T] = $DEFAULT, ...): ..."
           - pattern: "async def $FUNC(..., $PARAM = None, ...): ..."
       - pattern-not: "def __init__(...): ..."
       - pattern-not: "async def __init__(...): ..."
@@ -67,9 +87,9 @@ rules:
           @overrides.overrides(...)
           async def $FUNC(...): ...
     message: >-
-      Function or method `$FUNC` accepts parameter `$PARAM` with default `None`.
-      Per RULES.md Section 4 and Section 7, functions and methods must explicitly declare required parameters or use dedicated domain models.
-      Do not accept optional parameters with silent `None` defaults. Require explicit arguments, dedicated factory functions, or parameter objects.
+      Function or method `$FUNC` accepts nullable parameter `$PARAM`.
+      Per RULES.md Section 4 and Section 7, functions and methods must explicitly declare non-nullable required parameters or use dedicated domain models.
+      Do not accept optional parameters with null/None types or defaults. Require explicit arguments, dedicated factory functions, or parameter objects.
     languages: [python]
     severity: ERROR
     metadata:
