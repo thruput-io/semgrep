@@ -1,0 +1,14 @@
+rules:
+  - id: no-comments-in-code
+    message: "Do not comment code, configuration, or any other version-controlled artifact. A comment is exempt only where something other than a human reader requires it: a shebang; a machine-read directive that is syntactically a comment; API documentation extracted to a published doc site; a mandated license header; a generated-file banner."
+    severity: ERROR
+    languages:
+      - bash
+    patterns:
+      - pattern-regex: '^\s*#(?!(\s*!|\s*shellcheck|\s*(ruleid|ok):)).+$'
+    metadata:
+      category: dead-code-and-comments
+      technology:
+        - bash
+      references:
+        - https://github.com/thruput-io/agents/blob/main/rules.yaml#no-comments-in-code

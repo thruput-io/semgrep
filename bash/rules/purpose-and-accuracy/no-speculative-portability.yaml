@@ -1,0 +1,14 @@
+rules:
+  - id: no-speculative-portability
+    message: "Do not add platform, shell, or environment compatibility branches for environments the task does not run in. Target the designated runtime directly."
+    severity: ERROR
+    languages:
+      - bash
+    patterns:
+      - pattern-regex: '(\$OSTYPE"?\s*(==|!=|=)|"\$\(uname[^)]*\)"\s*(==|!=|=)|case\s+"?\$\(uname)'
+    metadata:
+      category: purpose-and-accuracy
+      technology:
+        - bash
+      references:
+        - https://github.com/thruput-io/agents/blob/main/rules.yaml#no-speculative-portability

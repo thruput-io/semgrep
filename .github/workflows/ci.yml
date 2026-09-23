@@ -86,3 +86,31 @@ jobs:
         with:
           name: nuget-package
           path: dist/nuget/
+
+  test-bash:
+    name: Test Bash Rules Standalone Script
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python (for the bash CLI test suite)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Semgrep & Pytest
+        run: |
+          python -m pip install --upgrade pip
+          pip install semgrep pytest pyyaml
+
+      - name: Run ShellCheck on semgrep-bash
+        uses: ludeeus/action-shellcheck@2.0.0
+        with:
+          scandir: bash/bin
+
+      - name: Run Bash CLI Test Suite
+        run: |
+          pytest tests/test_bash_cli.py --junitxml=test-results-bash.xml

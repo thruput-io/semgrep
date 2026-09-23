@@ -1,0 +1,14 @@
+rules:
+  - id: no-silent-catch
+    message: "Do not clear an error trap with an empty action (trap '' ERR / trap \"\" EXIT); that silences failures instead of handling them."
+    severity: ERROR
+    languages:
+      - bash
+    patterns:
+      - pattern-regex: "^\\s*trap\\s+(''|\"\")\\s+\\w+"
+    metadata:
+      category: behavior-and-failure-handling
+      technology:
+        - bash
+      references:
+        - https://github.com/thruput-io/agents/blob/main/rules.yaml#no-silent-catch
