@@ -5,7 +5,7 @@ rules:
     languages:
       - bash
     patterns:
-      - pattern-regex: '^\s*#(?!(\s*!|\s*shellcheck|\s*(ruleid|ok):)).+$'
+      - pattern-regex: '^\s*#(?!(\s*!|\s*shellcheck|\s*(ruleid|ok):|DEBHELPER#$)).+$'
     metadata:
       category: dead-code-and-comments
       technology:
