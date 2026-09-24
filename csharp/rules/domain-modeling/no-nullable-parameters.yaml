@@ -1,0 +1,33 @@
+rules:
+  - id: csharp-no-nullable-parameters
+    patterns:
+      - pattern-either:
+          - pattern: "$RET $METHOD(..., $TYPE? $PARAM, ...) { ... }"
+          - pattern: "$RET $METHOD(..., $TYPE? $PARAM, ...) => $EXPR;"
+          - pattern: "$RET $METHOD(..., $TYPE? $PARAM, ...);"
+          - pattern: "$RET $METHOD(..., Nullable<$T> $PARAM, ...) { ... }"
+          - pattern: "$RET $METHOD(..., Nullable<$T> $PARAM, ...) => $EXPR;"
+          - pattern: "$RET $METHOD(..., Nullable<$T> $PARAM, ...);"
+          - pattern: "$RET $METHOD(..., $TYPE $PARAM = null, ...) { ... }"
+          - pattern: "$RET $METHOD(..., $TYPE $PARAM = default, ...) { ... }"
+          - pattern: "$RET $METHOD(..., $TYPE $PARAM = null, ...) => $EXPR;"
+          - pattern: "$RET $METHOD(..., $TYPE $PARAM = default, ...) => $EXPR;"
+          - pattern: "$RET $METHOD(..., $TYPE $PARAM = null, ...);"
+          - pattern: "$RET $METHOD(..., $TYPE $PARAM = default, ...);"
+      - pattern-not: "$RET $METHOD(..., CancellationToken $PARAM = default, ...) { ... }"
+      - pattern-not: "$RET $METHOD(..., CancellationToken $PARAM = default, ...) => $EXPR;"
+      - pattern-not: "$RET $METHOD(..., CancellationToken $PARAM = default, ...);"
+      - pattern-not: "override $RET $METHOD(...) { ... }"
+      - pattern-not: "override $RET $METHOD(...) => $EXPR;"
+    message: >-
+      Method `$METHOD` accepts nullable parameter `$PARAM`.
+      Per RULES.md Section 4 and Section 7, methods and domain operations must explicitly declare non-nullable required parameters or provide dedicated overloads.
+      Do not accept optional parameters with null/default types or defaults. Require explicit arguments, dedicated overloads, or Option/Result types.
+    languages: [csharp]
+    severity: ERROR
+    metadata:
+      category: domain-modeling
+      confidence: HIGH
+      references:
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#compile-time-optionality
+        - https://github.com/thruput-io/agents/blob/main/RULES.md#no-strategy-fallback
