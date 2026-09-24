@@ -7,3 +7,6 @@ echo "No comment on this line"
 
 # ruleid: no-comments-in-code
 # This is an illegal comment explaining code
+
+# ok: no-comments-in-code
+#DEBHELPER#
