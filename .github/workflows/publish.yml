@@ -48,6 +48,7 @@ jobs:
     permissions:
       contents: write
       packages: write
+      id-token: write
 
     steps:
       - uses: actions/checkout@v4
@@ -90,13 +91,17 @@ jobs:
             --api-key "${{ secrets.GITHUB_TOKEN }}" \
             --skip-duplicate
 
-      # Push to NuGet.org (optional: if NUGET_API_KEY is configured)
+      # Authenticate with NuGet.org via OIDC (Trusted Publishing)
+      - name: Authenticate with NuGet.org
+        uses: NuGet/login@v1
+        id: nuget-login
+        with:
+          user: thruput
+
+      # Push to NuGet.org
       - name: Push to NuGet.org
-        if: env.NUGET_API_KEY != ''
-        env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         run: |
           dotnet nuget push dist/nuget/*.nupkg \
             --source "https://api.nuget.org/v3/index.json" \
-            --api-key ${{ secrets.NUGET_API_KEY }} \
+            --api-key ${{ steps.nuget-login.outputs.NUGET_API_KEY }} \
             --skip-duplicate
