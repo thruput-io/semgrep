@@ -13,6 +13,10 @@ rules:
       - pattern-not: |
           [$ATTR(...)]
           public async $RET $FUNC(...) { ... }
+      - pattern-not: "override $RET $FUNC(...) { ... }"
+      - pattern-not: "override $RET $FUNC(...) => $EXPR;"
+      - pattern-not: "override async $RET $FUNC(...) { ... }"
+      - pattern-not: "override async $RET $FUNC(...) => $EXPR;"
       - pattern-either:
           - pattern: "$RET $FUNC($T1 $P1, $T2 $P2, $T3 $P3) { ... }"
           - pattern: "$RET $FUNC($T1 $P1, $T2 $P2, $T3 $P3) => $EXPR;"
@@ -43,6 +47,10 @@ rules:
       - pattern-not: |
           [$ATTR(...)]
           public async $RET $FUNC(...) { ... }
+      - pattern-not: "override $RET $FUNC(...) { ... }"
+      - pattern-not: "override $RET $FUNC(...) => $EXPR;"
+      - pattern-not: "override async $RET $FUNC(...) { ... }"
+      - pattern-not: "override async $RET $FUNC(...) => $EXPR;"
       - pattern-either:
           - pattern: "$RET $FUNC($T1 $P1, $T2 $P2, $T3 $P3, $T4 $P4, ...) { ... }"
           - pattern: "$RET $FUNC($T1 $P1, $T2 $P2, $T3 $P3, $T4 $P4, ...) => $EXPR;"
