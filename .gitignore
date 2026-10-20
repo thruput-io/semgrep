@@ -35,6 +35,7 @@ csharp/**/obj/
 *.sln.docstates
 
 # IDE
+.venv/
 .vscode/
 .idea/
 *.swp
