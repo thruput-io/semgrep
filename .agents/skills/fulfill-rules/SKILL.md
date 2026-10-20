@@ -9,12 +9,12 @@ When upstream rules at [`https://thruput.se/agents`](https://thruput.se/agents) 
 
 ## 1. Read the Upstream Source of Truth
 
-1. Read the authoritative rules, principles, and glossary definitions from the single source of truth at [`https://thruput.se/agents`](https://thruput.se/agents).
+1. Read the authoritative rules and glossary definitions from the single source of truth at [`https://thruput.se/agents/rules/Rules.yaml`](https://thruput.se/agents/rules/Rules.yaml) and [`https://thruput.se/agents/rules/Definitions.yaml`](https://thruput.se/agents/rules/Definitions.yaml).
 2. Read [`docs/rule-detection-matrix.md`](../../docs/rule-detection-matrix.md) to compare the upstream rules against the current repository matrix.
-3. Diff the upstream rules at [`https://thruput.se/agents`](https://thruput.se/agents) against `docs/rule-detection-matrix.md` across four dimensions:
-   - **New rules**: Present at `https://thruput.se/agents` but missing from `docs/rule-detection-matrix.md`.
-   - **Removed or renamed rules**: Present in the matrix or `<lang>/rules/` but removed or renamed at `https://thruput.se/agents`.
-   - **Refined specifications or `bad`/`good` examples**: Changes to `specification`, `why`, `parent`, `marker`, or code examples at `https://thruput.se/agents`.
+3. Diff [`https://thruput.se/agents/rules/Rules.yaml`](https://thruput.se/agents/rules/Rules.yaml) against `docs/rule-detection-matrix.md` across four dimensions:
+   - **New rules**: Present in `https://thruput.se/agents/rules/Rules.yaml` but missing from `docs/rule-detection-matrix.md`.
+   - **Removed or renamed rules**: Present in the matrix or `<lang>/rules/` but removed or renamed in `https://thruput.se/agents/rules/Rules.yaml`.
+   - **Refined specifications or `bad`/`good` examples**: Changes to `specification`, `why`, `parent`, `marker`, or code examples in `https://thruput.se/agents/rules/Rules.yaml`.
    - **Detection score changes**: Evaluate whether a new or refined rule scores **`>= 8` on the `Semgrep (1–10)` axis** (syntactic or file-local structural patterns detectable with low false-positive rates).
 
 ## 2. Update `docs/rule-detection-matrix.md`
