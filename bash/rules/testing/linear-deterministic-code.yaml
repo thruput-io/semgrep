@@ -8,7 +8,8 @@ rules:
       include:
         - "*.bats"
     patterns:
-      - pattern-regex: "(?s)@test\\s+\"[^\"]*\"\\s*\\{(?:(?!\\n\\})[\\s\\S])*?\\b(if|for|while|case)\\b"
+      - pattern-regex: |
+          (?sm)@test\s+"[^"]*"\s*\{(?:'[^']*'|"(?:[^"\\]|\\.)*"|<<-?\s*['"]?(\w+)['"]?[^\n]*\n[\s\S]*?\n\s*\1|#[^\n]*\n|(?!\n\})(?:(?!<<)[^'"#]))*?(?:^|\n|;|&&|\|\||\||\{|\bthen\b|\bdo\b)\s*\b(if|for|while|case)\b(?:(?!\n\})[\s\S])*?\n\}
     metadata:
       category: testing
       technology:
