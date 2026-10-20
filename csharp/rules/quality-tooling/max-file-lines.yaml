@@ -6,6 +6,24 @@ rules:
     severity: ERROR
     languages:
       - csharp
+    paths:
+      exclude:
+        - "tests/**"
+        - "**/tests/**"
+        - "test/**"
+        - "**/test/**"
+        - "*Tests/**"
+        - "**/*Tests/**"
+        - "*Test/**"
+        - "**/*Test/**"
+        - "*.Tests/**"
+        - "**/*.Tests/**"
+        - "*.Test/**"
+        - "**/*.Test/**"
+        - "*Tests.cs"
+        - "*Test.cs"
+        - "*_Tests.cs"
+        - "*_Test.cs"
     patterns:
       - pattern-regex: '\A(?:[^\n]*\n){200}\K(?:\r?\n|.)[^\n]*'
     metadata:

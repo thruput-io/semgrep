@@ -6,6 +6,16 @@ rules:
     severity: ERROR
     languages:
       - python
+    paths:
+      exclude:
+        - "tests/**"
+        - "**/tests/**"
+        - "test/**"
+        - "**/test/**"
+        - "*_test.py"
+        - "test_*.py"
+        - "conftest.py"
+        - "**/conftest.py"
     patterns:
       - pattern-regex: '\A(?:[^\n]*\n){200}\K(?:\r?\n|.)[^\n]*'
     metadata:
