@@ -9,7 +9,7 @@ Use this skill when adding support for a new programming language `<lang>` to `t
 
 ## 1. Select Rules to Implement
 
-1. Read [`docs/rule-detection-matrix.md`](../../docs/rule-detection-matrix.md) and `/Users/tore/.gemini/rules/Rules.yaml`.
+1. Read [`docs/rule-detection-matrix.md`](../../docs/rule-detection-matrix.md) and the authoritative rules at [`https://thruput.se/agents`](https://thruput.se/agents).
 2. By default, select all rules scoring **`>= 8` in `Semgrep (1–10)`** (the high-precision syntactic/AST tier), unless the user specifies a different score threshold:
    - `purpose-and-accuracy`: `no-speculative-portability`
    - `dead-code-and-comments`: `no-comments-in-code`
