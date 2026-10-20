@@ -1,0 +1,16 @@
+rules:
+  - id: exhaustive-matching
+    message: "Use pattern matching over the closed set of cases, with no wildcard default branch."
+    severity: ERROR
+    languages:
+      - javascript
+      - typescript
+    patterns:
+      - pattern-regex: '^[ \t]*default\s*:'
+    metadata:
+      category: domain-modeling
+      technology:
+        - javascript
+      references:
+        - https://thruput.se/agents/#make-illegal-states-unrepresentable
+        - https://github.com/thruput-io/agents/blob/main/rules/Rules.yaml

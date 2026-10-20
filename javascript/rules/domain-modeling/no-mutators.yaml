@@ -1,0 +1,35 @@
+rules:
+  - id: no-mutators
+    message: "Do not expose a setter or mutate an object in place. Return a new instance that passes the validating path of creation."
+    severity: ERROR
+    languages:
+      - javascript
+      - typescript
+    patterns:
+      - pattern-either:
+          - pattern-regex: '^[ \t]*set\s+[A-Za-z0-9_$]+\s*\([^)]*\)\s*\{'
+          - patterns:
+              - pattern-either:
+                  - pattern: $OBJ.$PROP = $VAL
+                  - pattern: $OBJ.$PROP += $VAL
+                  - pattern: $OBJ[$KEY] = $VAL
+              - pattern-not-inside: |
+                  constructor(...) {
+                    ...
+                  }
+              - metavariable-pattern:
+                  metavariable: $OBJ
+                  patterns:
+                    - pattern-not: module
+                    - pattern-not: exports
+                    - pattern-not: process.env
+          - patterns:
+              - pattern: Object.assign($TARGET, ...)
+              - pattern-not: Object.assign({}, ...)
+    metadata:
+      category: domain-modeling
+      technology:
+        - javascript
+      references:
+        - https://thruput.se/agents/#immutable-by-default
+        - https://github.com/thruput-io/agents/blob/main/rules/Rules.yaml

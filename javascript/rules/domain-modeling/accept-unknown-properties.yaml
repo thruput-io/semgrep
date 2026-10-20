@@ -1,0 +1,19 @@
+rules:
+  - id: accept-unknown-properties
+    message: "Accept input that carries unknown properties and ignore them; do not configure schema validators with additionalProperties: false, .strict(), or allowUnknown: false."
+    severity: ERROR
+    languages:
+      - javascript
+      - typescript
+    patterns:
+      - pattern-either:
+          - pattern: "{ ..., additionalProperties: false, ... }"
+          - pattern: "{ ..., allowUnknown: false, ... }"
+          - pattern: $SCHEMA.strict()
+    metadata:
+      category: domain-modeling
+      technology:
+        - javascript
+      references:
+        - https://thruput.se/agents/#prepare-reader-for-evolving-producer
+        - https://github.com/thruput-io/agents/blob/main/rules/Rules.yaml

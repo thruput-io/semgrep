@@ -1,0 +1,31 @@
+rules:
+  - id: no-suppressed-exit-status
+    message: "Do not discard a command's non-zero exit status or exit with 0 inside a catch block."
+    severity: ERROR
+    languages:
+      - javascript
+      - typescript
+    patterns:
+      - pattern-either:
+          - pattern: |
+              try {
+                ...
+              } catch ($ERR) {
+                ...
+                process.exit(0);
+              }
+          - pattern: |
+              try {
+                ...
+              } catch {
+                ...
+                process.exit(0);
+              }
+          - pattern-regex: "['\"`][^'\"`\\n]*\\|\\|\\s*(?:true|:)\\b[^'\"`\\n]*['\"`]"
+    metadata:
+      category: behavior-and-failure-handling
+      technology:
+        - javascript
+      references:
+        - https://thruput.se/agents/#fail-fast
+        - https://github.com/thruput-io/agents/blob/main/rules/Rules.yaml

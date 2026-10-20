@@ -1,0 +1,19 @@
+rules:
+  - id: no-discarded-diagnostics
+    message: "Do not discard a child process's error output (stdio: 'ignore' or 2>/dev/null); let the failing tool report its error."
+    severity: ERROR
+    languages:
+      - javascript
+      - typescript
+    patterns:
+      - pattern-either:
+          - pattern: "{ ..., stdio: 'ignore', ... }"
+          - pattern: "{ ..., stdio: [$IN, $OUT, 'ignore'], ... }"
+          - pattern-regex: "['\"`][^'\"`\\n]*(?:2>>?\\s*/dev/null|&>>?\\s*/dev/null)[^'\"`\\n]*['\"`]"
+    metadata:
+      category: behavior-and-failure-handling
+      technology:
+        - javascript
+      references:
+        - https://thruput.se/agents/#fail-fast
+        - https://github.com/thruput-io/agents/blob/main/rules/Rules.yaml

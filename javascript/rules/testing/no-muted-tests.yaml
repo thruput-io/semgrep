@@ -1,0 +1,26 @@
+rules:
+  - id: no-muted-tests
+    message: "Do not mute or skip tests (test.skip, it.skip, describe.skip, xit, xtest, test.todo, or { skip: true }). Fix or delete the test instead."
+    severity: ERROR
+    languages:
+      - javascript
+      - typescript
+    patterns:
+      - pattern-either:
+          - pattern: test.skip(...)
+          - pattern: it.skip(...)
+          - pattern: describe.skip(...)
+          - pattern: test.todo(...)
+          - pattern: it.todo(...)
+          - pattern: xit(...)
+          - pattern: xtest(...)
+          - pattern: xdescribe(...)
+          - pattern: "test($NAME, { ..., skip: $SKIP, ... }, ...)"
+          - pattern: "it($NAME, { ..., skip: $SKIP, ... }, ...)"
+    metadata:
+      category: testing
+      technology:
+        - javascript
+      references:
+        - https://thruput.se/agents/#test-driven-development
+        - https://github.com/thruput-io/agents/blob/main/rules/Rules.yaml

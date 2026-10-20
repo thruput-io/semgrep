@@ -1,0 +1,40 @@
+rules:
+  - id: scripts-abort-on-error
+    message: "Do not suppress unhandled rejections or uncaught exceptions at the process level; let a failing step terminate the script immediately."
+    severity: ERROR
+    languages:
+      - javascript
+      - typescript
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: process.on('unhandledRejection', ($REASON, ...) => { ... })
+              - pattern-not: |
+                  process.on('unhandledRejection', ($REASON, ...) => {
+                    ...
+                    throw $EX;
+                  })
+              - pattern-not: |
+                  process.on('unhandledRejection', ($REASON, ...) => {
+                    ...
+                    process.exit(1);
+                  })
+          - patterns:
+              - pattern: process.on('uncaughtException', ($ERR, ...) => { ... })
+              - pattern-not: |
+                  process.on('uncaughtException', ($ERR, ...) => {
+                    ...
+                    throw $EX;
+                  })
+              - pattern-not: |
+                  process.on('uncaughtException', ($ERR, ...) => {
+                    ...
+                    process.exit(1);
+                  })
+    metadata:
+      category: behavior-and-failure-handling
+      technology:
+        - javascript
+      references:
+        - https://thruput.se/agents/#fail-fast
+        - https://github.com/thruput-io/agents/blob/main/rules/Rules.yaml

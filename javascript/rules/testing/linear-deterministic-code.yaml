@@ -1,0 +1,45 @@
+rules:
+  - id: linear-deterministic-code
+    message: "Do not write tests that contain branching logic (if, switch, ternary) or loops (for, while). Split conditional scenarios into separate linear test cases."
+    severity: ERROR
+    languages:
+      - javascript
+      - typescript
+    patterns:
+      - pattern-either:
+          - pattern: |
+              if ($COND) {
+                ...
+              }
+          - pattern: |
+              for ($INIT; $COND; $STEP) {
+                ...
+              }
+          - pattern: |
+              for ($ITEM of $SEQ) {
+                ...
+              }
+          - pattern: |
+              while ($COND) {
+                ...
+              }
+          - pattern: |
+              switch ($EXPR) {
+                case $VAL:
+                  ...
+              }
+          - pattern: "$COND ? $THEN : $ELSE"
+      - pattern-inside: |
+          $TEST_FN($NAME, (...) => {
+            ...
+          })
+      - metavariable-regex:
+          metavariable: $TEST_FN
+          regex: '^(test|it)$'
+    metadata:
+      category: testing
+      technology:
+        - javascript
+      references:
+        - https://thruput.se/agents/#fail-fast
+        - https://github.com/thruput-io/agents/blob/main/rules/Rules.yaml

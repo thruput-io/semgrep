@@ -1,0 +1,32 @@
+rules:
+  - id: no-default-on-failure
+    message: "Do not return or coalesce to a default value when failing. Fail fast instead of masking missing or failed values."
+    severity: ERROR
+    languages:
+      - javascript
+      - typescript
+    patterns:
+      - pattern-either:
+          - pattern: $EXPR ?? $DEFAULT
+          - pattern: $EXPR ??= $DEFAULT
+          - pattern: |
+              try {
+                ...
+              } catch ($ERR) {
+                ...
+                return $DEFAULT;
+              }
+          - pattern: |
+              try {
+                ...
+              } catch {
+                ...
+                return $DEFAULT;
+              }
+    metadata:
+      category: behavior-and-failure-handling
+      technology:
+        - javascript
+      references:
+        - https://thruput.se/agents/#fail-fast
+        - https://github.com/thruput-io/agents/blob/main/rules/Rules.yaml

@@ -1,0 +1,18 @@
+rules:
+  - id: max-file-lines
+    message: >-
+      File exceeds the maximum limit of 200 lines.
+      Keep files small, modular, and focused on a single responsibility to maintain readability and maintainability.
+    severity: ERROR
+    languages:
+      - javascript
+      - typescript
+    patterns:
+      - pattern-regex: '\A(?:[^\n]*\n){200}\K(?:\r?\n|.)[^\n]*'
+    metadata:
+      category: quality-tooling
+      technology:
+        - javascript
+      references:
+        - https://thruput.se/agents/#less-is-more
+        - https://github.com/thruput-io/agents/blob/main/rules/Rules.yaml
