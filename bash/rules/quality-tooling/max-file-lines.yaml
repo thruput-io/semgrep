@@ -6,6 +6,15 @@ rules:
     severity: ERROR
     languages:
       - bash
+    paths:
+      exclude:
+        - "tests/**"
+        - "**/tests/**"
+        - "test/**"
+        - "**/test/**"
+        - "*.bats"
+        - "*_test.sh"
+        - "test_*.sh"
     patterns:
       - pattern-regex: '\A(?:[^\n]*\n){200}\K(?:\r?\n|.)[^\n]*'
     metadata:
