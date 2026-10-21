@@ -1,0 +1,19 @@
+rules:
+  - id: no-optionality
+    message: "Do not use optional parameters, default parameter values, or return undefined as an in-band sentinel. Provide explicit methods or typed outcomes instead."
+    severity: ERROR
+    languages:
+      - javascript
+      - typescript
+    patterns:
+      - pattern-either:
+          - pattern: return undefined;
+          - pattern-regex: '\bfunction\s+[A-Za-z0-9_$]*\s*\([^)]*=[^)>][^)]*\)'
+          - pattern-regex: '\([A-Za-z0-9_$,\s]*[A-Za-z0-9_$]+\s*=\s*[^)>]+\)\s*=>'
+    metadata:
+      category: domain-modeling
+      technology:
+        - javascript
+      references:
+        - https://thruput.se/agents/#avoid-optionality
+        - https://github.com/thruput-io/agents/blob/main/rules/Rules.yaml

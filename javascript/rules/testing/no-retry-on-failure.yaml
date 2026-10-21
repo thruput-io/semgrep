@@ -1,0 +1,20 @@
+rules:
+  - id: no-retry-on-failure
+    message: "Do not configure a test to retry until it passes (jest.retryTimes, this.retries, or retries option)."
+    severity: ERROR
+    languages:
+      - javascript
+      - typescript
+    patterns:
+      - pattern-either:
+          - pattern: jest.retryTimes(...)
+          - pattern: this.retries(...)
+          - pattern: "{ ..., retries: $COUNT, ... }"
+          - pattern: "{ ..., retry: $COUNT, ... }"
+    metadata:
+      category: testing
+      technology:
+        - javascript
+      references:
+        - https://thruput.se/agents/#first
+        - https://github.com/thruput-io/agents/blob/main/rules/Rules.yaml

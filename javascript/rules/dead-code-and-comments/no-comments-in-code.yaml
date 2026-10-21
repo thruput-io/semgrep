@@ -1,0 +1,18 @@
+rules:
+  - id: no-comments-in-code
+    message: "Do not comment code, configuration, or any other version-controlled artifact. Only a machine-read comment is exempt."
+    severity: ERROR
+    languages:
+      - javascript
+      - typescript
+    patterns:
+      - pattern-either:
+          - pattern-regex: '^[ \t]*\/\/(?!([ \t]*(?:ruleid:|ok:|semgrep:|@license|@generated)))[ \t]*\S.*$'
+          - pattern-regex: '\/\*(?!(\*(?!\/)|[ \t]*(?:ruleid:|ok:|semgrep:|@license|@generated)))[\s\S]*?\*\/'
+    metadata:
+      category: dead-code-and-comments
+      technology:
+        - javascript
+      references:
+        - https://thruput.se/agents/#no-comments
+        - https://github.com/thruput-io/agents/blob/main/rules/Rules.yaml

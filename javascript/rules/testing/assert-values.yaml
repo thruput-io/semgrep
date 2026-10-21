@@ -1,0 +1,45 @@
+rules:
+  - id: assert-values
+    message: "Make an assertion on the actual returned values — not merely that no error occurred."
+    severity: ERROR
+    languages:
+      - javascript
+      - typescript
+    patterns:
+      - pattern-either:
+          - pattern: assert.doesNotThrow(...)
+          - pattern: assert.doesNotReject(...)
+          - pattern: expect(...).not.toThrow(...)
+          - patterns:
+              - pattern: |
+                  $TEST_FN($NAME, (...) => {
+                    ...
+                  })
+              - metavariable-regex:
+                  metavariable: $TEST_FN
+                  regex: '^(test|it)$'
+              - pattern-not: |
+                  $TEST_FN($NAME, (...) => {
+                    ...
+                    assert.$METHOD(...);
+                    ...
+                  })
+              - pattern-not: |
+                  $TEST_FN($NAME, (...) => {
+                    ...
+                    await assert.$METHOD(...);
+                    ...
+                  })
+              - pattern-not: |
+                  $TEST_FN($NAME, (...) => {
+                    ...
+                    expect(...).$MATCHER(...);
+                    ...
+                  })
+    metadata:
+      category: testing
+      technology:
+        - javascript
+      references:
+        - https://thruput.se/agents/#first
+        - https://github.com/thruput-io/agents/blob/main/rules/Rules.yaml

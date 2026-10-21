@@ -1,6 +1,6 @@
 # Thruput Semgrep Rules
 
-Curated Semgrep rulesets for **Python**, **.NET (C#)**, and **Bash** codebases. All rules are configured with **`ERROR`** severity to enforce strict, blocking quality gates in CI/CD.
+Curated Semgrep rulesets for **Python**, **.NET (C#)**, **Bash**, and **JavaScript** codebases. All rules are configured with **`ERROR`** severity to enforce strict, blocking quality gates in CI/CD.
 
 ---
 
@@ -86,4 +86,19 @@ A standalone shell script, not a Python package — Bash consumers do not need P
 2. **Run Linter**:
    ```bash
    ./semgrep/bash/bin/semgrep-bash .
+   ```
+
+---
+
+### 🟨 JavaScript (`javascript/bin/semgrep-javascript`)
+
+A standalone shell wrapper around Semgrep's JavaScript/TypeScript analyzer (`languages: [javascript, typescript]`) that scans `.js` and `.mjs` files with zero Node or Python wrapper dependencies.
+
+1. **Get the script and rules**:
+   ```bash
+   git clone https://github.com/thruput-io/semgrep.git
+   ```
+2. **Run Linter**:
+   ```bash
+   ./semgrep/javascript/bin/semgrep-javascript .
    ```

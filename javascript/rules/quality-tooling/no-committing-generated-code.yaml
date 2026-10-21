@@ -1,0 +1,16 @@
+rules:
+  - id: no-committing-generated-code
+    message: "Do not commit generated code or source map artifacts to version control."
+    severity: ERROR
+    languages:
+      - javascript
+      - typescript
+    patterns:
+      - pattern-regex: '(?:\/\/|\/\*)[# \t*@]*(?:@generated\b|AUTO-GENERATED|DO NOT EDIT\b|sourceMappingURL=)'
+    metadata:
+      category: quality-tooling
+      technology:
+        - javascript
+      references:
+        - https://thruput.se/agents/#the-toolchain-is-the-guardrail
+        - https://github.com/thruput-io/agents/blob/main/rules/Rules.yaml

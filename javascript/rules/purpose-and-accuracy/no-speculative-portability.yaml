@@ -1,0 +1,20 @@
+rules:
+  - id: no-speculative-portability
+    message: "Do not add platform, shell, or environment compatibility branches for environments the task does not run in. Target the designated runtime directly."
+    severity: ERROR
+    languages:
+      - javascript
+      - typescript
+    patterns:
+      - pattern-either:
+          - pattern: process.platform
+          - pattern: os.platform()
+          - pattern: process.arch
+          - pattern: os.arch()
+    metadata:
+      category: purpose-and-accuracy
+      technology:
+        - javascript
+      references:
+        - https://thruput.se/agents/#fail-fast
+        - https://github.com/thruput-io/agents/blob/main/rules/Rules.yaml

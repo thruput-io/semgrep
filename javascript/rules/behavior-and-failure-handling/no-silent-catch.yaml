@@ -1,0 +1,46 @@
+rules:
+  - id: no-silent-catch
+    message: "Do not use try/catch blocks or Promise .catch() handlers that do not rethrow."
+    severity: ERROR
+    languages:
+      - javascript
+      - typescript
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: |
+                  try {
+                    ...
+                  } catch ($ERR) {
+                    ...
+                  }
+              - pattern-not: |
+                  try {
+                    ...
+                  } catch ($ERR) {
+                    ...
+                    throw $EX;
+                  }
+          - patterns:
+              - pattern: |
+                  try {
+                    ...
+                  } catch {
+                    ...
+                  }
+              - pattern-not: |
+                  try {
+                    ...
+                  } catch {
+                    ...
+                    throw $EX;
+                  }
+          - pattern: $PROMISE.catch(() => {})
+          - pattern: $PROMISE.catch(($ERR) => {})
+    metadata:
+      category: behavior-and-failure-handling
+      technology:
+        - javascript
+      references:
+        - https://thruput.se/agents/#fail-fast
+        - https://github.com/thruput-io/agents/blob/main/rules/Rules.yaml
