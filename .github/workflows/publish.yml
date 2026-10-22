@@ -1,13 +1,55 @@
 name: Publish Packages
 
 on:
+  push:
+    branches: [ main, master ]
   release:
     types: [ published ]
   workflow_dispatch:
 
 jobs:
+  publish-rulesets:
+    name: Publish Bundled URL Rulesets (GitHub Pages & Release Assets)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Build Bundled Rulesets
+        run: |
+          python -m pip install --upgrade pip pyyaml
+          python scripts/bundle_rules.py dist/site
+
+      - name: Upload Bundled Rulesets to GitHub Release
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload ${{ github.event.release.tag_name }} dist/site/*.yaml --clobber
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
   publish-python:
     name: Publish Python Package (GitHub Release Assets & PyPI)
+    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -44,6 +86,7 @@ jobs:
 
   publish-nuget:
     name: Publish C# NuGet Package (GitHub Packages & NuGet.org)
+    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     permissions:
       contents: write

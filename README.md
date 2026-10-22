@@ -29,6 +29,29 @@ Curated Semgrep rulesets for **Python**, **.NET (C#)**, **Bash**, and **JavaScri
 
 ## 📦 Consuming the Packages
 
+### 🌐 Direct URL (`semgrep --config`)
+
+Bundled single-file rulesets are built by `scripts/bundle_rules.py` and published to GitHub Pages and GitHub Releases so any repository can scan directly via URL without cloning:
+
+```bash
+# Scan all supported languages (Python, C#, Bash, JavaScript)
+semgrep --error --config "https://thruput.se/semgrep/all.yaml" .
+
+# Or scan a specific language ruleset
+semgrep --error --config "https://thruput.se/semgrep/python.yaml" .
+semgrep --error --config "https://thruput.se/semgrep/csharp.yaml" .
+semgrep --error --config "https://thruput.se/semgrep/bash.yaml" .
+semgrep --error --config "https://thruput.se/semgrep/javascript.yaml" .
+```
+
+To build the bundled YAML files locally into `dist/site/`:
+
+```bash
+python scripts/bundle_rules.py dist/site
+```
+
+---
+
 ### 🐍 Python (`thruput-semgrep-rules`)
 
 1. **Add Dependency**:
