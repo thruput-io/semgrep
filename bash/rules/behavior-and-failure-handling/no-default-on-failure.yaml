@@ -1,11 +1,11 @@
 rules:
   - id: no-default-on-failure
-    message: "Do not return or use a default value when a command fails or a variable or parameter is unset or empty (VAR=$(cmd) || VAR=default, $(cmd || echo default), $(cmd || printf default), ${VAR:-default}, or ${VAR:=default}). Fail fast instead of masking missing inputs or failures."
+    message: "Do not return or use a default value when a command fails or when a variable or parameter is unset or empty. Fail fast instead of masking missing inputs or failures."
     severity: ERROR
     languages:
       - bash
     patterns:
-      - pattern-regex: '(\w+=\$\([^)]*\)\s*\|\|\s*\w+=|\$\([^)]*\|\|\s*(?:echo|printf)\b|\$\{[A-Za-z0-9_]+(?::-|:=)[^}]*\})'
+      - pattern-regex: '(\w+=\$\([^)]*\)\s*\|\|\s*\w+=|\$\([^)]*\|\|\s*(?:echo|printf)\b|\$\{[A-Za-z0-9_]+:[-=][^}]*\})'
     metadata:
       category: behavior-and-failure-handling
       technology:
