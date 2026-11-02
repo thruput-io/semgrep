@@ -8,9 +8,6 @@ VALUE=$(compute_value)
 cmd || exit 1
 
 # ok: no-default-on-failure
-MODE="${1:-summary}"
-
-# ok: no-default-on-failure
 REQUIRED_FEED="${PACKAGE_FEED:?PACKAGE_FEED must be set}"
 
 # ruleid: no-default-on-failure
@@ -28,8 +25,5 @@ FEED_NAME="${PACKAGE_FEED:-default-feed}"
 # ruleid: no-default-on-failure
 BRANCH="${BUILD_SOURCEBRANCHNAME:-$(current_branch)}"
 
-read_from_git() {
-  # ruleid: no-default-on-failure
-  local base_ref="${1:-origin/main}"
-  printf '%s\n' "$base_ref"
-}
+# ruleid: no-default-on-failure
+BASE_REF="${1:-origin/main}"

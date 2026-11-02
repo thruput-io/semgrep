@@ -1,6 +1,6 @@
 rules:
   - id: linear-deterministic-code
-    message: "Do not write tests that contain branching logic (if, for, while, case). A bats @test body must be linear and deterministic."
+    message: "Do not write tests that contain branching or loop logic (if, for, while, until, case). Test scripts and bats @test bodies must be linear and deterministic."
     severity: ERROR
     languages:
       - generic
@@ -15,11 +15,10 @@ rules:
     patterns:
       - pattern-either:
           - pattern-regex: |
-              (?sm)@test\s+"[^"]*"\s*\{(?:'[^']*'|"(?:[^"\\]|\\.)*"|<<-?\s*['"]?(\w+)['"]?[^\n]*\n[\s\S]*?\n\s*\1|#[^\n]*\n|(?!\n\})(?:(?!<<)[^'"#]))*?(?:^|\n|;|&&|\|\||\||\{|\bthen\b|\bdo\b)\s*\b(if|for|while|case)\b(?:(?!\n\})[\s\S])*?\n\}
+              (?sm)@test\s+"[^"]*"\s*\{(?:'[^']*'|"(?:[^"\\]|\\.)*"|<<-?\s*['"]?(\w+)['"]?[^\n]*\n[\s\S]*?\n\s*\1|#[^\n]*\n|(?!\n\})(?:(?!<<)[^'"#]))*?(?:^|\n|;|&&|\|\||\||\{|\bthen\b|\bdo\b)\s*\b(if|for|while|until|case)\b(?:(?!\n\})[\s\S])*?\n\}
           - patterns:
               - pattern-regex: '(?m)^\s*(?:if|for|while|until|case)\s+'
               - pattern-not-regex: '(?sm)@test\s+"[^"]*"\s*\{[\s\S]*?\n\}'
-              - pattern-not-regex: '(?ms)<<-?\s*[''"]?(\w+)[''"]?[^\n]*\n[\s\S]*?\n\s*\1(?:\n|\z)'
     metadata:
       category: testing
       technology:

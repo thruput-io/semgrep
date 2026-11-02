@@ -7,11 +7,6 @@ rules:
     paths:
       include:
         - "*.bats"
-        - "test-*.sh"
-        - "*_test.sh"
-        - "test_*.sh"
-        - "**/test/**"
-        - "**/tests/**"
     patterns:
       - pattern-regex: "(?s)@test\\s+\"[^\"]*\"\\s*\\{(?:(?!\\n\\}|\\$status|\\$output|\\$lines)[\\s\\S])*?\\brun\\b(?:(?!\\n\\}|\\$status|\\$output|\\$lines)[\\s\\S])*?\\n\\}"
     metadata:

@@ -1,11 +1,11 @@
 rules:
   - id: no-suppressed-exit-status
-    message: "Do not discard a command's non-zero exit status with '|| true', '|| :', or an equivalent."
+    message: "Do not discard a command's non-zero exit status with '|| true', '|| :', '|| return 0', '|| exit 0', or an equivalent."
     severity: ERROR
     languages:
       - bash
     patterns:
-      - pattern-regex: '(\|\|\s*(?:true|:|\{[^}]*\b(?:return|exit)\s+0\b[^}]*\})|(?<![\]\s])\s*\|\|\s*(?:return|exit)\s+0)\s*(#.*)?$'
+      - pattern-regex: '\|\|\s*(?:true|:|(?:return|exit)\s+0|\{[^}]*\b(?:return|exit)\s+0\b[^}]*\})\s*(#.*)?$'
     metadata:
       category: behavior-and-failure-handling
       technology:

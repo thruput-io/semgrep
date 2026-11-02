@@ -7,11 +7,6 @@ rules:
     paths:
       include:
         - "*.bats"
-        - "test-*.sh"
-        - "*_test.sh"
-        - "test_*.sh"
-        - "**/test/**"
-        - "**/tests/**"
     patterns:
       - pattern-regex: '^\s*skip\b'
     metadata:
