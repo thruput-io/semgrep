@@ -27,3 +27,6 @@ BRANCH="${BUILD_SOURCEBRANCHNAME:-$(current_branch)}"
 
 # ruleid: no-default-on-failure
 BASE_REF="${1:-origin/main}"
+
+# ruleid: no-default-on-failure
+: "${CACHE_DIR:=/tmp/cache}"

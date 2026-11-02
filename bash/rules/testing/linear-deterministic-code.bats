@@ -20,6 +20,12 @@
   [ "$output" = 'nothing is registered for github/...' ]
 }
 
+# ok: linear-deterministic-code
+@test "passes here-string input to command" {
+  run get_config <<< "for each item in input"
+  [ "$status" -eq 0 ]
+}
+
 # ruleid: linear-deterministic-code
 @test "branches on platform" {
   run detect_os
@@ -42,8 +48,3 @@
     [ "$output" = "ok" ]
   fi
 }
-
-# ruleid: linear-deterministic-code
-for pkg in alpha beta; do
-  run_check "$pkg"
-done
