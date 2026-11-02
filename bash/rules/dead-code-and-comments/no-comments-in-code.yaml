@@ -6,6 +6,7 @@ rules:
       - bash
     patterns:
       - pattern-regex: '^\s*#(?!(\s*!|\s*shellcheck|\s*(ruleid|ok):|DEBHELPER#$)).+$'
+      - pattern-not-regex: '(?ms)<<-?\s*[''"]?(\w+)[''"]?[^\n]*\n[\s\S]*?\n\s*\1(?:\n|\z)'
     metadata:
       category: dead-code-and-comments
       technology:

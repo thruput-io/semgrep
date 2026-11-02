@@ -10,3 +10,9 @@ echo "No comment on this line"
 
 # ok: no-comments-in-code
 #DEBHELPER#
+
+# ok: no-comments-in-code
+cat <<'EOF'
+# Markdown heading inside heredoc
+## Subheading inside heredoc
+EOF
