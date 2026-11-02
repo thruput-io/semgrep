@@ -10,6 +10,8 @@ SCRIPT_PATH = os.path.join(REPO_ROOT, "bash", "bin", "semgrep-bash")
 BASH_RULES_ROOT = os.path.join(REPO_ROOT, "bash", "rules")
 BAD_FIXTURE = os.path.join(BASH_RULES_ROOT, "purpose-and-accuracy", "require-shebang.sh")
 OK_FIXTURE = os.path.join(BASH_RULES_ROOT, "purpose-and-accuracy", "require-shebang.ok.sh")
+LIB_FIXTURE = os.path.join(BASH_RULES_ROOT, "purpose-and-accuracy", "lib", "require-shebang.ok.sh")
+LIBRARY_FIXTURE = os.path.join(BASH_RULES_ROOT, "purpose-and-accuracy", "library", "require-shebang.sh")
 
 
 def require_semgrep():
@@ -51,6 +53,24 @@ class TestSemgrepBashScript:
         result = run_script(["--json", "--quiet", OK_FIXTURE])
         payload = json.loads(result.stdout)
         assert payload["results"] == [], f"Unexpected findings: {payload['results']}"
+
+    def test_silent_on_sourced_file_without_shebang_under_lib(self):
+        require_semgrep()
+        result = run_script(["--json", "--quiet", LIB_FIXTURE])
+        payload = json.loads(result.stdout)
+        check_ids = [r["check_id"] for r in payload["results"]]
+        assert not any(cid.endswith("require-shebang") for cid in check_ids), (
+            f"A sourced file under lib/ was flagged for its missing shebang: {check_ids}"
+        )
+
+    def test_detects_violation_in_a_folder_only_named_like_lib(self):
+        require_semgrep()
+        result = run_script(["--json", "--quiet", LIBRARY_FIXTURE])
+        payload = json.loads(result.stdout)
+        check_ids = [r["check_id"] for r in payload["results"]]
+        assert any(cid.endswith("require-shebang") for cid in check_ids), (
+            f"Expected 'require-shebang' finding outside lib/, got: {check_ids}"
+        )
 
     def test_defaults_target_to_current_directory_when_no_positional_args(self, tmp_path):
         require_semgrep()

@@ -1,9 +1,12 @@
 rules:
   - id: require-shebang
-    message: "Executable shell scripts MUST start with a valid shebang (e.g. #!/bin/bash or #!/usr/bin/env bash)."
+    message: "Executable shell scripts MUST start with a valid shebang (e.g. #!/bin/bash or #!/usr/bin/env bash). A sourced file lives under a lib/ folder instead, with no shebang."
     severity: ERROR
     languages:
       - bash
+    paths:
+      exclude:
+        - "**/lib/**"
     patterns:
       - pattern-regex: '\A(?!#!)'
     metadata:
