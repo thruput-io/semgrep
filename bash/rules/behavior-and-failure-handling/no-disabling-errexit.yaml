@@ -1,11 +1,12 @@
 rules:
   - id: no-disabling-errexit
-    message: "Do not disable errexit mid-script with 'set +e' or 'set +o errexit'. Scripts must fail fast on every line."
+    message: "Do not disable errexit mid-script. Scripts must fail fast on every line."
     severity: ERROR
     languages:
       - bash
-    patterns:
-      - pattern-regex: '^\s*set\s+(\S*\+[a-zA-Z]*e[a-zA-Z]*\S*(\s|$)|.*\+o\s+errexit\b)'
+    pattern-either:
+      - pattern: set ... +e ...
+      - pattern: set ... +o errexit ...
     metadata:
       category: behavior-and-failure-handling
       technology:

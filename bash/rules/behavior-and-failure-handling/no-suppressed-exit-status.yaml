@@ -4,8 +4,21 @@ rules:
     severity: ERROR
     languages:
       - bash
-    patterns:
-      - pattern-regex: '\|\|\s*(?:true|:|(?:\{[^}]*)?\b(?:return|exit)\s+0\b(?:\s*;?\s*\})?)\s*(#.*)?$'
+    pattern-either:
+      - pattern: $CMD ... || true
+      - pattern: "$CMD ... || :"
+      - pattern: $CMD ... || return 0
+      - pattern: $CMD ... || exit 0
+      - pattern: |
+          $CMD ... || {
+            ...
+            return 0
+          }
+      - pattern: |
+          $CMD ... || {
+            ...
+            exit 0
+          }
     metadata:
       category: behavior-and-failure-handling
       technology:
