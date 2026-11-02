@@ -5,7 +5,7 @@ rules:
     languages:
       - bash
     patterns:
-      - pattern-regex: '(\w+=\$\([^)]*\)\s*\|\|\s*\w+=|\$\([^)]*\|\|\s*echo\b)'
+      - pattern-regex: '(\w+=\$\([^)]*\)\s*\|\|\s*\w+=|\$\([^)]*\|\|\s*(?:echo|printf)\b|\$\{[A-Za-z_][A-Za-z0-9_]*(?::-|:=)[^}]*\}|\blocal\s+[A-Za-z_][A-Za-z0-9_]*=["'']?\$\{[0-9]+(?::-|:=)[^}]*\})'
     metadata:
       category: behavior-and-failure-handling
       technology:

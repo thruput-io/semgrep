@@ -5,7 +5,7 @@ rules:
     languages:
       - bash
     patterns:
-      - pattern-regex: '\|\|\s*(true|:)\s*(#.*)?$'
+      - pattern-regex: '(\|\|\s*(?:true|:|\{[^}]*\b(?:return|exit)\s+0\b[^}]*\})|(?<![\]\s])\s*\|\|\s*(?:return|exit)\s+0)\s*(#.*)?$'
     metadata:
       category: behavior-and-failure-handling
       technology:

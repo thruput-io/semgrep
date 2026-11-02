@@ -42,3 +42,8 @@
     [ "$output" = "ok" ]
   fi
 }
+
+# ruleid: linear-deterministic-code
+for pkg in alpha beta; do
+  run_check "$pkg"
+done
