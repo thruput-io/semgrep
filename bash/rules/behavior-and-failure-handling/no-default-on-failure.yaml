@@ -4,8 +4,11 @@ rules:
     severity: ERROR
     languages:
       - bash
-    patterns:
-      - pattern-regex: '(\w+=\$\([^)]*\)\s*\|\|\s*\w+=|\$\([^)]*\|\|\s*(?:echo|printf)\b|\$\{[A-Za-z0-9_]+:[-=][^}]*\})'
+    pattern-either:
+      - pattern: $VAR=$(...) || $VAR=$DEFAULT
+      - pattern: $($CMD ... || echo ...)
+      - pattern: $($CMD ... || printf ...)
+      - pattern-regex: '\$\{[A-Za-z0-9_]+:[-=][^}]*\}'
     metadata:
       category: behavior-and-failure-handling
       technology:

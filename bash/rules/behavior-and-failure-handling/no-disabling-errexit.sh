@@ -12,3 +12,6 @@ set +e
 
 # ruleid: no-disabling-errexit
 set +o errexit
+
+# ruleid: no-disabling-errexit
+run_unchecked() { set +e; }

@@ -12,3 +12,6 @@ trap '' ERR
 
 # ruleid: no-silent-catch
 trap "" EXIT
+
+# ruleid: no-silent-catch
+run_step() { trap '' ERR; }
