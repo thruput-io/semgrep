@@ -78,3 +78,8 @@ test_wrapped_branch_in_function() {
 for pkg in alpha beta; do
   run_check "$pkg"
 done
+
+# ruleid: linear-deterministic-code
+until check_service_up; do
+  sleep 1
+done
