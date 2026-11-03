@@ -8,6 +8,12 @@ VALUE=$(compute_value)
 cmd || exit 1
 
 # ok: no-default-on-failure
+OUT=$(compute_value) || exit 1
+
+# ok: no-default-on-failure
+CHECK=$(compute_value || exit 1)
+
+# ok: no-default-on-failure
 REQUIRED_FEED="${PACKAGE_FEED:?PACKAGE_FEED must be set}"
 
 # ruleid: no-default-on-failure
