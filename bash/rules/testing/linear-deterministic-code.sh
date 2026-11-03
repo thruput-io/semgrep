@@ -1,4 +1,4 @@
-#!/usr/bin/env bats
+#!/usr/bin/env bash
 
 # ok: linear-deterministic-code
 @test "checks a config value" {
@@ -22,8 +22,14 @@
 
 # ok: linear-deterministic-code
 @test "passes here-string input to command" {
-  run get_config <<< "for each item in input"
+  run get_config <<< "for each item in input until case while if"
   [ "$status" -eq 0 ]
+}
+
+# ok: linear-deterministic-code
+test_linear_shell_helper() {
+  actual=$(get_config "host")
+  [ "$actual" = "localhost" ]
 }
 
 # ruleid: linear-deterministic-code
@@ -42,18 +48,17 @@
 }
 
 # ruleid: linear-deterministic-code
-@test "branches with real if statement" {
-  run echo "checking for updates"
-  if [ "$status" -eq 0 ]; then
-    [ "$output" = "ok" ]
-  fi
-}
-
-# ruleid: linear-deterministic-code
 @test "loops with while" {
   while read -r line; do
     run process "$line"
   done < input.txt
+}
+
+# ruleid: linear-deterministic-code
+@test "loops with until" {
+  until check_ready; do
+    sleep 1
+  done
 }
 
 # ruleid: linear-deterministic-code
@@ -63,3 +68,13 @@
     linux) [ "$status" -eq 0 ] ;;
   esac
 }
+
+# ruleid: linear-deterministic-code
+test_wrapped_branch_in_function() {
+  { if [ "$1" = "linux" ]; then echo "ok"; fi; }
+}
+
+# ruleid: linear-deterministic-code
+for pkg in alpha beta; do
+  run_check "$pkg"
+done
