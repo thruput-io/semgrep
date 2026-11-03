@@ -27,3 +27,12 @@ baseline_exists "$1" || { printf '%s\n' "$committed_version"; exit 0; }
 
 # ok: no-suppressed-exit-status
 check_baseline "$1" || return 1
+
+# ok: no-suppressed-exit-status
+verify_state || exit 1
+
+# ok: no-suppressed-exit-status
+baseline_exists "$1" || { printf '%s\n' "missing" >&2; return 1; }
+
+# ok: no-suppressed-exit-status
+baseline_exists "$1" || { printf '%s\n' "missing" >&2; exit 1; }

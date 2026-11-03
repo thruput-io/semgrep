@@ -48,3 +48,18 @@
     [ "$output" = "ok" ]
   fi
 }
+
+# ruleid: linear-deterministic-code
+@test "loops with while" {
+  while read -r line; do
+    run process "$line"
+  done < input.txt
+}
+
+# ruleid: linear-deterministic-code
+@test "branches with case" {
+  run detect_os
+  case "$output" in
+    linux) [ "$status" -eq 0 ] ;;
+  esac
+}
