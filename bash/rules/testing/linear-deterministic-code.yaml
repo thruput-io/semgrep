@@ -1,15 +1,37 @@
 rules:
   - id: linear-deterministic-code
-    message: "Do not write tests that contain conditional branching or loops. A bats @test body must be linear and deterministic."
+    message: "Do not write tests that contain conditional branching or loops. Test scripts and bats @test bodies must be linear and deterministic."
     severity: ERROR
     languages:
-      - generic
+      - bash
     paths:
       include:
         - "*.bats"
-    patterns:
-      - pattern-regex: |
-          (?sm)@test\s+"[^"]*"\s*\{(?:'[^']*'|"(?:[^"\\]|\\.)*"|#[^\n]*\n|(?!\n\})[^'"#])*?(?:^|\n|;|&&|\|\||\||\{|\bthen\b|\bdo\b)\s*\b(if|for|while|case)\b(?:(?!\n\})[\s\S])*?\n\}
+        - "test-*.sh"
+        - "*_test.sh"
+        - "test_*.sh"
+        - "**/test/**"
+        - "**/tests/**"
+        - "**/testing/**"
+    pattern-either:
+      - pattern: |
+          if ...; then
+            ...
+          fi
+      - pattern: |
+          for $VAR in ...; do
+            ...
+          done
+      - pattern: |
+          while ...; do
+            ...
+          done
+      - pattern: until ...
+      - pattern: |
+          case $VAL in
+            $PAT) ...
+            ;;
+          esac
     metadata:
       category: testing
       technology:
