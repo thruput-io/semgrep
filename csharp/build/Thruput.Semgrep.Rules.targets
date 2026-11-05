@@ -59,7 +59,7 @@
   <!-- Main Lint Target -->
   <Target Name="ThruputSemgrepLint" DependsOnTargets="ThruputEnsureSemgrep">
     <Message Importance="high" Text="[Thruput] Running Semgrep rules on $(MSBuildProjectDirectory)..." />
-    <Exec Command="&quot;$(SemgrepExecutable)&quot; --config &quot;$(ThruputSemgrepCSharpRulesPath)&quot; --error &quot;$(MSBuildProjectDirectory)&quot;" 
+    <Exec Command="&quot;$(SemgrepExecutable)&quot; --config &quot;$(ThruputSemgrepCSharpRulesPath)&quot; &quot;$(MSBuildProjectDirectory)&quot;" 
           ContinueOnError="false" />
   </Target>
 

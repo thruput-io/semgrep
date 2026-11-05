@@ -25,6 +25,7 @@ htmlcov/
 test-results*.xml
 
 # .NET / C#
+!csharp/build/
 csharp/**/bin/
 csharp/**/obj/
 *.nupkg
