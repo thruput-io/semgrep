@@ -7,23 +7,27 @@ rules:
       - pattern-not: |
           [$ATTR(...)]
           public $RET $FUNC(...) { ... }
-      - pattern-not: |
-          [$ATTR]
-          public async $RET $FUNC(...) { ... }
-      - pattern-not: |
-          [$ATTR(...)]
-          public async $RET $FUNC(...) { ... }
       - pattern-not: "override $RET $FUNC(...) { ... }"
-      - pattern-not: "override $RET $FUNC(...) => $EXPR;"
-      - pattern-not: "override async $RET $FUNC(...) { ... }"
-      - pattern-not: "override async $RET $FUNC(...) => $EXPR;"
+      - pattern: "$RET $FUNC(..., $T1 $P1, ..., $T2 $P2, ..., $T3 $P3, ..., $T4 $P4, ...) { ... }"
+      - metavariable-regex:
+          metavariable: $T1
+          regex: ^(?!.*CancellationToken$).*
+      - metavariable-regex:
+          metavariable: $T2
+          regex: ^(?!.*CancellationToken$).*
+      - metavariable-regex:
+          metavariable: $T3
+          regex: ^(?!.*CancellationToken$).*
+      - metavariable-regex:
+          metavariable: $T4
+          regex: ^(?!.*CancellationToken$).*
       - pattern-either:
-          - pattern: "$RET $FUNC($T1 $P1, $T2 $P2, $T3 $P3) { ... }"
-          - pattern: "$RET $FUNC($T1 $P1, $T2 $P2, $T3 $P3) => $EXPR;"
-      - pattern-not: "$RET $FUNC($T1 $P1, $T2 $P2, $T3 $P3, $T4 $P4, ...) { ... }"
-      - pattern-not: "$RET $FUNC($T1 $P1, $T2 $P2, $T3 $P3, $T4 $P4, ...) => $EXPR;"
+          - pattern: "$RET $FUNC($A1, $A2, $A3, $A4) { ... }"
+          - pattern: "$RET $FUNC(..., CancellationToken $CT, ...) { ... }"
+          - pattern: "$RET $FUNC(..., System.Threading.CancellationToken $CT, ...) { ... }"
+      - pattern-not: "$RET $FUNC($A1, $A2, $A3, $A4, $A5, $A6, ...) { ... }"
     message: >-
-      Method `$FUNC` accepts 3 parameters (WARNING).
+      Method `$FUNC` accepts 4 parameters (WARNING).
       Consider grouping related parameters into a dedicated Value Object / Parameter record.
     languages: [csharp]
     severity: WARNING
@@ -41,21 +45,25 @@ rules:
       - pattern-not: |
           [$ATTR(...)]
           public $RET $FUNC(...) { ... }
-      - pattern-not: |
-          [$ATTR]
-          public async $RET $FUNC(...) { ... }
-      - pattern-not: |
-          [$ATTR(...)]
-          public async $RET $FUNC(...) { ... }
       - pattern-not: "override $RET $FUNC(...) { ... }"
-      - pattern-not: "override $RET $FUNC(...) => $EXPR;"
-      - pattern-not: "override async $RET $FUNC(...) { ... }"
-      - pattern-not: "override async $RET $FUNC(...) => $EXPR;"
-      - pattern-either:
-          - pattern: "$RET $FUNC($T1 $P1, $T2 $P2, $T3 $P3, $T4 $P4, ...) { ... }"
-          - pattern: "$RET $FUNC($T1 $P1, $T2 $P2, $T3 $P3, $T4 $P4, ...) => $EXPR;"
+      - pattern: "$RET $FUNC(..., $T1 $P1, ..., $T2 $P2, ..., $T3 $P3, ..., $T4 $P4, ..., $T5 $P5, ...) { ... }"
+      - metavariable-regex:
+          metavariable: $T1
+          regex: ^(?!.*CancellationToken$).*
+      - metavariable-regex:
+          metavariable: $T2
+          regex: ^(?!.*CancellationToken$).*
+      - metavariable-regex:
+          metavariable: $T3
+          regex: ^(?!.*CancellationToken$).*
+      - metavariable-regex:
+          metavariable: $T4
+          regex: ^(?!.*CancellationToken$).*
+      - metavariable-regex:
+          metavariable: $T5
+          regex: ^(?!.*CancellationToken$).*
     message: >-
-      Method `$FUNC` accepts 4 or more parameters (ERROR).
+      Method `$FUNC` accepts 5 or more parameters (ERROR).
       Per RULES.md Section 4, methods MUST NOT exceed parameter limits.
       Refactor parameters into a strongly-typed Domain Model, Command record, or Value Object.
     languages: [csharp]
