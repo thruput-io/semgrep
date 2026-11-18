@@ -10,6 +10,7 @@ REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 PYTHON_RULES_ROOT = os.path.join(REPO_ROOT, "python", "rules")
 CSHARP_RULES_ROOT = os.path.join(REPO_ROOT, "csharp", "rules")
 BASH_RULES_ROOT = os.path.join(REPO_ROOT, "bash", "rules")
+BATS_RULES_ROOT = os.path.join(REPO_ROOT, "bats", "rules")
 JAVASCRIPT_RULES_ROOT = os.path.join(REPO_ROOT, "javascript", "rules")
 JS_MAX_LINES_FIXTURE = os.path.join(JAVASCRIPT_RULES_ROOT, "quality-tooling", "max-file-lines.js")
 
@@ -23,12 +24,13 @@ def generate_js_max_file_lines_fixture():
 
 
 def get_all_rule_files():
-    """Discover all YAML rule files across Python, C#, Bash, and JavaScript directories."""
+    """Discover all YAML rule files across Python, C#, Bash, Bats, and JavaScript directories."""
     python_rules = sorted(glob.glob(os.path.join(PYTHON_RULES_ROOT, "**", "*.yaml"), recursive=True))
     csharp_rules = sorted(glob.glob(os.path.join(CSHARP_RULES_ROOT, "**", "*.yaml"), recursive=True))
     bash_rules = sorted(glob.glob(os.path.join(BASH_RULES_ROOT, "**", "*.yaml"), recursive=True))
+    bats_rules = sorted(glob.glob(os.path.join(BATS_RULES_ROOT, "**", "*.yaml"), recursive=True))
     javascript_rules = sorted(glob.glob(os.path.join(JAVASCRIPT_RULES_ROOT, "**", "*.yaml"), recursive=True))
-    return python_rules + csharp_rules + bash_rules + javascript_rules
+    return python_rules + csharp_rules + bash_rules + bats_rules + javascript_rules
 
 ALL_RULE_FILES = get_all_rule_files()
 

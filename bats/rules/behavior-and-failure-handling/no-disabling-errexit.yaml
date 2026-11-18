@@ -1,0 +1,18 @@
+rules:
+  - id: no-disabling-errexit
+    message: "Do not disable errexit mid-script. Scripts must fail fast on every line."
+    severity: ERROR
+    languages:
+      - generic
+    paths:
+      include:
+        - "*.bats"
+    patterns:
+      - pattern-regex: '(?:^|[;&|]\s*|\s)set\s+(?:[^#\n]*\s+)?(?:\+[a-zA-Z]*e[a-zA-Z]*|\+o\s+errexit)\b'
+    metadata:
+      category: behavior-and-failure-handling
+      technology:
+        - bats
+      references:
+        - https://github.com/thruput-io/agents/blob/main/rules.yaml#scripts-abort-on-error
+        - https://github.com/thruput-io/agents/blob/main/rules.yaml#fail-fast

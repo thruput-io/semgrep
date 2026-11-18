@@ -3,7 +3,7 @@ from pathlib import Path
 import sys
 import yaml
 
-LANGUAGES: tuple[str, ...] = ("python", "csharp", "bash", "javascript")
+LANGUAGES: tuple[str, ...] = ("python", "csharp", "bash", "bats", "javascript")
 
 
 @dataclass(frozen=True)

@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+rules_path="${script_dir}/../rules"
+
+if ! command -v semgrep >/dev/null 2>&1; then
+  echo "Error: 'semgrep' executable was not found. Install it: https://semgrep.dev/docs/getting-started/" >&2
+  exit 1
+fi
+
+if [ ! -d "${rules_path}" ]; then
+  echo "Error: bats rules directory not found at: ${rules_path}" >&2
+  exit 1
+fi
+
+flags=()
+targets=()
+for arg in "$@"; do
+  case "${arg}" in
+    -*) flags+=("${arg}") ;;
+    *) targets+=("${arg}") ;;
+  esac
+done
+
+if [ "${#targets[@]}" -eq 0 ]; then
+  targets=(".")
+fi
+
+resolved_targets=()
+for target in "${targets[@]}"; do
+  if [ -d "${target}" ]; then
+    while IFS= read -r -d '' bats_file; do
+      resolved_targets+=("${bats_file}")
+    done < <(find "${target}" -type f -name "*.bats" -print0)
+  else
+    resolved_targets+=("${target}")
+  fi
+done
+
+if [ "${#resolved_targets[@]}" -eq 0 ]; then
+  exit 0
+fi
+
+exec semgrep --error --config "${rules_path}" "${flags[@]}" "${resolved_targets[@]}"

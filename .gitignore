@@ -45,3 +45,4 @@ csharp/**/obj/
 # Semgrep / Thruput cache
 .semgrep/
 .thruput/
+.log/

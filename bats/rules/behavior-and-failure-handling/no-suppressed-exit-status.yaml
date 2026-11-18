@@ -1,0 +1,18 @@
+rules:
+  - id: no-suppressed-exit-status
+    message: "Do not discard or suppress a command's non-zero exit status in an '||' fallback. Let failing commands abort or return a non-zero status."
+    severity: ERROR
+    languages:
+      - generic
+    paths:
+      include:
+        - "*.bats"
+    pattern-either:
+      - pattern-regex: '\|\|\s*(?:true|:|return\s+0|exit\s+0)(?:\s|$|;|#)'
+      - pattern-regex: '(?s)\|\|\s*\{[^}]*?(?:return\s+0|exit\s+0)[^}]*\}'
+    metadata:
+      category: behavior-and-failure-handling
+      technology:
+        - bats
+      references:
+        - https://github.com/thruput-io/agents/blob/main/rules.yaml#no-suppressed-exit-status

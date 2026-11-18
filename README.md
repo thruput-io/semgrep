@@ -1,6 +1,6 @@
 # Thruput Semgrep Rules
 
-Curated Semgrep rulesets for **Python**, **.NET (C#)**, **Bash**, and **JavaScript** codebases. All rules are configured with **`ERROR`** severity to enforce strict, blocking quality gates in CI/CD.
+Curated Semgrep rulesets for **Python**, **.NET (C#)**, **Bash**, **Bats**, and **JavaScript** codebases. All rules are configured with **`ERROR`** severity to enforce strict, blocking quality gates in CI/CD.
 
 ---
 
@@ -34,13 +34,14 @@ Curated Semgrep rulesets for **Python**, **.NET (C#)**, **Bash**, and **JavaScri
 Bundled single-file rulesets are built by `scripts/bundle_rules.py` and published to GitHub Pages and GitHub Releases so any repository can scan directly via URL without cloning:
 
 ```bash
-# Scan all supported languages (Python, C#, Bash, JavaScript)
+# Scan all supported languages (Python, C#, Bash, Bats, JavaScript)
 semgrep --error --config "https://thruput.se/semgrep/all.yaml" .
 
 # Or scan a specific language ruleset
 semgrep --error --config "https://thruput.se/semgrep/python.yaml" .
 semgrep --error --config "https://thruput.se/semgrep/csharp.yaml" .
 semgrep --error --config "https://thruput.se/semgrep/bash.yaml" .
+semgrep --error --config "https://thruput.se/semgrep/bats.yaml" .
 semgrep --error --config "https://thruput.se/semgrep/javascript.yaml" .
 ```
 
@@ -109,6 +110,21 @@ A standalone shell script, not a Python package — Bash consumers do not need P
 2. **Run Linter**:
    ```bash
    ./semgrep/bash/bin/semgrep-bash .
+   ```
+
+---
+
+### 🧪 Bats (`bats/bin/semgrep-bats`)
+
+A standalone shell wrapper for scanning `.bats` test files (`14` rules) with zero Python wrapper dependencies.
+
+1. **Get the script and rules**:
+   ```bash
+   git clone https://github.com/thruput-io/semgrep.git
+   ```
+2. **Run Linter**:
+   ```bash
+   ./semgrep/bats/bin/semgrep-bats .
    ```
 
 ---
