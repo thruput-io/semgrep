@@ -1,0 +1,8 @@
+number: 1
+title: Language-Agnostic Common Ruleset
+date: "2026-11-18"
+context: |
+  Duplicating text-level and structural [[Lint rule]]s across per-language rule sets creates a second [[Representation]] that drifts when thresholds, severities, or remediation messages evolve, and causes duplicate findings when combined [[Ruleset]]s scan multi-language repositories.
+decisions:
+  - Define every language-agnostic [[Static code analysis]] check once in a shared common [[Ruleset]] rather than per target language, keeping language directories exclusively for syntax- and AST-dependent checks per [[Single Source of Truth]] and [[No second representation]].
+  - Include the common [[Ruleset]] in every language-specific CLI, package, and bundle, while emitting it once in the combined multi-language bundle.
