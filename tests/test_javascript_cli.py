@@ -7,8 +7,8 @@ import pytest
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 SCRIPT_PATH = os.path.join(REPO_ROOT, "javascript", "bin", "semgrep-javascript")
-JS_RULES_ROOT = os.path.join(REPO_ROOT, "javascript", "rules")
-OK_FIXTURE = os.path.join(JS_RULES_ROOT, "quality-tooling", "max-file-lines.ok.js")
+COMMON_RULES_ROOT = os.path.join(REPO_ROOT, "common", "rules")
+OK_FIXTURE = os.path.join(COMMON_RULES_ROOT, "quality-tooling", "max-file-lines.ok.js")
 
 
 def require_semgrep():

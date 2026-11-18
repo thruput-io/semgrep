@@ -7,28 +7,32 @@ import yaml
 import pytest
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+COMMON_RULES_ROOT = os.path.join(REPO_ROOT, "common", "rules")
 PYTHON_RULES_ROOT = os.path.join(REPO_ROOT, "python", "rules")
 CSHARP_RULES_ROOT = os.path.join(REPO_ROOT, "csharp", "rules")
 BASH_RULES_ROOT = os.path.join(REPO_ROOT, "bash", "rules")
 JAVASCRIPT_RULES_ROOT = os.path.join(REPO_ROOT, "javascript", "rules")
-JS_MAX_LINES_FIXTURE = os.path.join(JAVASCRIPT_RULES_ROOT, "quality-tooling", "max-file-lines.js")
+COMMON_MAX_LINES_FIXTURE = os.path.join(COMMON_RULES_ROOT, "quality-tooling", "max-file-lines.js")
 
 
 @pytest.fixture(scope="session", autouse=True)
-def generate_js_max_file_lines_fixture():
-    with open(JS_MAX_LINES_FIXTURE, "w", encoding="utf-8") as f:
+def generate_common_max_file_lines_fixture():
+    os.makedirs(os.path.dirname(COMMON_MAX_LINES_FIXTURE), exist_ok=True)
+    with open(COMMON_MAX_LINES_FIXTURE, "w", encoding="utf-8") as f:
         f.write("export const x = 1;\n" * 199 + "// ruleid: max-file-lines\nexport const y = 2;\n")
     yield
-    os.remove(JS_MAX_LINES_FIXTURE)
+    if os.path.exists(COMMON_MAX_LINES_FIXTURE):
+        os.remove(COMMON_MAX_LINES_FIXTURE)
 
 
 def get_all_rule_files():
-    """Discover all YAML rule files across Python, C#, Bash, and JavaScript directories."""
+    """Discover all YAML rule files across common, Python, C#, Bash, and JavaScript directories."""
+    common_rules = sorted(glob.glob(os.path.join(COMMON_RULES_ROOT, "**", "*.yaml"), recursive=True))
     python_rules = sorted(glob.glob(os.path.join(PYTHON_RULES_ROOT, "**", "*.yaml"), recursive=True))
     csharp_rules = sorted(glob.glob(os.path.join(CSHARP_RULES_ROOT, "**", "*.yaml"), recursive=True))
     bash_rules = sorted(glob.glob(os.path.join(BASH_RULES_ROOT, "**", "*.yaml"), recursive=True))
     javascript_rules = sorted(glob.glob(os.path.join(JAVASCRIPT_RULES_ROOT, "**", "*.yaml"), recursive=True))
-    return python_rules + csharp_rules + bash_rules + javascript_rules
+    return common_rules + python_rules + csharp_rules + bash_rules + javascript_rules
 
 ALL_RULE_FILES = get_all_rule_files()
 
