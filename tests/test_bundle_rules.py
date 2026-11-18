@@ -9,7 +9,7 @@ from scripts.bundle_rules import bundle_all_rulesets
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 JS_BAD_FIXTURE = REPO_ROOT / "javascript" / "rules" / "domain-modeling" / "no-mutators.js"
-JS_OK_FIXTURE = REPO_ROOT / "javascript" / "rules" / "quality-tooling" / "max-file-lines.ok.js"
+JS_OK_FIXTURE = REPO_ROOT / "common" / "rules" / "quality-tooling" / "max-file-lines.ok.js"
 
 
 def load_rules_count(path: Path) -> int:
@@ -28,6 +28,7 @@ def start_static_server(directory: Path) -> tuple[http.server.HTTPServer, int]:
 
 def test_bundle_creates_language_and_combined_rulesets(tmp_path: Path) -> None:
     bundle_all_rulesets(REPO_ROOT, tmp_path)
+    common_count = load_rules_count(tmp_path / "common.yaml")
     python_count = load_rules_count(tmp_path / "python.yaml")
     csharp_count = load_rules_count(tmp_path / "csharp.yaml")
     bash_count = load_rules_count(tmp_path / "bash.yaml")
@@ -35,11 +36,14 @@ def test_bundle_creates_language_and_combined_rulesets(tmp_path: Path) -> None:
     all_count = load_rules_count(tmp_path / "all.yaml")
     rules_count = load_rules_count(tmp_path / "rules.yaml")
     index_count = load_rules_count(tmp_path / "index.html")
-    assert python_count > 0
-    assert csharp_count > 0
-    assert bash_count == 14
-    assert javascript_count == 19
-    assert all_count == python_count + csharp_count + bash_count + javascript_count
+    assert common_count == 3
+    assert python_count > common_count
+    assert csharp_count > common_count
+    assert bash_count == 13 + common_count
+    assert javascript_count == 18 + common_count
+    assert all_count == (
+        python_count + csharp_count + bash_count + javascript_count - (3 * common_count)
+    )
     assert rules_count == all_count
     assert index_count == all_count
 

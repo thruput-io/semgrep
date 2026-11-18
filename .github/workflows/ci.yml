@@ -163,13 +163,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install semgrep pytest pyyaml
 
-      - name: Lint Bundler Script & Test with Python Semgrep Rules
+      - name: Lint Bundler Script & Test with Python & Common Semgrep Rules
         run: |
-          semgrep --error --config python/rules scripts/bundle_rules.py tests/test_bundle_rules.py
+          semgrep --error --config python/rules --config common/rules scripts/bundle_rules.py tests/test_bundle_rules.py tests/test_common_rules.py
 
-      - name: Run Bundled Ruleset Tests (including HTTP --config URL scan)
+      - name: Run Common & Bundled Ruleset Tests (including HTTP --config URL scan)
         run: |
-          PYTHONPATH=. pytest tests/test_bundle_rules.py --junitxml=test-results-bundle.xml
+          PYTHONPATH=. pytest tests/test_all_rules.py -k "common" --junitxml=test-results-common-rules.xml
+          PYTHONPATH=. pytest tests/test_common_rules.py tests/test_bundle_rules.py --junitxml=test-results-bundle.xml
 
       - name: Build Bundled Rulesets
         run: |

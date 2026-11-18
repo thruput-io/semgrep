@@ -3,6 +3,7 @@ from pathlib import Path
 import sys
 import yaml
 
+COMMON_RULESET = "common"
 LANGUAGES: tuple[str, ...] = ("python", "csharp", "bash", "javascript")
 
 
@@ -12,30 +13,54 @@ class RulesetBundle:
     rule_count: int
 
 
-def collect_language_bundle(repo_root: Path, language: str) -> RulesetBundle:
-    rules_dir = repo_root / language / "rules"
-    rule_files = sorted(rules_dir.rglob("*.yaml"))
+@dataclass(frozen=True)
+class LoadedRules:
+    yaml_documents: tuple[str, ...]
+
+
+def read_rule_documents(rules_dir: Path) -> LoadedRules:
+    docs = [
+        rule_file.read_text(encoding="utf-8")
+        for rule_file in sorted(rules_dir.rglob("*.yaml"))
+    ]
+    return LoadedRules(yaml_documents=tuple(docs))
+
+
+def build_bundle(loaded: LoadedRules, namespace_prefix: str) -> RulesetBundle:
     collected = []
-    for rule_file in rule_files:
-        with open(rule_file, "r", encoding="utf-8") as handle:
-            data = yaml.safe_load(handle)
+    for raw_doc in loaded.yaml_documents:
+        data = yaml.safe_load(raw_doc)
         for entry in data["rules"]:
-            collected.append({**entry, "id": str(entry["id"])})
+            raw_id = str(entry["id"])
+            if namespace_prefix and not raw_id.startswith(f"{namespace_prefix}."):
+                rule_id = f"{namespace_prefix}.{raw_id}"
+            else:
+                rule_id = raw_id
+            collected.append({**entry, "id": rule_id})
     serialized = yaml.safe_dump({"rules": collected}, sort_keys=False, allow_unicode=True)
     return RulesetBundle(serialized_yaml=serialized, rule_count=len(collected))
 
 
+def collect_common_bundle(repo_root: Path) -> RulesetBundle:
+    return build_bundle(read_rule_documents(repo_root / COMMON_RULESET / "rules"), "")
+
+
+def collect_language_bundle(repo_root: Path, language: str) -> RulesetBundle:
+    lang_docs = read_rule_documents(repo_root / language / "rules").yaml_documents
+    common_docs = read_rule_documents(repo_root / COMMON_RULESET / "rules").yaml_documents
+    return build_bundle(LoadedRules(yaml_documents=lang_docs + common_docs), "")
+
+
 def collect_combined_bundle(repo_root: Path) -> RulesetBundle:
-    combined = []
+    combined = yaml.safe_load(
+        build_bundle(
+            read_rule_documents(repo_root / COMMON_RULESET / "rules"),
+            COMMON_RULESET,
+        ).serialized_yaml
+    )["rules"]
     for language in LANGUAGES:
-        rules_dir = repo_root / language / "rules"
-        for rule_file in sorted(rules_dir.rglob("*.yaml")):
-            with open(rule_file, "r", encoding="utf-8") as handle:
-                data = yaml.safe_load(handle)
-            for entry in data["rules"]:
-                raw_id = str(entry["id"])
-                qualified_id = raw_id if raw_id.startswith(f"{language}.") else f"{language}.{raw_id}"
-                combined.append({**entry, "id": qualified_id})
+        lang_bundle = build_bundle(read_rule_documents(repo_root / language / "rules"), language)
+        combined.extend(yaml.safe_load(lang_bundle.serialized_yaml)["rules"])
     serialized = yaml.safe_dump({"rules": combined}, sort_keys=False, allow_unicode=True)
     return RulesetBundle(serialized_yaml=serialized, rule_count=len(combined))
 
@@ -46,9 +71,9 @@ def write_bundle(target_path: Path, bundle: RulesetBundle) -> None:
 
 def bundle_all_rulesets(repo_root: Path, output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
+    write_bundle(output_dir / f"{COMMON_RULESET}.yaml", collect_common_bundle(repo_root))
     for language in LANGUAGES:
-        lang_bundle = collect_language_bundle(repo_root, language)
-        write_bundle(output_dir / f"{language}.yaml", lang_bundle)
+        write_bundle(output_dir / f"{language}.yaml", collect_language_bundle(repo_root, language))
     combined_bundle = collect_combined_bundle(repo_root)
     write_bundle(output_dir / "all.yaml", combined_bundle)
     write_bundle(output_dir / "rules.yaml", combined_bundle)

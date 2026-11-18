@@ -31,6 +31,7 @@
 
     <!-- Include all C# rules into package -->
     <None Include="rules\**\*.yaml" Pack="true" PackagePath="rules\csharp\" />
+    <None Include="..\common\rules\**\*.yaml" Pack="true" PackagePath="rules\csharp\common\" />
 
     <!-- Include MSBuild targets for consumers -->
     <None Include="build\Thruput.Semgrep.Rules.targets" Pack="true" PackagePath="build\Thruput.Semgrep.Rules.targets" />

@@ -3,6 +3,7 @@ set -euo pipefail
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 rules_path="${script_dir}/../rules"
+common_rules_path="${script_dir}/../../common/rules"
 
 if ! command -v semgrep >/dev/null 2>&1; then
   echo "Error: 'semgrep' executable was not found. Install it: https://semgrep.dev/docs/getting-started/" >&2
@@ -13,6 +14,14 @@ if [ ! -d "${rules_path}" ]; then
   echo "Error: bash rules directory not found at: ${rules_path}" >&2
   exit 1
 fi
+
+if [ ! -d "${common_rules_path}" ]; then
+  echo "Error: common rules directory not found at: ${common_rules_path}" >&2
+  exit 1
+fi
+
+rules_path="$(cd "${rules_path}" && pwd)"
+common_rules_path="$(cd "${common_rules_path}" && pwd)"
 
 if [ "$#" -eq 0 ]; then
   args=(".")
@@ -30,4 +39,4 @@ else
   fi
 fi
 
-exec semgrep --error --config "${rules_path}" "${args[@]}"
+exec semgrep --error --config "${rules_path}" --config "${common_rules_path}" "${args[@]}"

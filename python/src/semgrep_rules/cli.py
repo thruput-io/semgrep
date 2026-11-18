@@ -5,32 +5,35 @@ CLI runner for semgrep-python.
 import argparse
 import subprocess
 import sys
-from typing import Optional, Sequence
+from typing import Sequence
 
-from . import get_rules_path, __version__
+from . import get_rule_paths, __version__
 
 
-def main(argv: Optional[Sequence[str]] = None) -> int:
+def run_cli(argv: Sequence[str]) -> int:
     parser = argparse.ArgumentParser(
         prog="semgrep-python",
         description="Run Python Semgrep rules against your codebase.",
-        add_help=False
+        add_help=False,
     )
     parser.add_argument(
         "--version",
         action="version",
-        version=f"%(prog)s {__version__}"
+        version=f"%(prog)s {__version__}",
     )
 
     _, remaining_args = parser.parse_known_args(argv)
 
     try:
-        rules_path = str(get_rules_path())
+        rule_paths = get_rule_paths()
     except FileNotFoundError as exc:
         print(f"Error: {exc}", file=sys.stderr)
         return 1
 
-    cmd = ["semgrep", "--error", "--config", rules_path] + list(remaining_args)
+    cmd = ["semgrep", "--error"]
+    for path in rule_paths:
+        cmd.extend(["--config", str(path)])
+    cmd.extend(remaining_args)
 
     if not any(not arg.startswith("-") for arg in remaining_args):
         cmd.append(".")
@@ -41,9 +44,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     except FileNotFoundError:
         print(
             "Error: 'semgrep' executable was not found. Please install semgrep via: pip install semgrep",
-            file=sys.stderr
+            file=sys.stderr,
         )
         return 1
+
+
+def main() -> int:
+    return run_cli(sys.argv[1:])
 
 
 if __name__ == "__main__":
