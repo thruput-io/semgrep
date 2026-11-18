@@ -1,15 +1,21 @@
 rules:
-  - id: python-no-linter-pragma-disables
-    patterns:
-      - pattern-regex: '^[ \t]*#[ \t]*(type:\s*ignore|noqa|pragma:\s*no cover|pylint:\s*disable|pyright:\s*ignore|mypy:\s*ignore).*$'
-    message: >-
-      Found linter/compiler suppression pragma comment.
-      Per RULES.md Section 9, do NOT add or accept comment pragmas that bypass rules (e.g. `type: ignore`, `noqa`, `pragma: no cover`).
-      Fix the underlying type or code defect rather than suppressing it.
-    languages: [python]
-    severity: ERROR
-    metadata:
-      category: quality-tooling
-      confidence: HIGH
-      references:
-        - https://github.com/thruput-io/agents/blob/main/RULES.md#no-disabling-via-pragma
+- id: python-no-linter-pragma-disables
+  patterns:
+  - pattern-regex: ^[ \t]*#[ \t]*(type:\s*ignore|noqa|pragma:\s*no cover|pylint:\s*disable|pyright:\s*ignore|mypy:\s*ignore).*$
+  message: 'Found linter/compiler suppression pragma comment. Per RULES.md Section 9, do NOT add or accept comment pragmas
+    that bypass rules (e.g. `type: ignore`, `noqa`, `pragma: no cover`). Fix the underlying type or code defect rather than
+    suppressing it.'
+  languages:
+  - python
+  severity: ERROR
+  metadata:
+    category: quality-tooling
+    confidence: HIGH
+    references:
+    - https://thruput.se/agents/#no-local-disabling-of-lint-rules
+    rule: No local disabling of lint rules
+    solutions:
+    - 'SHOULD: Resolve a [[Static code analysis]] warning at its root cause; where the code cannot satisfy a strict rule,
+      seek architectural guidance, never a workaround.'
+    - 'SHOULD: Enable the strictest static-analysis presets and compiler checks the ecosystem offers, so safeguards are enforced
+      without review.'

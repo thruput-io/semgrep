@@ -1,16 +1,23 @@
 rules:
-  - id: no-disabling-via-pragma
-    message: "Do not disable linting or type-checking rules locally via comments or pragmas (eslint-disable, @ts-ignore, @ts-expect-error, @ts-nocheck, biome-ignore, nosemgrep)."
-    severity: ERROR
-    languages:
-      - javascript
-      - typescript
-    patterns:
-      - pattern-regex: '(?:\/\/|\/\*)[ \t]*(?:eslint-disable(?:-next-line|-line)?|@ts-(?:ignore|expect-error|nocheck)|biome-ignore|prettier-ignore|nosemgrep)\b'
-    metadata:
-      category: quality-tooling
-      technology:
-        - javascript
-      references:
-        - https://thruput.se/agents/#push-tests-down-the-pyramid
-        - https://github.com/thruput-io/agents/blob/main/rules/Rules.yaml
+- id: no-disabling-via-pragma
+  message: Do not disable linting or type-checking rules locally via comments or pragmas (eslint-disable, @ts-ignore, @ts-expect-error,
+    @ts-nocheck, biome-ignore, nosemgrep).
+  severity: ERROR
+  languages:
+  - javascript
+  - typescript
+  patterns:
+  - pattern-regex: (?:\/\/|\/\*)[ \t]*(?:eslint-disable(?:-next-line|-line)?|@ts-(?:ignore|expect-error|nocheck)|biome-ignore|prettier-ignore|nosemgrep)\b
+  metadata:
+    category: quality-tooling
+    technology:
+    - javascript
+    references:
+    - https://thruput.se/agents/#no-local-disabling-of-lint-rules
+    - https://thruput.se/agents/#push-tests-down-the-pyramid
+    rule: No local disabling of lint rules
+    solutions:
+    - 'SHOULD: Resolve a [[Static code analysis]] warning at its root cause; where the code cannot satisfy a strict rule,
+      seek architectural guidance, never a workaround.'
+    - 'SHOULD: Enable the strictest static-analysis presets and compiler checks the ecosystem offers, so safeguards are enforced
+      without review.'

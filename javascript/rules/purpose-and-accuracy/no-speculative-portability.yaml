@@ -1,20 +1,25 @@
 rules:
-  - id: no-speculative-portability
-    message: "Do not add platform, shell, or environment compatibility branches for environments the task does not run in. Target the designated runtime directly."
-    severity: ERROR
-    languages:
-      - javascript
-      - typescript
-    patterns:
-      - pattern-either:
-          - pattern: process.platform
-          - pattern: os.platform()
-          - pattern: process.arch
-          - pattern: os.arch()
-    metadata:
-      category: purpose-and-accuracy
-      technology:
-        - javascript
-      references:
-        - https://thruput.se/agents/#fail-fast
-        - https://github.com/thruput-io/agents/blob/main/rules/Rules.yaml
+- id: no-speculative-portability
+  message: Do not add platform, shell, or environment compatibility branches for environments the task does not run in. Target
+    the designated runtime directly.
+  severity: ERROR
+  languages:
+  - javascript
+  - typescript
+  patterns:
+  - pattern-either:
+    - pattern: process.platform
+    - pattern: os.platform()
+    - pattern: process.arch
+    - pattern: os.arch()
+  metadata:
+    category: purpose-and-accuracy
+    technology:
+    - javascript
+    references:
+    - https://thruput.se/agents/#no-speculative-portability
+    - https://thruput.se/agents/#fail-fast
+    rule: No speculative portability
+    solutions:
+    - 'SHOULD: State the [[User]] need before the change is reviewed, so every part of the change can be traced to it.'
+    - 'SHOULD: Choose the technology the team already operates before adopting a new one.'

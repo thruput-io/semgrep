@@ -1,16 +1,21 @@
 rules:
-  - id: exhaustive-matching
-    message: "Use pattern matching over the closed set of cases, with no wildcard default branch."
-    severity: ERROR
-    languages:
-      - javascript
-      - typescript
-    patterns:
-      - pattern-regex: '^[ \t]*default\s*:'
-    metadata:
-      category: domain-modeling
-      technology:
-        - javascript
-      references:
-        - https://thruput.se/agents/#make-illegal-states-unrepresentable
-        - https://github.com/thruput-io/agents/blob/main/rules/Rules.yaml
+- id: exhaustive-matching
+  message: Use pattern matching over the closed set of cases, with no wildcard default branch.
+  severity: ERROR
+  languages:
+  - javascript
+  - typescript
+  patterns:
+  - pattern-regex: '^[ \t]*default\s*:'
+  metadata:
+    category: domain-modeling
+    technology:
+    - javascript
+    references:
+    - https://thruput.se/agents/#exhaustive-matching
+    - https://thruput.se/agents/#make-illegal-states-unrepresentable
+    rule: Exhaustive matching
+    solutions:
+    - 'SHOULD: Use every typing add-on the language offers to give every type one [[Validating path of creation]] and no other.'
+    - 'SHOULD: Encode a state machine in the type, each transition consuming the old state''s type and returning the new one,
+      so an operation invalid in the current state does not typecheck.'

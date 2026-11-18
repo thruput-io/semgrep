@@ -1,20 +1,25 @@
 rules:
-  - id: no-retry-on-failure
-    message: "Do not configure a test to retry until it passes (jest.retryTimes, this.retries, or retries option)."
-    severity: ERROR
-    languages:
-      - javascript
-      - typescript
-    patterns:
-      - pattern-either:
-          - pattern: jest.retryTimes(...)
-          - pattern: this.retries(...)
-          - pattern: "{ ..., retries: $COUNT, ... }"
-          - pattern: "{ ..., retry: $COUNT, ... }"
-    metadata:
-      category: testing
-      technology:
-        - javascript
-      references:
-        - https://thruput.se/agents/#first
-        - https://github.com/thruput-io/agents/blob/main/rules/Rules.yaml
+- id: no-retry-on-failure
+  message: Do not configure a test to retry until it passes (jest.retryTimes, this.retries, or retries option).
+  severity: ERROR
+  languages:
+  - javascript
+  - typescript
+  patterns:
+  - pattern-either:
+    - pattern: jest.retryTimes(...)
+    - pattern: this.retries(...)
+    - pattern: '{ ..., retries: $COUNT, ... }'
+    - pattern: '{ ..., retry: $COUNT, ... }'
+  metadata:
+    category: testing
+    technology:
+    - javascript
+    references:
+    - https://thruput.se/agents/#no-retry-on-failure
+    - https://thruput.se/agents/#first
+    rule: No retry on failure
+    solutions:
+    - 'SHOULD: Run mutation testing to show that the tests fail when the code is wrong ([State of Mutation Testing at Google](https://research.google.com/pubs/archive/46584.pdf)).'
+    - 'SHOULD: Treat painful [[Test setup]] as a design signal: split the subject into smaller domain models or focused interfaces
+      before reaching for a mock.'

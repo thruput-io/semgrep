@@ -135,3 +135,26 @@ def test_sync_audit_detects_matrix_deltas_orphans_severity_and_solution_chains(t
     assert chain.ancestor_solutions == (
         "SHOULD: Hide each design decision likely to change behind one module interface.",
     )
+
+
+def collect_repo_metadata_gaps(repo_root: Path) -> tuple[str, ...]:
+    import yaml
+
+    gaps = []
+    for group in ("common", "python", "csharp", "bash", "javascript"):
+        rules_root = repo_root / group / "rules"
+        for rule_file in sorted(rules_root.rglob("*.yaml")):
+            doc = yaml.safe_load(rule_file.read_text(encoding="utf-8"))
+            for entry in doc["rules"]:
+                rel = rule_file.relative_to(repo_root).as_posix()
+                rid = entry["id"]
+                meta = entry.get("metadata", {})
+                if not meta.get("rule") or not meta.get("solutions"):
+                    gaps.append(f"{rel}::{rid}")
+                if meta.get("smell") and entry.get("severity") != "WARNING":
+                    gaps.append(f"{rel}::{rid}::smell-severity")
+    return tuple(gaps)
+
+
+def test_every_repository_rule_maps_to_upstream_rule_and_curated_solutions() -> None:
+    assert collect_repo_metadata_gaps(REPO_ROOT) == ()

@@ -1,18 +1,23 @@
 rules:
-  - id: no-muted-tests
-    message: "Do not mute or skip tests (bats 'skip'). Fix or delete the test instead."
-    severity: ERROR
-    languages:
-      - generic
-    paths:
-      include:
-        - "*.bats"
-    patterns:
-      - pattern-regex: '^\s*skip\b'
-    metadata:
-      category: testing
-      technology:
-        - bash
-        - bats
-      references:
-        - https://github.com/thruput-io/agents/blob/main/rules.yaml#no-muted-tests
+- id: no-muted-tests
+  message: Do not mute or skip tests (bats 'skip'). Fix or delete the test instead.
+  severity: ERROR
+  languages:
+  - generic
+  paths:
+    include:
+    - '*.bats'
+  patterns:
+  - pattern-regex: ^\s*skip\b
+  metadata:
+    category: testing
+    technology:
+    - bash
+    - bats
+    references:
+    - https://thruput.se/agents/#no-muted-tests
+    rule: No muted tests
+    solutions:
+    - 'SHOULD: Run mutation testing to show that the tests fail when the code is wrong ([State of Mutation Testing at Google](https://research.google.com/pubs/archive/46584.pdf)).'
+    - 'SHOULD: Treat painful [[Test setup]] as a design signal: split the subject into smaller domain models or focused interfaces
+      before reaching for a mock.'

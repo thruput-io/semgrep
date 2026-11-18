@@ -1,15 +1,20 @@
 rules:
-  - id: csharp-no-linter-pragma-disables
-    patterns:
-      - pattern-regex: '^[ \t]*#pragma\s+warning\s+disable.*$'
-    message: >-
-      Found compiler warning suppression pragma (`#pragma warning disable`).
-      Per RULES.md Section 9, do NOT add or accept comment/compiler pragmas that bypass rules.
-      Fix the underlying defect or warning rather than suppressing it.
-    languages: [csharp]
-    severity: ERROR
-    metadata:
-      category: quality-tooling
-      confidence: HIGH
-      references:
-        - https://github.com/thruput-io/agents/blob/main/RULES.md#no-disabling-via-pragma
+- id: csharp-no-linter-pragma-disables
+  patterns:
+  - pattern-regex: ^[ \t]*#pragma\s+warning\s+disable.*$
+  message: Found compiler warning suppression pragma (`#pragma warning disable`). Per RULES.md Section 9, do NOT add or accept
+    comment/compiler pragmas that bypass rules. Fix the underlying defect or warning rather than suppressing it.
+  languages:
+  - csharp
+  severity: ERROR
+  metadata:
+    category: quality-tooling
+    confidence: HIGH
+    references:
+    - https://thruput.se/agents/#no-local-disabling-of-lint-rules
+    rule: No local disabling of lint rules
+    solutions:
+    - 'SHOULD: Resolve a [[Static code analysis]] warning at its root cause; where the code cannot satisfy a strict rule,
+      seek architectural guidance, never a workaround.'
+    - 'SHOULD: Enable the strictest static-analysis presets and compiler checks the ecosystem offers, so safeguards are enforced
+      without review.'

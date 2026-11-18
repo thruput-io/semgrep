@@ -1,68 +1,65 @@
 rules:
-  - id: no-horizontal-line-cramming
-    message: >-
-      Code line exceeds 200 characters without a URL, indicating horizontal code compacting that harms Readability.
-      Break complex expressions into named intermediate values or split responsibilities into separate single-purpose components
-      (https://thruput.se/agents/#read-far-more-than-written); never cram code onto long lines to avoid the 200-line warning.
-    severity: ERROR
-    languages:
-      - generic
-    paths:
-      include:
-        - "*.py"
-        - "*.pyi"
-        - "*.cs"
-        - "*.sh"
-        - "*.bash"
-        - "*.bats"
-        - "*.js"
-        - "*.jsx"
-        - "*.mjs"
-        - "*.cjs"
-        - "*.ts"
-        - "*.tsx"
-    patterns:
-      - pattern-regex: '^(?!.*https?://)[^\r\n]{201,}$'
-    metadata:
-      category: quality-tooling
-      rule: Single-purpose components
-      solutions:
-        - "SHOULD: Shape every unit of code, a file, a type, a function, to be read in one sitting by a reader who has not seen it before."
-        - "SHOULD: Keep concerns separate where merging them would save lines; the lines saved are paid back on every later change."
-      references:
-        - https://thruput.se/agents/#single-purpose-components
-        - https://thruput.se/agents/#read-far-more-than-written
-
-  - id: no-multi-statement-line-packing
-    message: >-
-      Multiple semicolon-chained statements are packed onto a single line.
-      Write one clear statement per line for Readability (https://thruput.se/agents/#read-far-more-than-written),
-      and split responsibilities into separate single-purpose components instead of compacting lines.
-    severity: ERROR
-    languages:
-      - generic
-    paths:
-      include:
-        - "*.py"
-        - "*.pyi"
-        - "*.cs"
-        - "*.sh"
-        - "*.bash"
-        - "*.bats"
-        - "*.js"
-        - "*.jsx"
-        - "*.mjs"
-        - "*.cjs"
-        - "*.ts"
-        - "*.tsx"
-    patterns:
-      - pattern-regex: '^(?![ \t]*(?:#|//|/\*|\*|for\b))[^"\x27`\r\n;]+;[ \t]*[^"\x27`\r\n;]+;[ \t]*[^"\x27`\r\n;]+'
-    metadata:
-      category: quality-tooling
-      rule: Single-purpose components
-      solutions:
-        - "SHOULD: Shape every unit of code, a file, a type, a function, to be read in one sitting by a reader who has not seen it before."
-        - "SHOULD: Keep concerns separate where merging them would save lines; the lines saved are paid back on every later change."
-      references:
-        - https://thruput.se/agents/#single-purpose-components
-        - https://thruput.se/agents/#read-far-more-than-written
+- id: no-horizontal-line-cramming
+  message: Code line exceeds 200 characters without a URL, indicating horizontal code compacting that harms Readability. Break
+    complex expressions into named intermediate values or split responsibilities into separate single-purpose components (https://thruput.se/agents/#read-far-more-than-written);
+    never cram code onto long lines to avoid the 200-line warning.
+  severity: ERROR
+  languages:
+  - generic
+  paths:
+    include:
+    - '*.py'
+    - '*.pyi'
+    - '*.cs'
+    - '*.sh'
+    - '*.bash'
+    - '*.bats'
+    - '*.js'
+    - '*.jsx'
+    - '*.mjs'
+    - '*.cjs'
+    - '*.ts'
+    - '*.tsx'
+  patterns:
+  - pattern-regex: ^(?!.*https?://)[^\r\n]{201,}$
+  metadata:
+    category: quality-tooling
+    rule: Single-purpose components
+    solutions:
+    - 'SHOULD: Hide each design decision likely to change behind one module interface.'
+    - 'SHOULD: Keep concerns separate where merging them would save lines; the lines saved are paid back on every later change.'
+    references:
+    - https://thruput.se/agents/#single-purpose-components
+    - https://thruput.se/agents/#read-far-more-than-written
+- id: no-multi-statement-line-packing
+  message: Multiple semicolon-chained statements are packed onto a single line. Write one clear statement per line for Readability
+    (https://thruput.se/agents/#read-far-more-than-written), and split responsibilities into separate single-purpose components
+    instead of compacting lines.
+  severity: ERROR
+  languages:
+  - generic
+  paths:
+    include:
+    - '*.py'
+    - '*.pyi'
+    - '*.cs'
+    - '*.sh'
+    - '*.bash'
+    - '*.bats'
+    - '*.js'
+    - '*.jsx'
+    - '*.mjs'
+    - '*.cjs'
+    - '*.ts'
+    - '*.tsx'
+  patterns:
+  - pattern-regex: ^(?![ \t]*(?:#|//|/\*|\*|for\b))[^"\x27`\r\n;]+;[ \t]*[^"\x27`\r\n;]+;[ \t]*[^"\x27`\r\n;]+
+  metadata:
+    category: quality-tooling
+    rule: Single-purpose components
+    solutions:
+    - 'SHOULD: Hide each design decision likely to change behind one module interface.'
+    - 'SHOULD: Keep concerns separate where merging them would save lines; the lines saved are paid back on every later change.'
+    references:
+    - https://thruput.se/agents/#single-purpose-components
+    - https://thruput.se/agents/#read-far-more-than-written

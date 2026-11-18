@@ -1,45 +1,31 @@
 rules:
-  - id: assert-values
-    message: "Make an assertion on the actual returned values — not merely that no error occurred."
-    severity: ERROR
-    languages:
-      - javascript
-      - typescript
-    patterns:
-      - pattern-either:
-          - pattern: assert.doesNotThrow(...)
-          - pattern: assert.doesNotReject(...)
-          - pattern: expect(...).not.toThrow(...)
-          - patterns:
-              - pattern: |
-                  $TEST_FN($NAME, (...) => {
-                    ...
-                  })
-              - metavariable-regex:
-                  metavariable: $TEST_FN
-                  regex: '^(test|it)$'
-              - pattern-not: |
-                  $TEST_FN($NAME, (...) => {
-                    ...
-                    assert.$METHOD(...);
-                    ...
-                  })
-              - pattern-not: |
-                  $TEST_FN($NAME, (...) => {
-                    ...
-                    await assert.$METHOD(...);
-                    ...
-                  })
-              - pattern-not: |
-                  $TEST_FN($NAME, (...) => {
-                    ...
-                    expect(...).$MATCHER(...);
-                    ...
-                  })
-    metadata:
-      category: testing
-      technology:
-        - javascript
-      references:
-        - https://thruput.se/agents/#first
-        - https://github.com/thruput-io/agents/blob/main/rules/Rules.yaml
+- id: assert-values
+  message: Make an assertion on the actual returned values — not merely that no error occurred.
+  severity: ERROR
+  languages:
+  - javascript
+  - typescript
+  patterns:
+  - pattern-either:
+    - pattern: assert.doesNotThrow(...)
+    - pattern: assert.doesNotReject(...)
+    - pattern: expect(...).not.toThrow(...)
+    - patterns:
+      - pattern: "$TEST_FN($NAME, (...) => {\n  ...\n})\n"
+      - metavariable-regex:
+          metavariable: $TEST_FN
+          regex: ^(test|it)$
+      - pattern-not: "$TEST_FN($NAME, (...) => {\n  ...\n  assert.$METHOD(...);\n  ...\n})\n"
+      - pattern-not: "$TEST_FN($NAME, (...) => {\n  ...\n  await assert.$METHOD(...);\n  ...\n})\n"
+      - pattern-not: "$TEST_FN($NAME, (...) => {\n  ...\n  expect(...).$MATCHER(...);\n  ...\n})\n"
+  metadata:
+    category: testing
+    technology:
+    - javascript
+    references:
+    - https://thruput.se/agents/#assert-values
+    - https://thruput.se/agents/#first
+    rule: Assert values
+    solutions:
+    - 'SHOULD: Run mutation testing to show that the tests fail when the code is wrong ([State of Mutation Testing at Google](https://research.google.com/pubs/archive/46584.pdf)).'
+    - 'SHOULD: Almost all code has tools for verification, make sure they are used inside the [project].'

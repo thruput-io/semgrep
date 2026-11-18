@@ -1,18 +1,21 @@
 rules:
-  - id: python-no-variadic-constructor-args
-    patterns:
-      - pattern-either:
-          - pattern: "def __init__(..., *$ARGS, ...): ..."
-          - pattern: "def __init__(..., **$KWARGS): ..."
-    message: >-
-      Constructor `__init__` accepts variadic arguments (`*$ARGS` or `**$KWARGS`).
-      Per RULES.md Section 4, domain classes and services MUST declare all dependencies and invariants explicitly.
-      Do not use `*args` or `**kwargs` in constructors to pass or dynamically extract dependencies.
-    languages: [python]
-    severity: ERROR
-    metadata:
-      category: domain-modeling
-      confidence: HIGH
-      references:
-        - https://github.com/thruput-io/agents/blob/main/RULES.md#strong-typing
-        - https://github.com/thruput-io/agents/blob/main/RULES.md#validating-factory
+- id: python-no-variadic-constructor-args
+  patterns:
+  - pattern-either:
+    - pattern: 'def __init__(..., *$ARGS, ...): ...'
+    - pattern: 'def __init__(..., **$KWARGS): ...'
+  message: Constructor `__init__` accepts variadic arguments (`*$ARGS` or `**$KWARGS`). Per RULES.md Section 4, domain classes
+    and services MUST declare all dependencies and invariants explicitly. Do not use `*args` or `**kwargs` in constructors
+    to pass or dynamically extract dependencies.
+  languages:
+  - python
+  severity: ERROR
+  metadata:
+    category: domain-modeling
+    confidence: HIGH
+    references:
+    - https://thruput.se/agents/#no-optionality
+    rule: No optionality
+    solutions:
+    - 'SHOULD: Make the toggle a strategy so that it encodes all options it controls'
+    - 'SHOULD: Make overload or specific behaviour [[Explicitly named method]]s instead of optional flags'

@@ -1,19 +1,26 @@
 rules:
-  - id: accept-unknown-properties
-    message: "Accept input that carries unknown properties and ignore them; do not configure schema validators with additionalProperties: false, .strict(), or allowUnknown: false."
-    severity: ERROR
-    languages:
-      - javascript
-      - typescript
-    patterns:
-      - pattern-either:
-          - pattern: "{ ..., additionalProperties: false, ... }"
-          - pattern: "{ ..., allowUnknown: false, ... }"
-          - pattern: $SCHEMA.strict()
-    metadata:
-      category: domain-modeling
-      technology:
-        - javascript
-      references:
-        - https://thruput.se/agents/#prepare-reader-for-evolving-producer
-        - https://github.com/thruput-io/agents/blob/main/rules/Rules.yaml
+- id: accept-unknown-properties
+  message: 'Accept input that carries unknown properties and ignore them; do not configure schema validators with additionalProperties:
+    false, .strict(), or allowUnknown: false.'
+  severity: ERROR
+  languages:
+  - javascript
+  - typescript
+  patterns:
+  - pattern-either:
+    - pattern: '{ ..., additionalProperties: false, ... }'
+    - pattern: '{ ..., allowUnknown: false, ... }'
+    - pattern: $SCHEMA.strict()
+  metadata:
+    category: domain-modeling
+    technology:
+    - javascript
+    references:
+    - https://thruput.se/agents/#accept-unknown-properties
+    - https://thruput.se/agents/#prepare-reader-for-evolving-producer
+    rule: Accept unknown properties
+    solutions:
+    - 'SHOULD: Ship the expanded contract, migrate its consumers, then remove what is left over, so every step deploys on
+      its own (Danilo Sato, [Parallel Change](https://martinfowler.com/bliki/ParallelChange.html)).'
+    - 'MAY: Let consumers publish the parts of the contract they rely on, so the producer sees what a change would break before
+      it ships (Ian Robinson, [Consumer-Driven Contracts](https://martinfowler.com/articles/consumerDrivenContracts.html)).'

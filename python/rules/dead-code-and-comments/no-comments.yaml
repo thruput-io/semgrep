@@ -1,14 +1,17 @@
 rules:
-  - id: python-no-comments
-    patterns:
-      - pattern-regex: '^[ \t]*#(?!([ \t]*(?:type:\s*ignore|noqa|pragma:|!|ruleid:|ok:|semgrep:)))[ \t]*\S.+$'
-    message: >-
-      Comments are disallowed in this codebase. Code should be self-documenting through clear naming,
-      concise function structure, and type annotations.
-    languages: [python]
-    severity: ERROR
-    metadata:
-      category: dead-code-and-comments
-      confidence: HIGH
-      references:
-        - https://github.com/thruput-io/agents/blob/main/RULES.md#no-comments-in-code
+- id: python-no-comments
+  patterns:
+  - pattern-regex: ^[ \t]*#(?!([ \t]*(?:type:\s*ignore|noqa|pragma:|!|ruleid:|ok:|semgrep:)))[ \t]*\S.+$
+  message: Comments are disallowed in this codebase. Code should be self-documenting through clear naming, concise function
+    structure, and type annotations.
+  languages:
+  - python
+  severity: ERROR
+  metadata:
+    category: dead-code-and-comments
+    confidence: HIGH
+    references:
+    - https://thruput.se/agents/#no-comments-in-code
+    rule: No comments in code
+    solutions:
+    - 'SHOULD: Name each test after the behaviour it pins, so the tests read as the specification.'
