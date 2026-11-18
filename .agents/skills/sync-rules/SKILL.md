@@ -54,7 +54,7 @@ Follow [ADR 0001](../../../docs/adrs/0001-language-agnostic-common-rules.yaml) a
 2. **Select curated ancestor solutions:**
    - Inspect `ancestor_solutions` in `sync_audit.py` output (`Rule -> Principle -> Rationale`).
    - Do not dump unrelated rationale solutions verbatim when a broad rationale (such as `Encapsulation`) lists many specialized options; select the 1–3 `SHOULD`/`MAY` solutions that directly remediate the matched violation.
-   - Populate `metadata.rule`, optional `metadata.smell`, `metadata.solutions`, and `metadata.references` (`published_url`: `https://thruput.se/agents/#<slug>`), and state both the violated rule/smell and concrete solution concisely in `message`.
+   - Populate `metadata.rule`, optional `metadata.smell`, `metadata.solutions`, and `metadata.references` (`published_url`: `https://thruput.se/agents/#<slug>`), updating [`scripts/enrich_rule_metadata.py`](../../../scripts/enrich_rule_metadata.py) and stating both the violated rule/smell and concrete solution concisely in `message`.
 
 ## 5. TDD Fixtures and Verification
 

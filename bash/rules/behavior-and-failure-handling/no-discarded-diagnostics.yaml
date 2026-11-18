@@ -1,14 +1,20 @@
 rules:
-  - id: no-discarded-diagnostics
-    message: "Do not send a command's stderr to /dev/null (e.g., 2>/dev/null, 2>>/dev/null, >/dev/null 2>&1, or &>/dev/null); let the failing tool report its error."
-    severity: ERROR
-    languages:
-      - bash
-    patterns:
-      - pattern-regex: '(2>>?\s*/dev/null|>\s*/dev/null\s+2>&1|&>>?\s*/dev/null)'
-    metadata:
-      category: behavior-and-failure-handling
-      technology:
-        - bash
-      references:
-        - https://github.com/thruput-io/agents/blob/main/rules.yaml#no-discarded-diagnostics
+- id: no-discarded-diagnostics
+  message: Do not send a command's stderr to /dev/null (e.g., 2>/dev/null, 2>>/dev/null, >/dev/null 2>&1, or &>/dev/null);
+    let the failing tool report its error.
+  severity: ERROR
+  languages:
+  - bash
+  patterns:
+  - pattern-regex: (2>>?\s*/dev/null|>\s*/dev/null\s+2>&1|&>>?\s*/dev/null)
+  metadata:
+    category: behavior-and-failure-handling
+    technology:
+    - bash
+    references:
+    - https://thruput.se/agents/#no-discarded-diagnostics
+    rule: No discarded diagnostics
+    solutions:
+    - 'SHOULD: Make processes safe to kill at any moment, so a crash costs nothing but a restart ([The Twelve-Factor App,
+      IX. Disposability](https://12factor.net/disposability)).'
+    - 'SHOULD: Leave recovery to a supervisor outside the failing process.'

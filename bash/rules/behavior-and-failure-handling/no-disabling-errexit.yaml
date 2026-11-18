@@ -1,20 +1,20 @@
 rules:
-  - id: no-disabling-errexit
-    message: "Do not disable errexit mid-script. Scripts must fail fast on every line."
-    severity: ERROR
-    languages:
-      - bash
-    pattern-either:
-      - pattern: set ... +e ...
-      - pattern: set ... +o errexit ...
-    metadata:
-      category: behavior-and-failure-handling
-      technology:
-        - bash
-      references:
-        - https://github.com/thruput-io/agents/blob/main/rules.yaml#scripts-abort-on-error
-        - https://github.com/thruput-io/agents/blob/main/rules.yaml#fail-fast
-      note: >-
-        No 1:1 canonical rule id exists for this specific anti-pattern; it is a
-        bash-specific elaboration guarding the scripts-abort-on-error and fail-fast
-        rules against the common way scripts silently undo them mid-execution.
+- id: no-disabling-errexit
+  message: Do not disable errexit mid-script. Scripts must fail fast on every line.
+  severity: ERROR
+  languages:
+  - bash
+  pattern-either:
+  - pattern: set ... +e ...
+  - pattern: set ... +o errexit ...
+  metadata:
+    category: behavior-and-failure-handling
+    technology:
+    - bash
+    references:
+    - https://thruput.se/agents/#scripts-abort-on-error
+    rule: Scripts abort on error
+    solutions:
+    - 'SHOULD: Make processes safe to kill at any moment, so a crash costs nothing but a restart ([The Twelve-Factor App,
+      IX. Disposability](https://12factor.net/disposability)).'
+    - 'SHOULD: Leave recovery to a supervisor outside the failing process.'

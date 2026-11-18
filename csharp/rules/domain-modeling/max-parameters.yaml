@@ -1,76 +1,90 @@
 rules:
-  - id: csharp-max-parameters-warning
-    patterns:
-      - pattern-not: |
-          [$ATTR]
-          public $RET $FUNC(...) { ... }
-      - pattern-not: |
-          [$ATTR(...)]
-          public $RET $FUNC(...) { ... }
-      - pattern-not: "override $RET $FUNC(...) { ... }"
-      - pattern: "$RET $FUNC(..., $T1 $P1, ..., $T2 $P2, ..., $T3 $P3, ..., $T4 $P4, ...) { ... }"
-      - metavariable-regex:
-          metavariable: $T1
-          regex: ^(?!.*CancellationToken$).*
-      - metavariable-regex:
-          metavariable: $T2
-          regex: ^(?!.*CancellationToken$).*
-      - metavariable-regex:
-          metavariable: $T3
-          regex: ^(?!.*CancellationToken$).*
-      - metavariable-regex:
-          metavariable: $T4
-          regex: ^(?!.*CancellationToken$).*
-      - pattern-either:
-          - pattern: "$RET $FUNC($A1, $A2, $A3, $A4) { ... }"
-          - pattern: "$RET $FUNC(..., CancellationToken $CT, ...) { ... }"
-          - pattern: "$RET $FUNC(..., System.Threading.CancellationToken $CT, ...) { ... }"
-      - pattern-not: "$RET $FUNC($A1, $A2, $A3, $A4, $A5, $A6, ...) { ... }"
-    message: >-
-      Method `$FUNC` accepts 4 parameters (WARNING).
-      Consider grouping related parameters into a dedicated Value Object / Parameter record.
-    languages: [csharp]
-    severity: WARNING
-    metadata:
-      category: domain-modeling
-      confidence: HIGH
-      references:
-        - https://github.com/thruput-io/agents/blob/main/RULES.md#domain-primitives
+- id: csharp-max-parameters-warning
+  patterns:
+  - pattern-not: '[$ATTR]
 
-  - id: csharp-max-parameters-error
-    patterns:
-      - pattern-not: |
-          [$ATTR]
-          public $RET $FUNC(...) { ... }
-      - pattern-not: |
-          [$ATTR(...)]
-          public $RET $FUNC(...) { ... }
-      - pattern-not: "override $RET $FUNC(...) { ... }"
-      - pattern: "$RET $FUNC(..., $T1 $P1, ..., $T2 $P2, ..., $T3 $P3, ..., $T4 $P4, ..., $T5 $P5, ...) { ... }"
-      - metavariable-regex:
-          metavariable: $T1
-          regex: ^(?!.*CancellationToken$).*
-      - metavariable-regex:
-          metavariable: $T2
-          regex: ^(?!.*CancellationToken$).*
-      - metavariable-regex:
-          metavariable: $T3
-          regex: ^(?!.*CancellationToken$).*
-      - metavariable-regex:
-          metavariable: $T4
-          regex: ^(?!.*CancellationToken$).*
-      - metavariable-regex:
-          metavariable: $T5
-          regex: ^(?!.*CancellationToken$).*
-    message: >-
-      Method `$FUNC` accepts 5 or more parameters (ERROR).
-      Per RULES.md Section 4, methods MUST NOT exceed parameter limits.
-      Refactor parameters into a strongly-typed Domain Model, Command record, or Value Object.
-    languages: [csharp]
-    severity: ERROR
-    metadata:
-      category: domain-modeling
-      confidence: HIGH
-      references:
-        - https://github.com/thruput-io/agents/blob/main/RULES.md#domain-primitives
-        - https://github.com/thruput-io/agents/blob/main/RULES.md#strong-typing
+      public $RET $FUNC(...) { ... }
+
+      '
+  - pattern-not: '[$ATTR(...)]
+
+      public $RET $FUNC(...) { ... }
+
+      '
+  - pattern-not: override $RET $FUNC(...) { ... }
+  - pattern: $RET $FUNC(..., $T1 $P1, ..., $T2 $P2, ..., $T3 $P3, ..., $T4 $P4, ...) { ... }
+  - metavariable-regex:
+      metavariable: $T1
+      regex: ^(?!.*CancellationToken$).*
+  - metavariable-regex:
+      metavariable: $T2
+      regex: ^(?!.*CancellationToken$).*
+  - metavariable-regex:
+      metavariable: $T3
+      regex: ^(?!.*CancellationToken$).*
+  - metavariable-regex:
+      metavariable: $T4
+      regex: ^(?!.*CancellationToken$).*
+  - pattern-either:
+    - pattern: $RET $FUNC($A1, $A2, $A3, $A4) { ... }
+    - pattern: $RET $FUNC(..., CancellationToken $CT, ...) { ... }
+    - pattern: $RET $FUNC(..., System.Threading.CancellationToken $CT, ...) { ... }
+  - pattern-not: $RET $FUNC($A1, $A2, $A3, $A4, $A5, $A6, ...) { ... }
+  message: Method `$FUNC` accepts 4 parameters (WARNING). Consider grouping related parameters into a dedicated Value Object
+    / Parameter record.
+  languages:
+  - csharp
+  severity: WARNING
+  metadata:
+    category: domain-modeling
+    confidence: HIGH
+    references:
+    - https://thruput.se/agents/#single-purpose-components
+    rule: Single-purpose components
+    smell: A [[Function]] or [[Public method]] with more than 3 parameters.
+    solutions:
+    - 'SHOULD: Hide each design decision likely to change behind one module interface.'
+    - 'SHOULD: Keep concerns separate where merging them would save lines; the lines saved are paid back on every later change.'
+- id: csharp-max-parameters-error
+  patterns:
+  - pattern-not: '[$ATTR]
+
+      public $RET $FUNC(...) { ... }
+
+      '
+  - pattern-not: '[$ATTR(...)]
+
+      public $RET $FUNC(...) { ... }
+
+      '
+  - pattern-not: override $RET $FUNC(...) { ... }
+  - pattern: $RET $FUNC(..., $T1 $P1, ..., $T2 $P2, ..., $T3 $P3, ..., $T4 $P4, ..., $T5 $P5, ...) { ... }
+  - metavariable-regex:
+      metavariable: $T1
+      regex: ^(?!.*CancellationToken$).*
+  - metavariable-regex:
+      metavariable: $T2
+      regex: ^(?!.*CancellationToken$).*
+  - metavariable-regex:
+      metavariable: $T3
+      regex: ^(?!.*CancellationToken$).*
+  - metavariable-regex:
+      metavariable: $T4
+      regex: ^(?!.*CancellationToken$).*
+  - metavariable-regex:
+      metavariable: $T5
+      regex: ^(?!.*CancellationToken$).*
+  message: Method `$FUNC` accepts 5 or more parameters (ERROR). Per RULES.md Section 4, methods MUST NOT exceed parameter
+    limits. Refactor parameters into a strongly-typed Domain Model, Command record, or Value Object.
+  languages:
+  - csharp
+  severity: ERROR
+  metadata:
+    category: domain-modeling
+    confidence: HIGH
+    references:
+    - https://thruput.se/agents/#single-purpose-components
+    rule: Single-purpose components
+    solutions:
+    - 'SHOULD: Hide each design decision likely to change behind one module interface.'
+    - 'SHOULD: Keep concerns separate where merging them would save lines; the lines saved are paid back on every later change.'

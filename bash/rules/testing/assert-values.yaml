@@ -1,18 +1,23 @@
 rules:
-  - id: assert-values
-    message: "Assert the actual returned values, not merely that no error occurred. A bats @test that runs a command must check $status, $output, or $lines."
-    severity: ERROR
-    languages:
-      - generic
-    paths:
-      include:
-        - "*.bats"
-    patterns:
-      - pattern-regex: "(?s)@test\\s+\"[^\"]*\"\\s*\\{(?:(?!\\n\\}|\\$status|\\$output|\\$lines)[\\s\\S])*?\\brun\\b(?:(?!\\n\\}|\\$status|\\$output|\\$lines)[\\s\\S])*?\\n\\}"
-    metadata:
-      category: testing
-      technology:
-        - bash
-        - bats
-      references:
-        - https://github.com/thruput-io/agents/blob/main/rules.yaml#assert-values
+- id: assert-values
+  message: Assert the actual returned values, not merely that no error occurred. A bats @test that runs a command must check
+    $status, $output, or $lines.
+  severity: ERROR
+  languages:
+  - generic
+  paths:
+    include:
+    - '*.bats'
+  patterns:
+  - pattern-regex: (?s)@test\s+"[^"]*"\s*\{(?:(?!\n\}|\$status|\$output|\$lines)[\s\S])*?\brun\b(?:(?!\n\}|\$status|\$output|\$lines)[\s\S])*?\n\}
+  metadata:
+    category: testing
+    technology:
+    - bash
+    - bats
+    references:
+    - https://thruput.se/agents/#assert-values
+    rule: Assert values
+    solutions:
+    - 'SHOULD: Run mutation testing to show that the tests fail when the code is wrong ([State of Mutation Testing at Google](https://research.google.com/pubs/archive/46584.pdf)).'
+    - 'SHOULD: Almost all code has tools for verification, make sure they are used inside the [project].'

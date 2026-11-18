@@ -1,26 +1,32 @@
 rules:
-  - id: no-muted-tests
-    message: "Do not mute or skip tests (test.skip, it.skip, describe.skip, xit, xtest, test.todo, or { skip: true }). Fix or delete the test instead."
-    severity: ERROR
-    languages:
-      - javascript
-      - typescript
-    patterns:
-      - pattern-either:
-          - pattern: test.skip(...)
-          - pattern: it.skip(...)
-          - pattern: describe.skip(...)
-          - pattern: test.todo(...)
-          - pattern: it.todo(...)
-          - pattern: xit(...)
-          - pattern: xtest(...)
-          - pattern: xdescribe(...)
-          - pattern: "test($NAME, { ..., skip: $SKIP, ... }, ...)"
-          - pattern: "it($NAME, { ..., skip: $SKIP, ... }, ...)"
-    metadata:
-      category: testing
-      technology:
-        - javascript
-      references:
-        - https://thruput.se/agents/#test-driven-development
-        - https://github.com/thruput-io/agents/blob/main/rules/Rules.yaml
+- id: no-muted-tests
+  message: 'Do not mute or skip tests (test.skip, it.skip, describe.skip, xit, xtest, test.todo, or { skip: true }). Fix or
+    delete the test instead.'
+  severity: ERROR
+  languages:
+  - javascript
+  - typescript
+  patterns:
+  - pattern-either:
+    - pattern: test.skip(...)
+    - pattern: it.skip(...)
+    - pattern: describe.skip(...)
+    - pattern: test.todo(...)
+    - pattern: it.todo(...)
+    - pattern: xit(...)
+    - pattern: xtest(...)
+    - pattern: xdescribe(...)
+    - pattern: 'test($NAME, { ..., skip: $SKIP, ... }, ...)'
+    - pattern: 'it($NAME, { ..., skip: $SKIP, ... }, ...)'
+  metadata:
+    category: testing
+    technology:
+    - javascript
+    references:
+    - https://thruput.se/agents/#no-muted-tests
+    - https://thruput.se/agents/#test-driven-development
+    rule: No muted tests
+    solutions:
+    - 'SHOULD: Run mutation testing to show that the tests fail when the code is wrong ([State of Mutation Testing at Google](https://research.google.com/pubs/archive/46584.pdf)).'
+    - 'SHOULD: Treat painful [[Test setup]] as a design signal: split the subject into smaller domain models or focused interfaces
+      before reaching for a mock.'

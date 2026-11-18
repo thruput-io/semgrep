@@ -1,21 +1,19 @@
 rules:
-  - id: python-no-fallback-return-in-except
-    patterns:
-      - pattern: |
-          try:
-              ...
-          except ...:
-              ...
-              return $VAL
-    message: >-
-      Found `return $VAL` inside an `except` block.
-      Per RULES.md Section 7, code MUST fail fast. Do not return fallback/default values or switch strategies on failure.
-      Either let the exception bubble up or translate it into a specific Domain Exception.
-    languages: [python]
-    severity: ERROR
-    metadata:
-      category: behavior-and-failure-handling
-      confidence: HIGH
-      references:
-        - https://github.com/thruput-io/agents/blob/main/RULES.md#no-default-on-failure
-        - https://github.com/thruput-io/agents/blob/main/RULES.md#fail-fast
+- id: python-no-fallback-return-in-except
+  patterns:
+  - pattern: "try:\n    ...\nexcept ...:\n    ...\n    return $VAL\n"
+  message: Found `return $VAL` inside an `except` block. Per RULES.md Section 7, code MUST fail fast. Do not return fallback/default
+    values or switch strategies on failure. Either let the exception bubble up or translate it into a specific Domain Exception.
+  languages:
+  - python
+  severity: ERROR
+  metadata:
+    category: behavior-and-failure-handling
+    confidence: HIGH
+    references:
+    - https://thruput.se/agents/#no-default-on-failure
+    rule: No default on failure
+    solutions:
+    - 'SHOULD: Make processes safe to kill at any moment, so a crash costs nothing but a restart ([The Twelve-Factor App,
+      IX. Disposability](https://12factor.net/disposability)).'
+    - 'SHOULD: Leave recovery to a supervisor outside the failing process.'

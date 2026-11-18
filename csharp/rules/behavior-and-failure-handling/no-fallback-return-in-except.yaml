@@ -1,46 +1,22 @@
 rules:
-  - id: csharp-no-fallback-return-in-except
-    patterns:
-      - pattern-either:
-          - pattern: |
-              try
-              {
-                  ...
-              }
-              catch ($TYPE $EX)
-              {
-                  ...
-                  return $VAL;
-              }
-          - pattern: |
-              try
-              {
-                  ...
-              }
-              catch ($TYPE)
-              {
-                  ...
-                  return $VAL;
-              }
-          - pattern: |
-              try
-              {
-                  ...
-              }
-              catch
-              {
-                  ...
-                  return $VAL;
-              }
-    message: >-
-      Found `return $VAL;` inside a `catch` block.
-      Per RULES.md Section 7, code MUST fail fast. Do not return fallback/default values or switch strategies on failure.
-      Either let the exception bubble up or translate it into a specific Domain Exception.
-    languages: [csharp]
-    severity: ERROR
-    metadata:
-      category: behavior-and-failure-handling
-      confidence: HIGH
-      references:
-        - https://github.com/thruput-io/agents/blob/main/RULES.md#no-default-on-failure
-        - https://github.com/thruput-io/agents/blob/main/RULES.md#fail-fast
+- id: csharp-no-fallback-return-in-except
+  patterns:
+  - pattern-either:
+    - pattern: "try\n{\n    ...\n}\ncatch ($TYPE $EX)\n{\n    ...\n    return $VAL;\n}\n"
+    - pattern: "try\n{\n    ...\n}\ncatch ($TYPE)\n{\n    ...\n    return $VAL;\n}\n"
+    - pattern: "try\n{\n    ...\n}\ncatch\n{\n    ...\n    return $VAL;\n}\n"
+  message: Found `return $VAL;` inside a `catch` block. Per RULES.md Section 7, code MUST fail fast. Do not return fallback/default
+    values or switch strategies on failure. Either let the exception bubble up or translate it into a specific Domain Exception.
+  languages:
+  - csharp
+  severity: ERROR
+  metadata:
+    category: behavior-and-failure-handling
+    confidence: HIGH
+    references:
+    - https://thruput.se/agents/#no-default-on-failure
+    rule: No default on failure
+    solutions:
+    - 'SHOULD: Make processes safe to kill at any moment, so a crash costs nothing but a restart ([The Twelve-Factor App,
+      IX. Disposability](https://12factor.net/disposability)).'
+    - 'SHOULD: Leave recovery to a supervisor outside the failing process.'

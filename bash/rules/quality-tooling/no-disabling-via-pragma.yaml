@@ -1,14 +1,21 @@
 rules:
-  - id: no-disabling-via-pragma
-    message: "Do not disable linting rules via comments or pragmas (e.g., 'shellcheck disable=SC2086'). Fix the underlying issue instead of suppressing it."
-    severity: ERROR
-    languages:
-      - bash
-    patterns:
-      - pattern-regex: '^\s*#\s*shellcheck\s+disable='
-    metadata:
-      category: quality-tooling
-      technology:
-        - bash
-      references:
-        - https://github.com/thruput-io/agents/blob/main/rules.yaml#no-disabling-via-pragma
+- id: no-disabling-via-pragma
+  message: Do not disable linting rules via comments or pragmas (e.g., 'shellcheck disable=SC2086'). Fix the underlying issue
+    instead of suppressing it.
+  severity: ERROR
+  languages:
+  - bash
+  patterns:
+  - pattern-regex: ^\s*#\s*shellcheck\s+disable=
+  metadata:
+    category: quality-tooling
+    technology:
+    - bash
+    references:
+    - https://thruput.se/agents/#no-local-disabling-of-lint-rules
+    rule: No local disabling of lint rules
+    solutions:
+    - 'SHOULD: Resolve a [[Static code analysis]] warning at its root cause; where the code cannot satisfy a strict rule,
+      seek architectural guidance, never a workaround.'
+    - 'SHOULD: Enable the strictest static-analysis presets and compiler checks the ecosystem offers, so safeguards are enforced
+      without review.'

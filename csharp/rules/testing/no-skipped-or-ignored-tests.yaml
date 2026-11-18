@@ -1,38 +1,23 @@
 rules:
-  - id: csharp-no-skipped-or-ignored-tests
-    patterns:
-      - pattern-either:
-          - pattern: |
-              [Fact(..., Skip = $REASON, ...)]
-              $RET $METHOD(...)
-              {
-                  ...
-              }
-          - pattern: |
-              [Theory(..., Skip = $REASON, ...)]
-              $RET $METHOD(...)
-              {
-                  ...
-              }
-          - pattern: |
-              [Ignore(...)]
-              $RET $METHOD(...)
-              {
-                  ...
-              }
-          - pattern: |
-              [Ignore]
-              $RET $METHOD(...)
-              {
-                  ...
-              }
-    message: >-
-      Skipped or ignored test detected.
-      Per RULES.md Section 8, tests MUST NOT be skipped or muted. Fix the defect or delete the obsolete test immediately.
-    languages: [csharp]
-    severity: ERROR
-    metadata:
-      category: testing
-      confidence: HIGH
-      references:
-        - https://github.com/thruput-io/agents/blob/main/RULES.md#8-testing
+- id: csharp-no-skipped-or-ignored-tests
+  patterns:
+  - pattern-either:
+    - pattern: "[Fact(..., Skip = $REASON, ...)]\n$RET $METHOD(...)\n{\n    ...\n}\n"
+    - pattern: "[Theory(..., Skip = $REASON, ...)]\n$RET $METHOD(...)\n{\n    ...\n}\n"
+    - pattern: "[Ignore(...)]\n$RET $METHOD(...)\n{\n    ...\n}\n"
+    - pattern: "[Ignore]\n$RET $METHOD(...)\n{\n    ...\n}\n"
+  message: Skipped or ignored test detected. Per RULES.md Section 8, tests MUST NOT be skipped or muted. Fix the defect or
+    delete the obsolete test immediately.
+  languages:
+  - csharp
+  severity: ERROR
+  metadata:
+    category: testing
+    confidence: HIGH
+    references:
+    - https://thruput.se/agents/#no-muted-tests
+    rule: No muted tests
+    solutions:
+    - 'SHOULD: Run mutation testing to show that the tests fail when the code is wrong ([State of Mutation Testing at Google](https://research.google.com/pubs/archive/46584.pdf)).'
+    - 'SHOULD: Treat painful [[Test setup]] as a design signal: split the subject into smaller domain models or focused interfaces
+      before reaching for a mock.'

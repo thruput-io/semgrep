@@ -1,20 +1,26 @@
 rules:
-  - id: strict-presets
-    message: "Use the strictest presets on linting, type checking, and assertions (import 'node:assert/strict' instead of non-strict 'node:assert', and do not set strict/noImplicitAny/strictNullChecks to false)."
-    severity: ERROR
-    languages:
-      - javascript
-      - typescript
-    patterns:
-      - pattern-either:
-          - pattern-regex: "(?:from\\s+|require\\(\\s*)['\"](?:node:)?assert['\"]"
-          - pattern: "{ ..., strict: false, ... }"
-          - pattern: "{ ..., noImplicitAny: false, ... }"
-          - pattern: "{ ..., strictNullChecks: false, ... }"
-    metadata:
-      category: quality-tooling
-      technology:
-        - javascript
-      references:
-        - https://thruput.se/agents/#push-tests-down-the-pyramid
-        - https://github.com/thruput-io/agents/blob/main/rules/Rules.yaml
+- id: strict-presets
+  message: Use the strictest presets on linting, type checking, and assertions (import 'node:assert/strict' instead of non-strict
+    'node:assert', and do not set strict/noImplicitAny/strictNullChecks to false).
+  severity: ERROR
+  languages:
+  - javascript
+  - typescript
+  patterns:
+  - pattern-either:
+    - pattern-regex: (?:from\s+|require\(\s*)['"](?:node:)?assert['"]
+    - pattern: '{ ..., strict: false, ... }'
+    - pattern: '{ ..., noImplicitAny: false, ... }'
+    - pattern: '{ ..., strictNullChecks: false, ... }'
+  metadata:
+    category: quality-tooling
+    technology:
+    - javascript
+    references:
+    - https://thruput.se/agents/#strict-presets
+    - https://thruput.se/agents/#push-tests-down-the-pyramid
+    rule: Strict presets
+    solutions:
+    - 'SHOULD: Run the same build locally and in the pipeline, so a change meets one bar wherever it runs.'
+    - 'SHOULD: Enable the strictest static-analysis presets and compiler checks the ecosystem offers, so safeguards are enforced
+      without review.'

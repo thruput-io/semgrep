@@ -1,40 +1,30 @@
 rules:
-  - id: scripts-abort-on-error
-    message: "Do not suppress unhandled rejections or uncaught exceptions at the process level; let a failing step terminate the script immediately."
-    severity: ERROR
-    languages:
-      - javascript
-      - typescript
-    patterns:
-      - pattern-either:
-          - patterns:
-              - pattern: process.on('unhandledRejection', ($REASON, ...) => { ... })
-              - pattern-not: |
-                  process.on('unhandledRejection', ($REASON, ...) => {
-                    ...
-                    throw $EX;
-                  })
-              - pattern-not: |
-                  process.on('unhandledRejection', ($REASON, ...) => {
-                    ...
-                    process.exit(1);
-                  })
-          - patterns:
-              - pattern: process.on('uncaughtException', ($ERR, ...) => { ... })
-              - pattern-not: |
-                  process.on('uncaughtException', ($ERR, ...) => {
-                    ...
-                    throw $EX;
-                  })
-              - pattern-not: |
-                  process.on('uncaughtException', ($ERR, ...) => {
-                    ...
-                    process.exit(1);
-                  })
-    metadata:
-      category: behavior-and-failure-handling
-      technology:
-        - javascript
-      references:
-        - https://thruput.se/agents/#fail-fast
-        - https://github.com/thruput-io/agents/blob/main/rules/Rules.yaml
+- id: scripts-abort-on-error
+  message: Do not suppress unhandled rejections or uncaught exceptions at the process level; let a failing step terminate
+    the script immediately.
+  severity: ERROR
+  languages:
+  - javascript
+  - typescript
+  patterns:
+  - pattern-either:
+    - patterns:
+      - pattern: process.on('unhandledRejection', ($REASON, ...) => { ... })
+      - pattern-not: "process.on('unhandledRejection', ($REASON, ...) => {\n  ...\n  throw $EX;\n})\n"
+      - pattern-not: "process.on('unhandledRejection', ($REASON, ...) => {\n  ...\n  process.exit(1);\n})\n"
+    - patterns:
+      - pattern: process.on('uncaughtException', ($ERR, ...) => { ... })
+      - pattern-not: "process.on('uncaughtException', ($ERR, ...) => {\n  ...\n  throw $EX;\n})\n"
+      - pattern-not: "process.on('uncaughtException', ($ERR, ...) => {\n  ...\n  process.exit(1);\n})\n"
+  metadata:
+    category: behavior-and-failure-handling
+    technology:
+    - javascript
+    references:
+    - https://thruput.se/agents/#scripts-abort-on-error
+    - https://thruput.se/agents/#fail-fast
+    rule: Scripts abort on error
+    solutions:
+    - 'SHOULD: Make processes safe to kill at any moment, so a crash costs nothing but a restart ([The Twelve-Factor App,
+      IX. Disposability](https://12factor.net/disposability)).'
+    - 'SHOULD: Leave recovery to a supervisor outside the failing process.'

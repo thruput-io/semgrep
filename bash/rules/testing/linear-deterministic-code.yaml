@@ -1,44 +1,34 @@
 rules:
-  - id: linear-deterministic-code
-    message: "Do not write tests that contain conditional branching or loops. Test scripts and bats @test bodies must be linear and deterministic."
-    severity: ERROR
-    languages:
-      - bash
-    paths:
-      include:
-        - "*.bats"
-        - "test-*.sh"
-        - "*_test.sh"
-        - "test_*.sh"
-        - "**/test/**"
-        - "**/tests/**"
-        - "**/testing/**"
-    pattern-either:
-      - pattern: |
-          if ...; then
-            ...
-          fi
-      - pattern: |
-          for $VAR in ...; do
-            ...
-          done
-      - pattern: |
-          while ...; do
-            ...
-          done
-      - pattern: |
-          until ...; do
-            ...
-          done
-      - pattern: |
-          case $VAL in
-            $PAT) ...
-            ;;
-          esac
-    metadata:
-      category: testing
-      technology:
-        - bash
-        - bats
-      references:
-        - https://github.com/thruput-io/agents/blob/main/rules.yaml#linear-deterministic-code
+- id: linear-deterministic-code
+  message: Do not write tests that contain conditional branching or loops. Test scripts and bats @test bodies must be linear
+    and deterministic.
+  severity: ERROR
+  languages:
+  - bash
+  paths:
+    include:
+    - '*.bats'
+    - test-*.sh
+    - '*_test.sh'
+    - test_*.sh
+    - '**/test/**'
+    - '**/tests/**'
+    - '**/testing/**'
+  pattern-either:
+  - pattern: "if ...; then\n  ...\nfi\n"
+  - pattern: "for $VAR in ...; do\n  ...\ndone\n"
+  - pattern: "while ...; do\n  ...\ndone\n"
+  - pattern: "until ...; do\n  ...\ndone\n"
+  - pattern: "case $VAL in\n  $PAT) ...\n  ;;\nesac\n"
+  metadata:
+    category: testing
+    technology:
+    - bash
+    - bats
+    references:
+    - https://thruput.se/agents/#linear-deterministic-code
+    rule: Linear deterministic code
+    solutions:
+    - 'SHOULD: Make processes safe to kill at any moment, so a crash costs nothing but a restart ([The Twelve-Factor App,
+      IX. Disposability](https://12factor.net/disposability)).'
+    - 'SHOULD: Leave recovery to a supervisor outside the failing process.'

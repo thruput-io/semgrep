@@ -1,21 +1,19 @@
 rules:
-  - id: max-file-lines
-    message: >-
-      Single-purpose components smell: file exceeds 200 lines.
-      Split distinct responsibilities into separate single-purpose components per Separation of Concerns
-      (One concern, one owner: https://thruput.se/agents/#single-purpose-components).
-      Do not compact lines, pack multiple statements onto one line, or strip whitespace to stay under 200 lines.
-    severity: WARNING
-    languages:
-      - generic
-    patterns:
-      - pattern-regex: '\A(?:[^\n]*\n){200}\K(?:\r?\n|.)[^\n]*'
-    metadata:
-      category: quality-tooling
-      rule: Single-purpose components
-      smell: "A [[Component]] longer than 200 lines."
-      solutions:
-        - "SHOULD: Hide each design decision likely to change behind one module interface."
-        - "SHOULD: Keep concerns separate where merging them would save lines; the lines saved are paid back on every later change."
-      references:
-        - https://thruput.se/agents/#single-purpose-components
+- id: max-file-lines
+  message: 'Single-purpose components smell: file exceeds 200 lines. Split distinct responsibilities into separate single-purpose
+    components per Separation of Concerns (One concern, one owner: https://thruput.se/agents/#single-purpose-components).
+    Do not compact lines, pack multiple statements onto one line, or strip whitespace to stay under 200 lines.'
+  severity: WARNING
+  languages:
+  - generic
+  patterns:
+  - pattern-regex: \A(?:[^\n]*\n){200}\K(?:\r?\n|.)[^\n]*
+  metadata:
+    category: quality-tooling
+    rule: Single-purpose components
+    smell: A [[Component]] longer than 200 lines.
+    solutions:
+    - 'SHOULD: Hide each design decision likely to change behind one module interface.'
+    - 'SHOULD: Keep concerns separate where merging them would save lines; the lines saved are paid back on every later change.'
+    references:
+    - https://thruput.se/agents/#single-purpose-components

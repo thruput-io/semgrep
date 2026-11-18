@@ -1,15 +1,19 @@
 rules:
-  - id: csharp-no-test-case-ordering
-    patterns:
-      - pattern-regex: '\[\s*(?:(?:Xunit\.|NUnit\.Framework\.|Microsoft\.VisualStudio\.TestTools\.UnitTesting\.)?(?:TestCaseOrderer|TestPriority|Order|Priority))\s*\('
-    message: >-
-      Found test ordering attribute (`[TestCaseOrderer]`, `[TestPriority]`, `[Order]`).
-      Per RULES.md Section 8, test cases MUST NOT be coupled or depend on execution order.
-      Every test case MUST be executable independently in any order.
-    languages: [csharp]
-    severity: ERROR
-    metadata:
-      category: testing
-      confidence: HIGH
-      references:
-        - https://github.com/thruput-io/agents/blob/main/RULES.md#no-test-case-coupling
+- id: csharp-no-test-case-ordering
+  patterns:
+  - pattern-regex: \[\s*(?:(?:Xunit\.|NUnit\.Framework\.|Microsoft\.VisualStudio\.TestTools\.UnitTesting\.)?(?:TestCaseOrderer|TestPriority|Order|Priority))\s*\(
+  message: Found test ordering attribute (`[TestCaseOrderer]`, `[TestPriority]`, `[Order]`). Per RULES.md Section 8, test
+    cases MUST NOT be coupled or depend on execution order. Every test case MUST be executable independently in any order.
+  languages:
+  - csharp
+  severity: ERROR
+  metadata:
+    category: testing
+    confidence: HIGH
+    references:
+    - https://thruput.se/agents/#no-test-case-coupling
+    rule: No test case coupling
+    solutions:
+    - 'SHOULD: Treat painful [[Test setup]] as a design signal: split the subject into smaller domain models or focused interfaces
+      before reaching for a mock.'
+    - 'SHOULD: Almost all code has tools for verification, make sure they are used inside the [project].'
