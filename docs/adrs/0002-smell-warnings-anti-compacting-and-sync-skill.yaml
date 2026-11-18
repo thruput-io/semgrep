@@ -1,0 +1,8 @@
+number: 2
+title: Smell Warnings, Anti-Compacting Guardrails, and Skill-Driven Upstream Sync
+date: "2026-11-18"
+context: |
+  Treating heuristic size smells as hard errors with path exemptions hides [[Single-purpose components]] smells in tests and incentivizes an [[AI agent]] to compact statements onto fewer lines rather than split responsibilities. Upstream governance changes also add smells, add ancestor solutions, and retire rules that perform poorly in [[Static code analysis]].
+decisions:
+  - Emit heuristic smell checks such as [[Component]] line-count thresholds at warning severity across all source and test files with no path exemptions, pairing them with error-severity language-agnostic [[Lint rule]]s that reject horizontal line cramming and multi-statement line packing to protect [[Readability]] and [[Separation of Concerns]].
+  - Synchronize [[Ruleset]]s with upstream governance by combining a deterministic delta audit script with a dedicated synchronization skill that evaluates [[Static code analysis]] fitness, removes retired or low-precision checks, refines violations where distinct smells require distinct remediations, and attaches curated solutions from the upstream rule, principle, and rationale chain.
