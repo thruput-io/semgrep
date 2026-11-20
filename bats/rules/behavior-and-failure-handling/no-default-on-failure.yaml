@@ -1,0 +1,18 @@
+rules:
+  - id: no-default-on-failure
+    message: "Do not return or use a default value when a command fails or when a variable or parameter is unset or empty. Fail fast instead of masking missing inputs or failures."
+    severity: ERROR
+    languages:
+      - generic
+    paths:
+      include:
+        - "*.bats"
+    patterns:
+      - pattern-regex: '(\$\{[A-Za-z0-9_]+:[-=][^}]*\}|[A-Za-z_][A-Za-z0-9_]*=\$\([^)]+\)\s*\|\|\s*[A-Za-z_][A-Za-z0-9_]*=|\$\([^)]*\|\|\s*(?:echo|printf)\b[^)]*\))'
+    metadata:
+      category: behavior-and-failure-handling
+      technology:
+        - bats
+      references:
+        - https://github.com/thruput-io/agents/blob/main/rules.yaml#no-default-on-failure
+        - https://github.com/thruput-io/agents/blob/main/rules.yaml#no-optionality

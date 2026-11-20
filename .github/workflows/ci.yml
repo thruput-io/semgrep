@@ -115,6 +115,35 @@ jobs:
         run: |
           pytest tests/test_bash_cli.py --junitxml=test-results-bash.xml
 
+  test-bats:
+    name: Test Bats Rules & Standalone Script
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python (for the Bats rule & CLI test suites)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Semgrep & Pytest
+        run: |
+          python -m pip install --upgrade pip
+          pip install semgrep pytest pyyaml
+
+      - name: Run ShellCheck on semgrep-bats
+        uses: ludeeus/action-shellcheck@2.0.0
+        with:
+          scandir: bats/bin
+
+      - name: Run Bats Rule & CLI Test Suites
+        run: |
+          pytest tests/test_all_rules.py -k "bats" --junitxml=test-results-bats-rules.xml
+          pytest tests/test_bats_cli.py --junitxml=test-results-bats-cli.xml
+
   test-javascript:
     name: Test JavaScript Rules & Standalone Script
     runs-on: ubuntu-latest

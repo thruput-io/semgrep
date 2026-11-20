@@ -1,0 +1,19 @@
+rules:
+  - id: require-shebang
+    message: "Bats test files MUST start with a valid bats shebang (e.g. #!/usr/bin/env bats). Do not use a bash shebang or omit the shebang."
+    severity: ERROR
+    languages:
+      - generic
+    paths:
+      include:
+        - "*.bats"
+      exclude:
+        - "**/lib/**"
+    patterns:
+      - pattern-regex: '\A(?!#!.*\bbats\b)'
+    metadata:
+      category: purpose-and-accuracy
+      technology:
+        - bats
+      references:
+        - https://bats-core.readthedocs.io/en/stable/gotchas.html

@@ -31,6 +31,7 @@ def test_bundle_creates_language_and_combined_rulesets(tmp_path: Path) -> None:
     python_count = load_rules_count(tmp_path / "python.yaml")
     csharp_count = load_rules_count(tmp_path / "csharp.yaml")
     bash_count = load_rules_count(tmp_path / "bash.yaml")
+    bats_count = load_rules_count(tmp_path / "bats.yaml")
     javascript_count = load_rules_count(tmp_path / "javascript.yaml")
     all_count = load_rules_count(tmp_path / "all.yaml")
     rules_count = load_rules_count(tmp_path / "rules.yaml")
@@ -38,8 +39,9 @@ def test_bundle_creates_language_and_combined_rulesets(tmp_path: Path) -> None:
     assert python_count > 0
     assert csharp_count > 0
     assert bash_count == 14
+    assert bats_count == 14
     assert javascript_count == 19
-    assert all_count == python_count + csharp_count + bash_count + javascript_count
+    assert all_count == python_count + csharp_count + bash_count + bats_count + javascript_count
     assert rules_count == all_count
     assert index_count == all_count
 
@@ -64,9 +66,16 @@ def test_bundled_rulesets_validate_with_semgrep(tmp_path: Path) -> None:
         text=True,
         check=True,
     )
+    res_bats = subprocess.run(
+        ["semgrep", "scan", "--validate", "--config", str(tmp_path / "bats.yaml")],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
     assert res_all.returncode == 0
     assert res_js.returncode == 0
     assert res_bash.returncode == 0
+    assert res_bats.returncode == 0
 
 
 def test_semgrep_config_url_scans_via_http(tmp_path: Path) -> None:

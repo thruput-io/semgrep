@@ -1,0 +1,17 @@
+rules:
+  - id: no-silent-catch
+    message: "Do not clear a signal or error trap with an empty action; that silences failures instead of handling them."
+    severity: ERROR
+    languages:
+      - generic
+    paths:
+      include:
+        - "*.bats"
+    patterns:
+      - pattern-regex: '(?:^|[;&|]\s*|\s)trap\s+(?:''''|"")\s+\S+'
+    metadata:
+      category: behavior-and-failure-handling
+      technology:
+        - bats
+      references:
+        - https://github.com/thruput-io/agents/blob/main/rules.yaml#no-silent-catch
