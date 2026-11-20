@@ -22,7 +22,15 @@ def require_semgrep():
     return semgrep_bin
 
 
-def run_script(args, env=None):
+def run_script(args):
+    return subprocess.run(
+        [SCRIPT_PATH] + args,
+        capture_output=True,
+        text=True,
+    )
+
+
+def run_script_with_env(args, env):
     return subprocess.run(
         [SCRIPT_PATH] + args,
         capture_output=True,
@@ -74,6 +82,6 @@ class TestSemgrepBatsScript:
         semgrep_dir = os.path.dirname(semgrep_bin)
         remaining_dirs = [d for d in os.environ.get("PATH", "").split(os.pathsep) if d != semgrep_dir]
         stripped_env = {**os.environ, "PATH": os.pathsep.join(remaining_dirs)}
-        result = run_script([BAD_FIXTURE], env=stripped_env)
+        result = run_script_with_env([BAD_FIXTURE], stripped_env)
         assert result.returncode == 1
         assert "semgrep" in result.stderr.lower()
